@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+  app:
+    ports:
+      - 3000:3000
+    build:
+      context: frontend
+    tty: true
+    volumes:
+      - ./frontend:/app # フォルダを同期
+    environment:
+      - WATCHPACK_POLLING=true # ホットリロード（同期に必要）
+    entrypoint: 'yarn dev'
+    depends_on: # db必須のフロント, dbコンテナが先に立つ
+      - db
+  db:
+    image: 'mysql:latest'
+    # ports:
+    #   - 3001:3001 # 書かないと3306:3306
+    tty: true
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - mysql-db:/var/lib/mysql
+volumes:
+  mysql-db:
