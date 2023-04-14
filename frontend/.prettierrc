@@ -1,0 +1,8 @@
+{
+  "semi": false, // セミコロン無し
+  "singleQuote": true, // シングルクォーテーション
+  "jsxSingleQuote": true, // jsxの文字でシングルクォーテーション
+  "trailingComma": "all", // 末尾にカンマ付ける
+  "arrowParens": "avoid", // アロー関数propsの()省略
+  "singleAttributePerLine": true // HTMLの属性2つ以上で改行
+}

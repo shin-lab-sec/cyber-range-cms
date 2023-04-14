@@ -21,3 +21,19 @@ model Anpan2 {
   email String  @unique
   name  String?
 }
+
+model Anpan3 {
+  id Int @id @default(autoincrement())
+}
+
+model Course {
+  id String @id
+}
+
+model Curriculum {
+  id String @id
+}
+
+model CourserCurriculumRelation {
+  id String @id
+}
