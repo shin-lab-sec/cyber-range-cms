@@ -28,6 +28,12 @@ VSCodeの拡張機能で、Dockerを入れる
 
 ![image](https://user-images.githubusercontent.com/88410576/231916531-d2f84aa8-783a-48df-8e54-ffc317711cf9.png)
 
+.envに追加
+
+```
+DATABASE_URL="mysql://root:password@db:3306/prisma"
+```
+
 
 ### step3 prismaの設定
 appコンテナに入る
