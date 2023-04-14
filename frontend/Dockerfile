@@ -4,13 +4,14 @@ FROM node:lts-buster-slim
 RUN apt-get update && apt-get install -y \
   openssl
 
-# cd
+RUN npm install -g pnpm
+
 WORKDIR /app
 
-# yarnでnode_modulesを作成する
-COPY package.json ./
+COPY package.json pnpm-lock.yaml ./
 
-RUN yarn install
+# pnpm-lock.yamlを変更させない
+RUN pnpm install --frozen-lockfile
 
 # 先に、.nextを生成したい
-CMD [ "yarn", "dev" ]
+CMD [ "pnpm", "dev" ]
