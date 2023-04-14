@@ -8,10 +8,11 @@ import styles from '../styles/Home.module.css'
 const Home: NextPage = () => {
   const [anpan, setAnpan] = useState<Anpan>()
   const [anpans, setAnpans] = useState<Anpan[]>()
+  const [email, setEmail] = useState('')
 
   const getAnpan = useCallback(async () => {
     try {
-      const res = await fetch('/api/anpan/3').then(res => res.json())
+      const res = await fetch('/api/anpan/1').then(res => res.json())
       setAnpan(res.data)
       console.log({ res })
     } catch (e) {
@@ -34,7 +35,12 @@ const Home: NextPage = () => {
     getAnpans()
   }, [getAnpan, getAnpans])
 
-  const createAnpan = useCallback(async () => {
+  const createAnpan = useCallback(async (email: string) => {
+    if (!email) {
+      console.log('emailが空です！')
+      return
+    }
+
     try {
       const res = await fetch('/api/anpan', {
         method: 'POST',
@@ -42,7 +48,7 @@ const Home: NextPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: 'email6',
+          email,
           name: 'aa',
         }),
       }).then(res => res.json())
@@ -60,7 +66,7 @@ const Home: NextPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          // email: "emailです", name: "test1 update"
+          email: 'emailです',
           name: 'test1 update2',
         }),
       }).then(res => res.json())
@@ -90,15 +96,21 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <button onClick={createAnpan}>あんぱん追加</button>
+        <input
+          type='text'
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
+        <button onClick={() => createAnpan(email)}>あんぱん追加</button>
         <button onClick={updateAnpan}>あんぱん更新</button>
         <button onClick={deleteAnpan}>あんぱん削除</button>
-        {JSON.stringify(anpan)}
+
+        {anpan && <p>anpan 1 : {JSON.stringify(anpan)}</p>}
 
         <ul>
           {anpans?.length &&
             anpans.map((v, i) => (
-              <li key={i} style={{ display: 'flex', gap: '20px' }}>
+              <li key={i} style={{ display: 'flex', gap: '5px' }}>
                 <p>{v.id}</p>
                 <p>{v.email}</p>
                 <p>{v.name}</p>

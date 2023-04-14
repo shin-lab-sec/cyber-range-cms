@@ -10,4 +10,7 @@ WORKDIR /app
 # yarnでnode_modulesを作成する
 COPY package.json ./
 
-RUN yarn
+RUN yarn install
+
+# 先に、.nextを生成したい
+CMD [ "yarn", "dev" ]
