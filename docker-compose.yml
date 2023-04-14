@@ -9,7 +9,7 @@ services:
     volumes:
       - ./frontend:/app # フォルダを同期
       - node_modules:/app/node_modules # node_modules, .nextはボリュームに保存
-      - _next:/app/.next
+      - next_data:/app/.next
     environment:
       - WATCHPACK_POLLING=true # ホットリロード（同期に必要）
     command: 'yarn dev'
@@ -27,4 +27,4 @@ services:
 volumes:
   mysql-db:
   node_modules:
-  _next:
+  next_data:
