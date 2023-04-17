@@ -66,6 +66,42 @@ async function main() {
       order: 0,
     },
   })
+  const relation2 = await prisma.courseCurriculumRelation.upsert({
+    where: {
+      courseId_curriculumId: {
+        courseId: course1.id,
+        curriculumId: curriculum2.id,
+      },
+    },
+    update: {},
+    create: {
+      course: {
+        connect: { id: course1.id },
+      },
+      curriculum: {
+        connect: { id: curriculum2.id },
+      },
+      order: 1,
+    },
+  })
+  const relation3 = await prisma.courseCurriculumRelation.upsert({
+    where: {
+      courseId_curriculumId: {
+        courseId: course1.id,
+        curriculumId: curriculum3.id,
+      },
+    },
+    update: {},
+    create: {
+      course: {
+        connect: { id: course1.id },
+      },
+      curriculum: {
+        connect: { id: curriculum3.id },
+      },
+      order: 2,
+    },
+  })
 
   // console.log({ alice })
 }

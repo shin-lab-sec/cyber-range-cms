@@ -5,8 +5,11 @@ export const Relation: FC = () => {
   const [courses, setCourses] = useState<Course[]>([])
 
   const getSamples = useCallback(async () => {
+    const { data: courses } = await fetch('api/courses').then(res => res.json())
+
     const res = await fetch(
-      'api/courses/clgj3v0cs0000oz0je9n5xhfm/curriculums',
+      // 'api/courses/clgj3v0cs0000oz0je9n5xhfm/curriculums',
+      `api/courses/${courses[0].id}/curriculums`,
       {
         method: 'GET',
       },
@@ -17,6 +20,10 @@ export const Relation: FC = () => {
 
   const createCourse = useCallback(async () => {
     try {
+      const { data: courses } = await fetch('api/courses').then(res =>
+        res.json(),
+      )
+
       const res = await fetch(
         'api/courses/clgj3v0cs0000oz0je9n5xhfm/curriculums/clgjgryxl0004oz0j9yyv35bd',
         {
