@@ -9,8 +9,6 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
   const [curriculums, setCurriculums] = useState<Curriculum[]>([])
   const [selectedCurriculumId, setselectedCurriculumId] = useState('')
 
-  // courseIds 初期値 "" が良い? OK
-  // courseに、curriculums含める OK
   let curriculumIds = course?.curriculumIds.split(',') || []
 
   // 順番に並び替えたカリキュラム
@@ -43,9 +41,7 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
 
   // 順番を入れ替えるのは、ライブラリ
   const updateCourse = useCallback(async () => {
-    // spliceでやる。もう少し増やす
-    // const newOrder = [...curriculumIds.slice(1), curriculumIds[0]].join(',')
-    // const newOrder = ''
+    // テストで順番を1つずつずらす
     const newOrder = [curriculumIds.at(-1), curriculumIds.slice(0, -1)].join(
       ',',
     )
@@ -135,11 +131,6 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
     const newOrder = curriculumIds
       .filter(id => id !== selectedCurriculumId)
       .join(',')
-    // const newOrder = [
-    //   'clgkj5xvq0006n0pgyggdbh8a',
-    //   'clgkj5xw7000an0pgu5j2tggt',
-    //   'clgkk74vc0000n00t2q2q6pg0',
-    // ].join(',')
     console.log('splice', newOrder, selectedCurriculumId)
 
     // 中間テーブル削除
@@ -169,8 +160,6 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
       console.error(e)
     }
   }, [selectedCurriculumId])
-
-  // if (!course) return <div>ない</div>
 
   return (
     <div style={{ margin: '0 20px' }}>
