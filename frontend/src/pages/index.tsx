@@ -4,6 +4,10 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
+import { Sample } from '../components/Sample'
+import { CourseItem } from '../components/CourseItem'
+import { CurriculumItem } from '../components/CurriculumItem'
+import { Relation } from '../components/Relation'
 
 const Home: NextPage = () => {
   const [anpan, setAnpan] = useState<Anpan>()
@@ -117,6 +121,14 @@ const Home: NextPage = () => {
               </li>
             ))}
         </ul>
+
+        <CourseItem />
+
+        <CurriculumItem />
+
+        <Relation />
+
+        <Sample />
       </main>
 
       <footer className={styles.footer}>

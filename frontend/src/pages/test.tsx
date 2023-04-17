@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { NextPage } from 'next'
-import  { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 type Comment = {
   postId: number
@@ -27,7 +27,9 @@ const CommentPage: NextPage = () => {
 
   useEffect(() => {
     const getComments = async () => {
-      const res = await axiosFetcher('https://jsonplaceholder.typicode.com/comments/?_limit=10')
+      const res = await axiosFetcher(
+        'https://jsonplaceholder.typicode.com/comments/?_limit=10',
+      )
       if (res) {
         setComments(res)
       }
@@ -44,7 +46,7 @@ const CommentPage: NextPage = () => {
           <p key={comment.id}>{comment.body}</p>
         ))}
       </ul>
-      </>
+    </>
   )
 }
 

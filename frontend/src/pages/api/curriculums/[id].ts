@@ -1,4 +1,3 @@
-import { Anpan } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../lib/prisma'
 
@@ -7,52 +6,57 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const { method, body } = req
-  const id = Number(req.query.id) // anpan/1 (1の部分)
+  const id = String(req.query.id)
 
   switch (method) {
-    // anpan/1 の時も対応させる
+    // courses/1
     case 'GET':
       try {
-        const anpans = await prisma.anpan.findUnique({
+        const courses = await prisma.curriculum.findUnique({
           where: {
             id: id,
           },
-        }) // findUnique, findMany (where(OR, AND), orderBy, select, include, )
-        res.status(200).json({ data: anpans, method: method })
-      } catch (e) {
-        const err = e
+        })
+        res.status(200).json({ data: courses, method: method })
+      } catch (err) {
         res.status(400).json({ data: err })
       }
+      break
 
-    // anpan/1
+    // courses/1
     case 'PUT':
       try {
-        const createAnpan = await prisma.anpan.update({
+        const curriculum = await prisma.curriculum.update({
           where: {
             id: id,
           },
+          // 大丈夫？
           data: {
-            email: body.email,
-            name: body.name, // emailだけ、nameだけでも行ける
+            name: body.name,
+            level: body.level,
+            description: body.description,
           },
         })
-        res.status(200).json({ data: createAnpan })
+        res.status(200).json({ data: curriculum })
       } catch (err) {
         res.status(400).json({ data: err })
       }
+      break
 
-    // anpan/1
+    // courses/1
     case 'DELETE':
       try {
-        const createAnpan = await prisma.anpan.delete({
+        const curriculum = await prisma.curriculum.delete({
           where: {
             id: id,
           },
         })
-        res.status(200).json({ data: createAnpan })
+        res.status(200).json({ data: curriculum })
       } catch (err) {
         res.status(400).json({ data: err })
       }
+      break
+
     default:
       res.status(405).end()
       break
