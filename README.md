@@ -26,8 +26,6 @@ docker compose up
 
 VSCodeの拡張機能で、Dockerを入れる
 
-![image](https://user-images.githubusercontent.com/88410576/231916531-d2f84aa8-783a-48df-8e54-ffc317711cf9.png)
-
 .envに追加
 
 ```
@@ -41,22 +39,15 @@ appコンテナに入る
 2. cyber-range-cms_appを右クリック
 3. Attach Visual Studio Codeを押す
 
-![image](https://user-images.githubusercontent.com/88410576/231915405-d8b40c7e-ab3f-4d48-b5fe-1ac866510f1d.png)
-
 appコンテナのターミナルで、以下を実行。
 ```
 yarn prisma migrate dev
 yarn prisma generate
-```
 
-![image](https://user-images.githubusercontent.com/88410576/231915908-e3955e90-bccf-4058-abfa-b228d17a15e2.png)
+```
 
 コンテナを再起動する。
 
-![image](https://user-images.githubusercontent.com/88410576/231916045-e0c999e6-8013-4e31-8443-806877306813.png)
-![image](https://user-images.githubusercontent.com/88410576/231916125-282476fb-5e2e-442d-807e-ae691be40749.png)
-
-または、
 ```
 docker compose stop
 docker compse up
