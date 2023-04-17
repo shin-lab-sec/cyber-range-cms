@@ -1,41 +1,27 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import { Course } from '@prisma/client'
 
-export const Relation: FC = () => {
+export const CourseList: FC = () => {
   const [courses, setCourses] = useState<Course[]>([])
 
   const getSamples = useCallback(async () => {
-    const { data: courses } = await fetch('api/courses').then(res => res.json())
-
-    const res = await fetch(
-      // 'api/courses/clgj3v0cs0000oz0je9n5xhfm/curriculums',
-      `api/courses/${courses[0]?.id}`,
-      {
-        method: 'GET',
-      },
-    ).then(res => res.json())
+    const res = await fetch('api/courses', {
+      method: 'GET',
+    }).then(res => res.json())
     setCourses(res.data)
-    console.log('relation: ', res)
   }, [])
 
   const createCourse = useCallback(async () => {
     try {
-      const { data: courses } = await fetch('api/courses').then(res =>
-        res.json(),
-      )
-
-      const res = await fetch(
-        'api/courses/clgj3v0cs0000oz0je9n5xhfm/curriculums/clgjgryxl0004oz0j9yyv35bd',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: 'aa',
-          }),
+      const res = await fetch('/api/courses', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      ).then(res => res.json())
+        body: JSON.stringify({
+          name: 'aa',
+        }),
+      }).then(res => res.json())
       console.log('追加に成功', res)
     } catch (e) {
       console.error(e)
@@ -80,8 +66,15 @@ export const Relation: FC = () => {
 
   return (
     <div>
-      <h2>Relation</h2>
-      {JSON.stringify(courses)}
+      <h2>Course</h2>
+      <p>course 1</p>
+      <p>{JSON.stringify(courses[0])}</p>
+      <p>course 全部</p>
+      <p>{JSON.stringify(courses)}</p>
+      <p>course 1以外</p>
+      <p>{JSON.stringify(courses.slice(1))}</p>
+
+      {/* <p>{JSON.stringify(courses[0].curriculums)}</p> */}
       <p>
         <button onClick={createCourse}>作成</button>
         <button onClick={updateCourse}>更新</button>

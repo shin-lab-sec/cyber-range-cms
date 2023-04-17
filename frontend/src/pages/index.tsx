@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
 import { Sample } from '../components/Sample'
+import { CourseList } from '../components/CourseList'
 import { CourseItem } from '../components/CourseItem'
 import { CurriculumItem } from '../components/CurriculumItem'
 import { Relation } from '../components/Relation'
@@ -14,82 +15,82 @@ const Home: NextPage = () => {
   const [anpans, setAnpans] = useState<Anpan[]>()
   const [email, setEmail] = useState('')
 
-  const getAnpan = useCallback(async () => {
-    try {
-      const res = await fetch('/api/anpan/1').then(res => res.json())
-      setAnpan(res.data)
-      console.log({ res })
-    } catch (e) {
-      console.error(e)
-    }
-  }, [])
+  // const getAnpan = useCallback(async () => {
+  //   try {
+  //     const res = await fetch('/api/anpan/1').then(res => res.json())
+  //     setAnpan(res.data)
+  //     console.log({ res })
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // }, [])
 
-  const getAnpans = useCallback(async () => {
-    try {
-      const res = await fetch('/api/anpan').then(res => res.json())
-      setAnpans(res.data)
-      console.log({ res })
-    } catch (e) {
-      console.error(e)
-    }
-  }, [])
+  // const getAnpans = useCallback(async () => {
+  //   try {
+  //     const res = await fetch('/api/anpan').then(res => res.json())
+  //     setAnpans(res.data)
+  //     console.log({ res })
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // }, [])
 
-  useEffect(() => {
-    getAnpan()
-    getAnpans()
-  }, [getAnpan, getAnpans])
+  // useEffect(() => {
+  //   getAnpan()
+  //   getAnpans()
+  // }, [getAnpan, getAnpans])
 
-  const createAnpan = useCallback(async (email: string) => {
-    if (!email) {
-      console.log('emailが空です！')
-      return
-    }
+  // const createAnpan = useCallback(async (email: string) => {
+  //   if (!email) {
+  //     console.log('emailが空です！')
+  //     return
+  //   }
 
-    try {
-      const res = await fetch('/api/anpan', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          name: 'aa',
-        }),
-      }).then(res => res.json())
-      console.log('追加に成功', res)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [])
+  //   try {
+  //     const res = await fetch('/api/anpan', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         email,
+  //         name: 'aa',
+  //       }),
+  //     }).then(res => res.json())
+  //     console.log('追加に成功', res)
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // }, [])
 
-  const updateAnpan = useCallback(async () => {
-    try {
-      const res = await fetch('/api/anpan/1', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: 'emailです',
-          name: 'test1 update2',
-        }),
-      }).then(res => res.json())
-      console.log('更新に成功', res)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [])
+  // const updateAnpan = useCallback(async () => {
+  //   try {
+  //     const res = await fetch('/api/anpan/1', {
+  //       method: 'PUT',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         email: 'emailです',
+  //         name: 'test1 update2',
+  //       }),
+  //     }).then(res => res.json())
+  //     console.log('更新に成功', res)
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // }, [])
 
-  const deleteAnpan = useCallback(async () => {
-    try {
-      const res = await fetch('/api/anpan/2', {
-        method: 'DELETE',
-      }).then(res => res.json())
-      console.log('削除に成功', res)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [])
+  // const deleteAnpan = useCallback(async () => {
+  //   try {
+  //     const res = await fetch('/api/anpan/2', {
+  //       method: 'DELETE',
+  //     }).then(res => res.json())
+  //     console.log('削除に成功', res)
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // }, [])
 
   return (
     <div className={styles.container}>
@@ -100,17 +101,6 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <input
-          type='text'
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        <button onClick={() => createAnpan(email)}>あんぱん追加</button>
-        <button onClick={updateAnpan}>あんぱん更新</button>
-        <button onClick={deleteAnpan}>あんぱん削除</button>
-
-        {anpan && <p>anpan 1 : {JSON.stringify(anpan)}</p>}
-
         <ul>
           {anpans?.length &&
             anpans.map((v, i) => (
@@ -122,13 +112,14 @@ const Home: NextPage = () => {
             ))}
         </ul>
 
-        <CourseItem />
+        <div style={{ wordBreak: 'break-all' }}>
+          <CourseList />
+          <CourseItem id='clgkj5xv20000n0pgd4o5wslw' />
 
-        <CurriculumItem />
+          <CurriculumItem />
 
-        <Relation />
-
-        <Sample />
+          <Relation />
+        </div>
       </main>
 
       <footer className={styles.footer}>

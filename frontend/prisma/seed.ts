@@ -63,7 +63,7 @@ async function main() {
       curriculum: {
         connect: { id: curriculum1.id },
       },
-      order: 0,
+      // order: 0,
     },
   })
   const relation2 = await prisma.courseCurriculumRelation.upsert({
@@ -81,25 +81,50 @@ async function main() {
       curriculum: {
         connect: { id: curriculum2.id },
       },
-      order: 1,
+      // order: 1,
     },
   })
-  const relation3 = await prisma.courseCurriculumRelation.upsert({
-    where: {
-      courseId_curriculumId: {
-        courseId: course1.id,
-        curriculumId: curriculum3.id,
-      },
-    },
-    update: {},
-    create: {
-      course: {
-        connect: { id: course1.id },
-      },
-      curriculum: {
-        connect: { id: curriculum3.id },
-      },
-      order: 2,
+  // const relation3 = await prisma.courseCurriculumRelation.upsert({
+  //   where: {
+  //     courseId_curriculumId: {
+  //       courseId: course1.id,
+  //       curriculumId: curriculum3.id,
+  //     },
+  //   },
+  //   update: {},
+  //   create: {
+  //     course: {
+  //       connect: { id: course1.id },
+  //     },
+  //     curriculum: {
+  //       connect: { id: curriculum3.id },
+  //     },
+  //     // order: 2,
+  //   },
+  // })
+  // await prisma.courseCurriculumRelation.delete({
+  //   where: {
+  //     courseId_curriculumId: {
+  //       courseId: course1.id,
+  //       curriculumId: curriculum3.id,
+  //     },
+  //   },
+  // })
+
+  // curiculumIds 追加
+  await prisma.course.update({
+    where: { id: course1.id },
+    data: { curriculumIds: curriculum1.id },
+  })
+  const course11 = await prisma.course.findUnique({
+    where: { name: 'コース1' },
+  })
+  await prisma.course.update({
+    where: { id: course1.id },
+    data: {
+      curriculumIds: `${
+        course11?.curriculumIds ? `${course11.curriculumIds},` : ''
+      }${curriculum2.id}`,
     },
   })
 
