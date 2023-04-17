@@ -1,4 +1,3 @@
-import { Anpan } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../lib/prisma'
 
@@ -9,24 +8,29 @@ export default async function handler(
   const { method, body } = req
 
   switch (method) {
-    // 全データ取得
     case 'GET':
       try {
-        const anpans = await prisma.anpan.findMany() // findUnique, findMany (where(OR, AND), orderBy, select, include, )
-        res.status(200).json({ data: anpans, method: method })
+        const courses = await prisma.curriculum.findMany()
+        res.status(200).json({ data: courses, method: method })
       } catch (err) {
         res.status(400).json({ data: err })
       }
+      break
 
     case 'POST':
       try {
-        const createAnpan = await prisma.anpan.create({
-          data: { email: body.email, name: body.name },
+        const createCourse = await prisma.curriculum.create({
+          data: {
+            name: body.name,
+            level: body.level,
+            description: body.description,
+          },
         })
-        res.status(200).json({ data: createAnpan })
+        res.status(200).json({ data: createCourse })
       } catch (err) {
-        res.status(400).json({ data: err })
+        res.status(400).json({ data: err, req: body })
       }
+      break
 
     default:
       res.status(405).end()
