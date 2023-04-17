@@ -10,6 +10,7 @@ services:
       - ./frontend:/app # フォルダを同期
       - node_modules:/app/node_modules # node_modules, .nextはボリュームに保存
       - next_data:/app/.next
+      - pnpm_store:/app/.pnpm-store
     environment:
       - WATCHPACK_POLLING=true # ホットリロード（同期に必要）
     command: 'pnpm dev'
@@ -28,3 +29,4 @@ volumes:
   mysql-db:
   node_modules:
   next_data:
+  pnpm_store:
