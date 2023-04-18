@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import { Course, Curriculum } from '@prisma/client'
+import { fetchApi, getApi, postApi } from '../utilis/api'
 
 type CourseWithCurriculums = Course & { curriculums: Curriculum[] }
 
@@ -24,10 +25,11 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
   curriculumIds = orderdCurriculums ? orderdCurriculums.map(v => v.id) : []
 
   const getCourse = useCallback(async () => {
-    const res: { data: CourseWithCurriculums } = await fetch(
-      `api/courses/${id}`,
-    ).then(res => res.json())
-    setCourse(res.data)
+    // const res: { data: CourseWithCurriculums } = await fetch(
+    //   `api/courses/${id}`,
+    // ).then(res => res.json())
+    const res = await getApi<CourseWithCurriculums>(`courses/${id}`)
+    setCourse(res)
   }, [])
   const getCurriculums = useCallback(async () => {
     const res = await fetch(`api/curriculums`).then(res => res.json())

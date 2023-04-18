@@ -1,27 +1,27 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import { Course } from '@prisma/client'
+import { getApi, postApi } from '../utilis/api'
 
 export const CourseList: FC = () => {
   const [courses, setCourses] = useState<Course[]>([])
 
   const getSamples = useCallback(async () => {
-    const res = await fetch('api/courses', {
-      method: 'GET',
-    }).then(res => res.json())
-    setCourses(res.data)
+    const res = await getApi<Course[]>(`/courses`)
+    setCourses(res)
   }, [])
 
   const createCourse = useCallback(async () => {
     try {
-      const res = await fetch('/api/courses', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: 'aa',
-        }),
-      }).then(res => res.json())
+      const res = await postApi("/courses",{name:"aaa"})
+      // const res = await fetch('/api/courses', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     name: 'aa',
+      //   }),
+      // }).then(res => res.json())
       console.log('追加に成功', res)
     } catch (e) {
       console.error(e)
