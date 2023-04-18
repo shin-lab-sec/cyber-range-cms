@@ -15,7 +15,7 @@ model Course {
   url           String?
   imageUrl      String?
   article       String?
-  curriculumIds String                     @default("")
+  curriculumIds String                     @default("") @db.VarChar(1000)
   curriculums   CourseCurriculumRelation[]
 }
 
