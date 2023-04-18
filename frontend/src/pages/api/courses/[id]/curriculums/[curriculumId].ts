@@ -26,7 +26,7 @@ export default async function handler(
                 id: curriculumId,
               },
             },
-            order: 0,
+            // order: 0,
           },
         })
         res.status(200).json({ data: course })

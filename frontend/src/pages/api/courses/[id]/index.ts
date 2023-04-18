@@ -12,12 +12,25 @@ export default async function handler(
     // courses/1
     case 'GET':
       try {
-        const courses = await prisma.course.findUnique({
+        const course = await prisma.course.findUnique({
           where: {
             id: id,
           },
+          include: {
+            curriculums: {
+              include: {
+                curriculum: true,
+              },
+            },
+          },
         })
-        res.status(200).json({ data: courses, method: method })
+
+        // courseがnullならnullを返す
+        const result = course && {
+          ...course,
+          curriculums: course?.curriculums.map(ccr => ccr.curriculum),
+        }
+        res.status(200).json({ data: result })
       } catch (err) {
         res.status(400).json({ data: err })
       }
@@ -37,6 +50,7 @@ export default async function handler(
             article: body.article,
             imageUrl: body.imageUrl,
             description: body.description,
+            curriculumIds: body.curriculumIds,
           },
         })
         res.status(200).json({ data: course })
