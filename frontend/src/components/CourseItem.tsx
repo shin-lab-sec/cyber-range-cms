@@ -64,7 +64,7 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
     } catch (e) {
       console.error(e)
     }
-  }, [selectedCurriculumId])
+  }, [curriculumIds, id, selectedCurriculumId])
 
   const removeCurriculum = useCallback(async () => {
     if (!selectedCurriculumId) {
@@ -93,18 +93,15 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
     } catch (e) {
       console.error(e)
     }
-  }, [selectedCurriculumId])
+  }, [curriculumIds, id, selectedCurriculumId])
 
   return (
     <div style={{ margin: '0 20px' }}>
       <h2>
         {course?.name} id: {id}
       </h2>
-
-      {JSON.stringify(course)}
       <p>curriculumIds</p>
       <p>{JSON.stringify(curriculumIds)}</p>
-      <p>{JSON.stringify(course?.curriculums)}</p>
 
       {/* select */}
       {curriculums && (
@@ -124,13 +121,10 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
       )}
       {selectedCurriculumId}
 
-      <h3>コースのカリキュラム一覧</h3>
+      <h3>「{course?.name}」のカリキュラム一覧</h3>
       <ul>
         {orderdCurriculums?.map(curriculum => (
-          <li key={curriculum.id}>
-            <p> {curriculum.id}</p>
-            <p>{curriculum.name}</p>
-          </li>
+          <li key={curriculum.id}>{curriculum.name}</li>
         ))}
       </ul>
     </div>

@@ -13,6 +13,9 @@ import { useGetApi } from '../hooks/useApi'
 
 const Home: NextPage = () => {
   const { data: courses } = useGetApi<Course[]>(`/courses`)
+  const [selectedCourseId, setselectedCourseId] = useState(
+    courses?.[0]?.id || '',
+  )
 
   return (
     <div className={styles.container}>
@@ -26,7 +29,22 @@ const Home: NextPage = () => {
         <div style={{ wordBreak: 'break-all' }}>
           <Link href='/page2'>page2</Link>
           <CourseList />
-          {courses?.[0]?.id && <CourseItem id={courses[0].id} />}
+          <br />
+          <h2>コース選択</h2>
+          {courses && (
+            <>
+              <select onChange={e => setselectedCourseId(e.target.value)}>
+                {courses.map(curriculum => (
+                  <option key={curriculum.id} value={curriculum.id}>
+                    {curriculum.name}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
+          {selectedCourseId}
+          {/* {courses?.[0]?.id && <CourseItem id={courses[0].id} />} */}
+          {selectedCourseId && <CourseItem id={selectedCourseId} />}
 
           <CurriculumItem />
 
