@@ -2,6 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react'
 import { Curriculum } from '@prisma/client'
 import { deleteApi, getApi, postApi, putApi } from '../utilis/api'
 import { useGetApi } from '../hooks/useApi'
+import { Button, Flex, List, Select, Text, TextInput } from '@mantine/core'
 
 export const CurriculumItem: FC = () => {
   const { data: curriculums } = useGetApi<Curriculum[]>(`/curriculums`)
@@ -42,39 +43,39 @@ export const CurriculumItem: FC = () => {
 
   return (
     <div>
-      <h2>Curriculum</h2>
-      <ul>
+      <Text className='text-xl'>カリキュラム一覧</Text>
+      <List withPadding mt='sm'>
         {curriculums?.map(curriculum => (
-          <li key={curriculum.id} value={curriculum.id}>
-            {curriculum.name}
-          </li>
+          <List.Item key={curriculum.id}>○ {curriculum.name}</List.Item>
         ))}
-      </ul>
+      </List>
 
-      <p>
-        <label>
-          name
-          <input
-            type='text'
+      <form className='mt-3'>
+        <Flex gap='sm'>
+          <TextInput
             value={name}
-            onChange={v => setName(v.target.value)}
+            onChange={e => setName(e.currentTarget.value)}
+            placeholder='カリキュラム名を入力して下さい'
+            className='max-w-300px w-300px'
           />
-        </label>
-        <button onClick={createCurriculum}>作成</button>
-      </p>
+          <Button onClick={createCurriculum}>作成</Button>
+        </Flex>
+      </form>
 
       {curriculums && (
-        <>
-          <select onChange={e => setselectedCurriculumId(e.target.value)}>
-            {curriculums.map(curriculum => (
-              <option key={curriculum.id} value={curriculum.id}>
-                {curriculum.name}
-              </option>
-            ))}
-          </select>
-          <button onClick={updateCurriculum}>更新</button>
-          <button onClick={deleteCurriculum}>削除</button>
-        </>
+        <Flex gap='sm' mt='sm'>
+          <Select
+            placeholder='カリキュラムを選択してください'
+            onChange={(e: string) => setselectedCurriculumId(e)}
+            data={curriculums.map(v => ({ value: v.id, label: v.name }))}
+            className='max-w-300px w-300px'
+          />
+
+          <Button onClick={updateCurriculum}>更新</Button>
+          <Button color='red' onClick={deleteCurriculum}>
+            削除
+          </Button>
+        </Flex>
       )}
       {selectedCurriculumId}
     </div>

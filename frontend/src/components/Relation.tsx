@@ -1,5 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import { useGetApi } from '../hooks/useApi'
+import { List } from '@mantine/core'
 
 type CourseCurriculumRelation = {
   courseId: string
@@ -14,14 +15,14 @@ export const Relation: FC = () => {
 
   return (
     <div>
-      <h2>Relation</h2>
-      <ul>
+      <h2 className='text-xl'>Relation</h2>
+      <List withPadding mt='sm'>
         {relations?.map(c => (
-          <li key={`${c.courseId} ${c.curriculumId}`}>
-            {c.courseName}, {c.curriculumName}
-          </li>
+          <List.Item key={`${c.courseId} ${c.curriculumId}`}>
+            ○ {c.courseName}, {c.curriculumName}
+          </List.Item>
         ))}
-      </ul>
+      </List>
     </div>
   )
 }

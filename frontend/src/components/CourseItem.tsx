@@ -2,6 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react'
 import { Course, Curriculum } from '@prisma/client'
 import { deleteApi, postApi, putApi } from '../utilis/api'
 import { useGetApi } from '../hooks/useApi'
+import { Button, Flex, List, Select, Text } from '@mantine/core'
 
 type CourseWithCurriculums = Course & { curriculums: Curriculum[] }
 
@@ -96,37 +97,36 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
   }, [curriculumIds, id, selectedCurriculumId])
 
   return (
-    <div style={{ margin: '0 20px' }}>
-      <h2>
+    <div>
+      <Text>
         {course?.name} id: {id}
-      </h2>
-      <p>curriculumIds</p>
-      <p>{JSON.stringify(curriculumIds)}</p>
+      </Text>
 
-      {/* select */}
       {curriculums && (
-        <>
-          <h3>カリキュラムを追加</h3>
-          <select onChange={e => setselectedCurriculumId(e.target.value)}>
-            {curriculums?.map(curriculum => (
-              <option key={curriculum.id} value={curriculum.id}>
-                {curriculum.name}
-              </option>
-            ))}
-          </select>
-          <button onClick={addCurriculum}>追加</button>
-          <button onClick={removeCurriculum}>削除</button>
-          <button onClick={updateCourse}>順番更新</button>
-        </>
+        <Flex gap='sm' mt='sm'>
+          {curriculums && (
+            <Select
+              placeholder='カリキュラムを選択してください'
+              onChange={(e: string) => setselectedCurriculumId(e)}
+              data={curriculums.map(v => ({ value: v.id, label: v.name }))}
+              className='max-w-300px w-300px'
+            />
+          )}
+          <Button onClick={addCurriculum}>追加</Button>
+          <Button onClick={updateCourse}>順番更新</Button>
+          <Button color='sred' onClick={removeCurriculum}>
+            削除
+          </Button>
+        </Flex>
       )}
-      {selectedCurriculumId}
 
-      <h3>「{course?.name}」のカリキュラム一覧</h3>
-      <ul>
+      <Text mt='sm'>「{course?.name}」のカリキュラム一覧</Text>
+
+      <List withPadding mt='sm'>
         {orderdCurriculums?.map(curriculum => (
-          <li key={curriculum.id}>{curriculum.name}</li>
+          <List.Item key={curriculum.id}>○ {curriculum.name}</List.Item>
         ))}
-      </ul>
+      </List>
     </div>
   )
 }
