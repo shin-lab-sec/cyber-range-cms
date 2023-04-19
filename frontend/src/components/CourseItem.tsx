@@ -1,17 +1,17 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import { Course, Curriculum } from '@prisma/client'
-import { fetchApi, getApi, postApi } from '../utilis/api'
+import { deleteApi, postApi, putApi } from '../utilis/api'
+import { useGetApi } from '../hooks/useApi'
 
 type CourseWithCurriculums = Course & { curriculums: Curriculum[] }
 
 export const CourseItem: FC<{ id: string }> = ({ id }) => {
-  const [course, setCourse] = useState<CourseWithCurriculums | null>(null)
+  const { data: course } = useGetApi<CourseWithCurriculums>(`/courses/${id}`)
   // セレクトボックス
-  const [curriculums, setCurriculums] = useState<Curriculum[]>([])
+  const { data: curriculums } = useGetApi<Curriculum[]>(`/curriculums`)
   const [selectedCurriculumId, setselectedCurriculumId] = useState('')
 
-  let curriculumIds = course?.curriculumIds.split(',') || []
-
+  let curriculumIds = course?.curriculumIds?.split(',') || []
   // 順番に並び替えたカリキュラム
   const orderdCurriculums = structuredClone(course?.curriculums)
   orderdCurriculums?.sort((a, b) => {
@@ -24,41 +24,14 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
   // curriculumIdsとカリキュラムを合わせる
   curriculumIds = orderdCurriculums ? orderdCurriculums.map(v => v.id) : []
 
-  const getCourse = useCallback(async () => {
-    // const res: { data: CourseWithCurriculums } = await fetch(
-    //   `api/courses/${id}`,
-    // ).then(res => res.json())
-    const res = await getApi<CourseWithCurriculums>(`courses/${id}`)
-    setCourse(res)
-  }, [])
-  const getCurriculums = useCallback(async () => {
-    const res = await fetch(`api/curriculums`).then(res => res.json())
-    setCurriculums(res.data)
-  }, [])
-
-  useEffect(() => {
-    getCourse()
-    getCurriculums()
-  }, [])
-
   // 順番を入れ替えるのは、ライブラリ
   const updateCourse = useCallback(async () => {
-    // テストで順番を1つずつずらす
     const newOrder = [curriculumIds.at(-1), curriculumIds.slice(0, -1)].join(
       ',',
     )
-    console.log(newOrder)
 
     try {
-      const res = await fetch(`/api/courses/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          curriculumIds: newOrder,
-        }),
-      }).then(res => res.json())
+      const res = await putApi(`/courses/${id}`, { curriculumIds: newOrder })
       console.log('更新に成功', res)
     } catch (e) {
       console.error(e)
@@ -70,7 +43,6 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
       console.log('カリキュラムidが空です', selectedCurriculumId)
       return
     }
-
     if (curriculumIds.includes(selectedCurriculumId)) {
       console.log('既にそのカリキュラムはコースに含まれています')
       return
@@ -79,45 +51,16 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
     const newOrder = [curriculumIds, selectedCurriculumId].join(',')
     console.log(newOrder)
 
-    // 中間テーブルに追加
     try {
-      const res = await fetch(
-        `/api/courses/${id}/curriculums/${selectedCurriculumId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      ).then(res => res.json())
+      // 中間テーブルに追加
+      const res = await postApi(
+        `/courses/${id}/curriculums/${selectedCurriculumId}`,
+      )
       console.log('中間テーブルに追加', res)
 
-      const res1 = await fetch(`/api/courses/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          curriculumIds: newOrder,
-        }),
-      }).then(res => res.json())
+      // curriculumIds更新
+      const res1 = await putApi(`/courses/${id}`, { curriculumIds: newOrder })
       console.log('更新に成功', res1)
-    } catch (e) {
-      console.error(e)
-    }
-
-    // コースの curriculumIds を更新
-    try {
-      const res = await fetch(`/api/courses/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          curriculumIds: newOrder,
-        }),
-      }).then(res => res.json())
-      console.log('更新に成功', res)
     } catch (e) {
       console.error(e)
     }
@@ -135,29 +78,18 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
       .join(',')
     console.log('splice', newOrder, selectedCurriculumId)
 
-    // 中間テーブル削除
     try {
-      const res = await fetch(
-        `/api/courses/${id}/curriculums/${selectedCurriculumId}`,
-        { method: 'DELETE' },
-      ).then(res => res.json())
+      // 中間テーブル削除
+      const res = await deleteApi(
+        `/courses/${id}/curriculums/${selectedCurriculumId}`,
+      )
       console.log('中間テーブル削除', res)
-    } catch (e) {
-      console.error(e)
-    }
 
-    // コースの curriculumIds を更新
-    try {
-      const res = await fetch(`/api/courses/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          curriculumIds: newOrder,
-        }),
-      }).then(res => res.json())
-      console.log('更新に成功', res)
+      // curriculumIds更新
+      const res1 = await putApi(`/courses/${id}`, {
+        curriculumIds: newOrder,
+      })
+      console.log('更新に成功', res1)
     } catch (e) {
       console.error(e)
     }
@@ -165,18 +97,21 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
 
   return (
     <div style={{ margin: '0 20px' }}>
-      <h2>CourseItem id: {id}</h2>
+      <h2>
+        {course?.name} id: {id}
+      </h2>
 
       {JSON.stringify(course)}
       <p>curriculumIds</p>
       <p>{JSON.stringify(curriculumIds)}</p>
+      <p>{JSON.stringify(course?.curriculums)}</p>
 
       {/* select */}
       {curriculums && (
         <>
           <h3>カリキュラムを追加</h3>
           <select onChange={e => setselectedCurriculumId(e.target.value)}>
-            {curriculums.map(curriculum => (
+            {curriculums?.map(curriculum => (
               <option key={curriculum.id} value={curriculum.id}>
                 {curriculum.name}
               </option>

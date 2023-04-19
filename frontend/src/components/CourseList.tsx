@@ -1,84 +1,75 @@
 import { FC, useCallback, useEffect, useState } from 'react'
 import { Course } from '@prisma/client'
-import { getApi, postApi } from '../utilis/api'
+import { deleteApi, getApi, postApi, putApi } from '../utilis/api'
+import { useGetApi } from '../hooks/useApi'
 
 export const CourseList: FC = () => {
-  const [courses, setCourses] = useState<Course[]>([])
-
-  const getSamples = useCallback(async () => {
-    const res = await getApi<Course[]>(`/courses`)
-    setCourses(res)
-  }, [])
+  const { data: courses } = useGetApi<Course[]>(`/courses`)
+  const [name, setName] = useState('')
+  const [selectedCourseId, setselectedCourseId] = useState('')
 
   const createCourse = useCallback(async () => {
+    if (!name) return
     try {
-      const res = await postApi("/courses",{name:"aaa"})
-      // const res = await fetch('/api/courses', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     name: 'aa',
-      //   }),
-      // }).then(res => res.json())
+      const res = await postApi('/courses', { name })
       console.log('追加に成功', res)
     } catch (e) {
       console.error(e)
     }
-  }, [])
-
-  useEffect(() => {
-    getSamples()
-  }, [])
+  }, [name])
 
   const updateCourse = useCallback(async () => {
     try {
-      const res = await fetch('/api/courses/clgj3v0cs0000oz0je9n5xhfm', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          // name: 'name update',
-          // url: 'url update',
-          // article: 'article update',
-          imageUrl: 'imageUrl update',
-          description: 'description update',
-        }),
-      }).then(res => res.json())
+      if (!name) return
+      const res = await putApi(`/courses/${selectedCourseId}`, {
+        name,
+      })
       console.log('更新に成功', res)
     } catch (e) {
       console.error(e)
     }
-  }, [])
+  }, [name, selectedCourseId])
 
   const deleteCourse = useCallback(async () => {
     try {
-      const res = await fetch('/api/courses/2', {
-        method: 'DELETE',
-      }).then(res => res.json())
+      const res = await deleteApi(`/courses/${selectedCourseId}`)
       console.log('削除に成功', res)
     } catch (e) {
       console.error(e)
     }
-  }, [])
+  }, [selectedCourseId])
 
   return (
     <div>
       <h2>Course</h2>
       <p>course 1</p>
-      <p>{JSON.stringify(courses[0])}</p>
+      <p>{JSON.stringify(courses?.[0])}</p>
       <p>course 全部</p>
       <p>{JSON.stringify(courses)}</p>
-      <p>course 1以外</p>
-      <p>{JSON.stringify(courses.slice(1))}</p>
 
       <p>
+        <input
+          type='text'
+          value={name}
+          onChange={v => setName(v.target.value)}
+        />
         <button onClick={createCourse}>作成</button>
-        <button onClick={updateCourse}>更新</button>
-        <button onClick={deleteCourse}>削除</button>
       </p>
+
+      {courses && (
+        <>
+          <select onChange={e => setselectedCourseId(e.target.value)}>
+            {courses.map(curriculum => (
+              <option key={curriculum.id} value={curriculum.id}>
+                {curriculum.name}
+              </option>
+            ))}
+          </select>
+          <button onClick={updateCourse}>更新</button>
+          <button onClick={deleteCourse}>削除</button>
+        </>
+      )}
+      {selectedCourseId}
     </div>
   )
 }

@@ -1,96 +1,18 @@
-import { Anpan } from '@prisma/client'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
-import { Sample } from '../components/Sample'
 import { CourseList } from '../components/CourseList'
 import { CourseItem } from '../components/CourseItem'
 import { CurriculumItem } from '../components/CurriculumItem'
 import { Relation } from '../components/Relation'
+import { Course } from '@prisma/client'
+import Link from 'next/link'
+import { useGetApi } from '../hooks/useApi'
 
 const Home: NextPage = () => {
-  const [anpan, setAnpan] = useState<Anpan>()
-  const [anpans, setAnpans] = useState<Anpan[]>()
-  const [email, setEmail] = useState('')
-
-  // const getAnpan = useCallback(async () => {
-  //   try {
-  //     const res = await fetch('/api/anpan/1').then(res => res.json())
-  //     setAnpan(res.data)
-  //     console.log({ res })
-  //   } catch (e) {
-  //     console.error(e)
-  //   }
-  // }, [])
-
-  // const getAnpans = useCallback(async () => {
-  //   try {
-  //     const res = await fetch('/api/anpan').then(res => res.json())
-  //     setAnpans(res.data)
-  //     console.log({ res })
-  //   } catch (e) {
-  //     console.error(e)
-  //   }
-  // }, [])
-
-  // useEffect(() => {
-  //   getAnpan()
-  //   getAnpans()
-  // }, [getAnpan, getAnpans])
-
-  // const createAnpan = useCallback(async (email: string) => {
-  //   if (!email) {
-  //     console.log('emailが空です！')
-  //     return
-  //   }
-
-  //   try {
-  //     const res = await fetch('/api/anpan', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         email,
-  //         name: 'aa',
-  //       }),
-  //     }).then(res => res.json())
-  //     console.log('追加に成功', res)
-  //   } catch (e) {
-  //     console.error(e)
-  //   }
-  // }, [])
-
-  // const updateAnpan = useCallback(async () => {
-  //   try {
-  //     const res = await fetch('/api/anpan/1', {
-  //       method: 'PUT',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         email: 'emailです',
-  //         name: 'test1 update2',
-  //       }),
-  //     }).then(res => res.json())
-  //     console.log('更新に成功', res)
-  //   } catch (e) {
-  //     console.error(e)
-  //   }
-  // }, [])
-
-  // const deleteAnpan = useCallback(async () => {
-  //   try {
-  //     const res = await fetch('/api/anpan/2', {
-  //       method: 'DELETE',
-  //     }).then(res => res.json())
-  //     console.log('削除に成功', res)
-  //   } catch (e) {
-  //     console.error(e)
-  //   }
-  // }, [])
+  const { data: courses } = useGetApi<Course[]>(`/courses`)
 
   return (
     <div className={styles.container}>
@@ -101,20 +23,10 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <ul>
-          {anpans?.length &&
-            anpans.map((v, i) => (
-              <li key={i} style={{ display: 'flex', gap: '5px' }}>
-                <p>{v.id}</p>
-                <p>{v.email}</p>
-                <p>{v.name}</p>
-              </li>
-            ))}
-        </ul>
-
         <div style={{ wordBreak: 'break-all' }}>
+          <Link href='/page2'>page2</Link>
           <CourseList />
-          <CourseItem id='clgkj5xv20000n0pgd4o5wslw' />
+          {courses?.[0]?.id && <CourseItem id={courses[0].id} />}
 
           <CurriculumItem />
 
