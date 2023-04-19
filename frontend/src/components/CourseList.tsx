@@ -42,10 +42,14 @@ export const CourseList: FC = () => {
   return (
     <div>
       <h2>Course</h2>
-      <p>course 1</p>
-      <p>{JSON.stringify(courses?.[0])}</p>
-      <p>course 全部</p>
-      <p>{JSON.stringify(courses)}</p>
+
+      <ul>
+        {courses?.map(course => (
+          <li key={course.id} value={course.id}>
+            {course.name}
+          </li>
+        ))}
+      </ul>
 
       <p>
         <input

@@ -6,8 +6,20 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    const course = await prisma.courseCurriculumRelation.findMany({})
-    res.status(200).json({ data: course })
+    const relations = await prisma.courseCurriculumRelation.findMany({
+      include: {
+        course: true,
+        curriculum: true,
+      },
+    })
+    const resulut = relations.map(relation => ({
+      courseId: relation.courseId,
+      curriculumId: relation.curriculumId,
+      courseName: relation.course.name,
+      curriculumName: relation.curriculum.name,
+    }))
+
+    res.status(200).json({ data: resulut })
   } catch (err) {
     res.status(400).json({ data: err })
   }

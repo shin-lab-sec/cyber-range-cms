@@ -43,7 +43,13 @@ export const CurriculumItem: FC = () => {
   return (
     <div>
       <h2>Curriculum</h2>
-      {JSON.stringify(curriculums)}
+      <ul>
+        {curriculums?.map(curriculum => (
+          <li key={curriculum.id} value={curriculum.id}>
+            {curriculum.name}
+          </li>
+        ))}
+      </ul>
 
       <p>
         <label>

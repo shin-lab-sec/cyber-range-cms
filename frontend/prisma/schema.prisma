@@ -29,9 +29,9 @@ model Curriculum {
 
 // 順番の番号も必要
 model CourseCurriculumRelation {
-  course       Course     @relation(fields: [courseId], references: [id])
+  course       Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId     String
-  curriculum   Curriculum @relation(fields: [curriculumId], references: [id])
+  curriculum   Curriculum @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
   curriculumId String
 
   @@id([courseId, curriculumId])
