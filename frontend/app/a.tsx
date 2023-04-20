@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import Link from 'next/link'
 
-const page2: NextPage = () => {
+const Page2 = () => {
   return (
     <div>
       <h1>page2</h1>
@@ -10,4 +10,4 @@ const page2: NextPage = () => {
   )
 }
 
-export default page2
+export default Page2

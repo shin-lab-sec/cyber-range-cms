@@ -1,6 +1,7 @@
+'use client'
 import { FC, useCallback, useEffect, useState } from 'react'
 import { useGetApi } from '../hooks/useApi'
-import { List } from '@mantine/core'
+import { Button, List } from '@mantine/core'
 
 type CourseCurriculumRelation = {
   courseId: string

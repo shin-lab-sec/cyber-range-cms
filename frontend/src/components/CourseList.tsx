@@ -1,3 +1,4 @@
+'use client'
 import { FC, useCallback, useEffect, useState } from 'react'
 import { Course } from '@prisma/client'
 import { deleteApi, getApi, postApi, putApi } from '../utilis/api'
