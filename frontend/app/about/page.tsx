@@ -14,28 +14,34 @@
 import { getApi } from '../../src/utilis/api'
 import { num, getUsers } from '../../src/utilis/sample'
 import { Sample } from '../../src/components/Sample'
-import Page2 from '../a'
 import { Suspense } from 'react'
 import { CurriculumItem } from '../../src/components/CurriculumItem'
+
 import { CourseList } from '../../src/components/CourseList'
 import { Relation } from '../../src/components/Relation'
+import { Counter } from '../../src/components/SampleCounter'
+import Page2 from '../a'
+import { SampleServer } from '../../src/components/SampleServer'
 
-export default async function Page() {
+// export default async function Page() {
+const Page = () => {
   // const curriculums = await getApi('/courses')
   // const users = await getUsers()
 
   return (
     <div>
       <h1>about</h1>
-      <CourseList />
-      <Relation />
-      {/* <Suspense fallback={<p className='mt-4'>ユーザデータ　Loading...</p>}>
+      <Counter />
+      {/* @ts-expect-error Server Component */}
+      <SampleServer title='anpaaa' />
+      <Suspense fallback={<p className='mt-4'>ユーザデータ　Loading...</p>}>
+        {/* @ts-expect-error Server Component */}
         <Sample />
-      </Suspense> */}
-      <Page2 />
+      </Suspense>
       {/* <p>{JSON.stringify(curriculums)}</p> */}
       {/* <p>{JSON.stringify(users)}</p> */}
     </div>
   )
-  // return <>page</>
 }
+
+export default Page

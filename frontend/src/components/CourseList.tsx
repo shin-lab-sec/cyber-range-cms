@@ -45,11 +45,16 @@ export const CourseList: FC = () => {
     <div>
       <h2 className='text-2xl'>コース一覧</h2>
 
-      <List withPadding mt='sm'>
+      {/* <List withPadding mt='sm'>
         {courses?.map(course => (
           <List.Item key={course.id}>○ {course.name}</List.Item>
         ))}
-      </List>
+      </List> */}
+      <ul>
+        {courses?.map(course => (
+          <li key={course.id}>○ {course.name}</li>
+        ))}
+      </ul>
 
       <form className='mt-3'>
         <Flex gap='sm'>

@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { Course, Curriculum } from '@prisma/client'
 import { deleteApi, postApi, putApi } from '../utilis/api'
 import { useGetApi } from '../hooks/useApi'
@@ -12,7 +12,10 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
   const { data: curriculums } = useGetApi<Curriculum[]>(`/curriculums`)
   const [selectedCurriculumId, setselectedCurriculumId] = useState('')
 
-  let curriculumIds = course?.curriculumIds?.split(',') || []
+  let curriculumIds = useMemo(
+    () => course?.curriculumIds?.split(',') || [],
+    [course?.curriculumIds],
+  )
   // 順番に並び替えたカリキュラム
   const orderdCurriculums = structuredClone(course?.curriculums)
   orderdCurriculums?.sort((a, b) => {
@@ -37,7 +40,7 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
     } catch (e) {
       console.error(e)
     }
-  }, [])
+  }, [curriculumIds, id])
 
   const addCurriculum = useCallback(async () => {
     if (!selectedCurriculumId) {
