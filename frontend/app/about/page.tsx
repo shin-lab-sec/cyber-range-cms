@@ -22,6 +22,7 @@ import { Relation } from '../../src/components/Relation'
 import { Counter } from '../../src/components/SampleCounter'
 import Page2 from '../a'
 import { SampleServer } from '../../src/components/SampleServer'
+import { ServerCourseList } from '../../src/components/ServerCourseList'
 
 // export default async function Page() {
 const Page = () => {
@@ -32,12 +33,14 @@ const Page = () => {
     <div>
       <h1>about</h1>
       <Counter />
-      {/* @ts-expect-error Server Component */}
-      <SampleServer title='anpaaa' />
       <Suspense fallback={<p className='mt-4'>ユーザデータ　Loading...</p>}>
         {/* @ts-expect-error Server Component */}
-        <Sample />
+        <ServerCourseList />
+        {/* <Sample /> */}
       </Suspense>
+
+      {/* @ts-expect-error Server Component */}
+      <SampleServer title='anpaaa' />
       {/* <p>{JSON.stringify(curriculums)}</p> */}
       {/* <p>{JSON.stringify(users)}</p> */}
     </div>
