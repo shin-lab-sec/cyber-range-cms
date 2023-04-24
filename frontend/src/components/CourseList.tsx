@@ -44,6 +44,7 @@ export const CourseList: FC = () => {
   return (
     <div>
       <h2 className='text-2xl'>コース一覧</h2>
+      <h2 className='text-2xl'>コース一覧</h2>
 
       {/* <List withPadding mt='sm'>
         {courses?.map(course => (
