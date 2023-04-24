@@ -2,7 +2,7 @@
 const WindiCSSWebpackPlugin = require('windicss-webpack-plugin')
 
 module.exports = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
   webpack(config) {
     config.plugins.push(new WindiCSSWebpackPlugin())
