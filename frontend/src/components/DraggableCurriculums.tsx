@@ -14,14 +14,14 @@ import {
 type Props = {
   curriculums: Curriculum[]
   onUpdateOrder: (curriculums: Curriculum[]) => void
+  onRemove: (id: string) => void
   className: string
 }
-
-// TODO: ここで更新、削除も出来るようにする
 
 export const DraggableCurriculums: FC<Props> = ({
   curriculums: curriculumList,
   onUpdateOrder,
+  onRemove,
   className,
 }) => {
   const [curriculums, setCurriculums] = useState(curriculumList)
@@ -62,7 +62,7 @@ export const DraggableCurriculums: FC<Props> = ({
                           <div>{curriculum.name}</div>
                           <X
                             size={44}
-                            className='cursor-pointer p-2.5'
+                            className='cursor-pointer mt-0.5 p-2.5'
                             onClick={() => onRemove(curriculum.id)}
                           />
                         </li>

@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { Course, Curriculum } from '@prisma/client'
 import { deleteApi, postApi, putApi } from '../utilis/api'
 import { useGetApi } from '../hooks/useApi'
@@ -27,7 +27,7 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
     return indexA - indexB
   })
   // curriculumIdsとカリキュラムを合わせる
-  curriculumIds = orderdCurriculums ? orderdCurriculums.map(v => v.id) : []
+  curriculumIds = orderedCurriculums ? orderedCurriculums.map(v => v.id) : []
 
   // 順番を入れ替えるのは、ライブラリ
   const updateCourse = useCallback(
@@ -72,34 +72,35 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
     }
   }, [curriculumIds, id, selectedCurriculumId])
 
-  const removeCurriculum = useCallback(async () => {
-    if (!selectedCurriculumId) {
-      console.log('カリキュラムidが空です', selectedCurriculumId)
-      return
-    }
+  const removeCurriculum = useCallback(
+    async (curriculumId: string) => {
+      if (!curriculumId) {
+        console.log('カリキュラムidが空です', curriculumId)
+        return
+      }
 
-    // spliceでやる。もう少し増やす
-    const newOrder = curriculumIds
-      .filter(id => id !== selectedCurriculumId)
-      .join(',')
-    console.log('splice', newOrder, selectedCurriculumId)
+      // spliceでやる。もう少し増やす
+      const newOrder = curriculumIds.filter(id => id !== curriculumId).join(',')
+      console.log('splice', newOrder, curriculumId)
 
-    try {
-      // 中間テーブル削除
-      const res = await deleteApi(
-        `/courses/${id}/curriculums/${selectedCurriculumId}`,
-      )
-      console.log('中間テーブル削除', res)
+      try {
+        // 中間テーブル削除
+        const res = await deleteApi(
+          `/courses/${id}/curriculums/${curriculumId}`,
+        )
+        console.log('中間テーブル削除', res)
 
-      // curriculumIds更新
-      const res1 = await putApi(`/courses/${id}`, {
-        curriculumIds: newOrder,
-      })
-      console.log('更新に成功', res1)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [curriculumIds, id, selectedCurriculumId])
+        // curriculumIds更新
+        const res1 = await putApi(`/courses/${id}`, {
+          curriculumIds: newOrder,
+        })
+        console.log('更新に成功', res1)
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    [curriculumIds, id],
+  )
 
   return (
     <div>
@@ -118,8 +119,11 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
             />
           )}
           <Button onClick={addCurriculum}>追加</Button>
-          <Button onClick={updateCourse}>順番更新</Button>
-          <Button color='sred' onClick={removeCurriculum}>
+          {/* <Button onClick={updateCourse}>順番更新</Button> */}
+          <Button
+            color='sred'
+            onClick={() => removeCurriculum(selectedCurriculumId)}
+          >
             削除
           </Button>
         </Flex>
@@ -128,7 +132,7 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
       <Text mt='sm'>「{course?.name}」のカリキュラム一覧</Text>
 
       <List withPadding mt='sm'>
-        {orderdCurriculums?.map(curriculum => (
+        {orderedCurriculums?.map(curriculum => (
           <List.Item key={curriculum.id}>○ {curriculum.name}</List.Item>
         ))}
       </List>
@@ -139,6 +143,7 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
           onUpdateOrder={(curriculums: Curriculum[]) =>
             updateCourse(curriculums)
           }
+          onRemove={(id: string) => removeCurriculum(id)}
           className='mx-auto w-300px'
         />
       ) : null}
