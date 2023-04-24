@@ -13,6 +13,7 @@ import {
 
 type Props = {
   curriculums: Curriculum[]
+  onUpdateOrder: (curriculums: Curriculum[]) => void
   className: string
 }
 
@@ -20,6 +21,7 @@ type Props = {
 
 export const DraggableCurriculums: FC<Props> = ({
   curriculums: curriculumList,
+  onUpdateOrder,
   className,
 }) => {
   const [curriculums, setCurriculums] = useState(curriculumList)
@@ -74,6 +76,10 @@ export const DraggableCurriculums: FC<Props> = ({
           </Droppable>
         </DragDropContext>
       )}
+
+      <div className='flex justify-end'>
+        <Button onClick={() => onUpdateOrder(curriculums)}>保存</Button>
+      </div>
 
       <Code block className='mt-4'>
         {JSON.stringify(curriculums, null, 2)}

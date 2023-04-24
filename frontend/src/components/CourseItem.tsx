@@ -30,18 +30,19 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
   curriculumIds = orderdCurriculums ? orderdCurriculums.map(v => v.id) : []
 
   // 順番を入れ替えるのは、ライブラリ
-  const updateCourse = useCallback(async () => {
-    const newOrder = [curriculumIds.at(-1), curriculumIds.slice(0, -1)].join(
-      ',',
-    )
+  const updateCourse = useCallback(
+    async (curriculums: Curriculum[]) => {
+      const newOrder = curriculums.map(v => v.id).join(',')
 
-    try {
-      const res = await putApi(`/courses/${id}`, { curriculumIds: newOrder })
-      console.log('更新に成功', res)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [])
+      try {
+        const res = await putApi(`/courses/${id}`, { curriculumIds: newOrder })
+        console.log('更新に成功', res)
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    [id],
+  )
 
   const addCurriculum = useCallback(async () => {
     if (!selectedCurriculumId) {
@@ -135,6 +136,9 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
       {orderedCurriculums?.length ? (
         <DraggableCurriculums
           curriculums={orderedCurriculums}
+          onUpdateOrder={(curriculums: Curriculum[]) =>
+            updateCourse(curriculums)
+          }
           className='mx-auto w-300px'
         />
       ) : null}
