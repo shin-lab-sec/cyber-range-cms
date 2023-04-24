@@ -3,6 +3,7 @@ import { Course, Curriculum } from '@prisma/client'
 import { deleteApi, postApi, putApi } from '../utilis/api'
 import { useGetApi } from '../hooks/useApi'
 import { Button, Flex, List, Select, Text } from '@mantine/core'
+import { DraggableCurriculums } from './DraggableCurriculums'
 
 type CourseWithCurriculums = Course & { curriculums: Curriculum[] }
 
@@ -12,10 +13,13 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
   const { data: curriculums } = useGetApi<Curriculum[]>(`/curriculums`)
   const [selectedCurriculumId, setselectedCurriculumId] = useState('')
 
-  let curriculumIds = course?.curriculumIds?.split(',') || []
+  let curriculumIds = useMemo(
+    () => course?.curriculumIds?.split(',') || [],
+    [course?.curriculumIds],
+  )
   // 順番に並び替えたカリキュラム
-  const orderdCurriculums = structuredClone(course?.curriculums)
-  orderdCurriculums?.sort((a, b) => {
+  const orderedCurriculums = structuredClone(course?.curriculums)
+  orderedCurriculums?.sort((a, b) => {
     const indexA = curriculumIds.findIndex(id => id === a.id)
     const indexB = curriculumIds.findIndex(id => id === b.id)
     if (indexA === -1) return 1
@@ -127,6 +131,13 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
           <List.Item key={curriculum.id}>○ {curriculum.name}</List.Item>
         ))}
       </List>
+
+      {orderedCurriculums?.length ? (
+        <DraggableCurriculums
+          curriculums={orderedCurriculums}
+          className='mx-auto w-300px'
+        />
+      ) : null}
     </div>
   )
 }
