@@ -64,6 +64,6 @@ http://localhost:3000/
 2. マイグレーション
 
 ```
-yarn prisma migrate dev
+docker copmose exec yarn prisma migrate dev
 ```
 
