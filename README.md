@@ -67,3 +67,5 @@ http://localhost:3000/
 docker copmose exec yarn prisma migrate dev
 ```
 
+3. コンテナ再起動
+
