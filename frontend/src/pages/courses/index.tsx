@@ -7,6 +7,7 @@ import { useGetApi } from '../../hooks/useApi'
 import { Button, Flex, List, Select, TextInput } from '@mantine/core'
 import Link from 'next/link'
 import { X } from 'tabler-icons-react'
+import { CreateCourseButton } from '../../components/course/CreateCourseButton'
 
 const Courses: NextPage = () => {
   const { data: courses } = useGetApi<Course[]>(`/courses`)
@@ -50,13 +51,14 @@ const Courses: NextPage = () => {
 
       <form className='mt-3'>
         <Flex gap='sm' justify='end'>
-          <TextInput
+          {/* <TextInput
             value={name}
             onChange={e => setName(e.currentTarget.value)}
             placeholder='コース名を入力して下さい'
             className='max-w-300px w-300px'
           />
-          <Button onClick={createCourse}>作成</Button>
+          <Button onClick={createCourse}>作成</Button> */}
+          <CreateCourseButton />
         </Flex>
       </form>
 
