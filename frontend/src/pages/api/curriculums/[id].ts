@@ -8,8 +8,8 @@ export default async function handler(
   const { method, body } = req
   const id = String(req.query.id)
 
+  // curriculums/[id]
   switch (method) {
-    // courses/1
     case 'GET':
       try {
         const courses = await prisma.curriculum.findUnique({
@@ -23,14 +23,12 @@ export default async function handler(
       }
       break
 
-    // courses/1
     case 'PUT':
       try {
         const curriculum = await prisma.curriculum.update({
           where: {
             id: id,
           },
-          // 大丈夫？
           data: {
             name: body.name,
             level: body.level,
@@ -43,7 +41,6 @@ export default async function handler(
       }
       break
 
-    // courses/1
     case 'DELETE':
       try {
         const curriculum = await prisma.curriculum.delete({

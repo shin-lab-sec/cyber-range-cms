@@ -7,19 +7,18 @@ export default async function handler(
 ) {
   const { method, body } = req
 
+  // api/courses
   switch (method) {
-    // case 'GET':
-    //   try {
-    //     const courses = await prisma.course.findMany()
-    //     res.status(200).json({ data: courses, method: method })
-    //   } catch (err) {
-    //     res.status(400).json({ data: err })
-    //   }
-    //   break
     case 'GET':
       try {
         const courses = await prisma.course.findMany({
-          include: { curriculums: { include: { curriculum: true } } },
+          include: {
+            curriculums: {
+              include: { curriculum: true },
+              orderBy: { createdAt: 'asc' },
+            },
+          },
+          orderBy: { createdAt: 'asc' },
         })
 
         const resulut = courses.map(course => ({

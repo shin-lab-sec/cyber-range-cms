@@ -132,7 +132,7 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
       <Text mt='sm'>「{course?.name}」のカリキュラム一覧</Text>
 
       <List withPadding mt='sm'>
-        {orderedCurriculums?.map(curriculum => (
+        {course?.curriculums?.map(curriculum => (
           <List.Item key={curriculum.id}>○ {curriculum.name}</List.Item>
         ))}
       </List>

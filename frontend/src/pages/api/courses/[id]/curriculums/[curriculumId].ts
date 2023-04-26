@@ -5,13 +5,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { method, body } = req
+  const { method } = req
   const id = String(req.query.id)
   const curriculumId = String(req.query.curriculumId)
 
+  // courses/[id]/curriculums/[curriculumId]
   switch (method) {
-    // courses/[id]/curriculums/[curriculumId]
-    // courses/1
     case 'POST':
       try {
         const course = await prisma.courseCurriculumRelation.create({
@@ -26,7 +25,6 @@ export default async function handler(
                 id: curriculumId,
               },
             },
-            // order: 0,
           },
         })
         res.status(200).json({ data: course })

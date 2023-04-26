@@ -8,8 +8,8 @@ export default async function handler(
   const { method, body } = req
   const id = String(req.query.id)
 
+  // api/courses/[id]
   switch (method) {
-    // courses/1
     case 'GET':
       try {
         const course = await prisma.course.findUnique({
@@ -21,6 +21,7 @@ export default async function handler(
               include: {
                 curriculum: true,
               },
+              orderBy: { createdAt: 'asc' },
             },
           },
         })
@@ -36,14 +37,12 @@ export default async function handler(
       }
       break
 
-    // courses/1
     case 'PUT':
       try {
         const course = await prisma.course.update({
           where: {
             id: id,
           },
-          // 大丈夫？
           data: {
             name: body.name,
             url: body.url,
@@ -59,7 +58,6 @@ export default async function handler(
       }
       break
 
-    // courses/1
     case 'DELETE':
       try {
         const course = await prisma.course.delete({
