@@ -1,6 +1,6 @@
 import { isEmptyObj } from './isEmptyObj'
 
-export const BASE_URL = "api"
+export const BASE_URL = '/api'
 
 type Res<T> = {
   message: string

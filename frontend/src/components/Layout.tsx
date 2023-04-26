@@ -16,11 +16,15 @@ export const Layout: FC<Props> = ({ title, children }) => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <header className='rounded-md border-2 shadow-md mx-2 mt-2 text-2xl py-4 px-4 flex items-center justify-between'>
+      <header className='rounded-md flex border-2 shadow-md mx-2 mt-2 py-4 px-4 text-2xl items-center justify-between'>
         <h1 className='text-xl'>
           <Link href='/'>カリキュラム管理システム</Link>
         </h1>
-        <Link href='/page2'>page2</Link>
+        <nav className='flex gap-3'>
+          <Link href='/courses'>コース一覧</Link>
+          <Link href='/courses/aa'>コース個別</Link>
+          <Link href='/curriculums'>カリキュラム一覧</Link>
+        </nav>
       </header>
 
       <main className='mx-4 mt-8'>{children}</main>

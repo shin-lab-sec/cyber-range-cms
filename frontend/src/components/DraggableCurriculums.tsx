@@ -80,10 +80,6 @@ export const DraggableCurriculums: FC<Props> = ({
       <div className='flex justify-end'>
         <Button onClick={() => onUpdateOrder(curriculums)}>保存</Button>
       </div>
-
-      <Code block className='mt-4'>
-        {JSON.stringify(curriculums, null, 2)}
-      </Code>
     </div>
   )
 }

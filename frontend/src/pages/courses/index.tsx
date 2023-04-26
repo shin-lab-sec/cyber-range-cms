@@ -1,10 +1,14 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { NextPage } from 'next'
+import { Layout } from '../../components/Layout'
+import { useCallback, useState } from 'react'
 import { Course } from '@prisma/client'
-import { deleteApi, getApi, postApi, putApi } from '../utils/api'
-import { useGetApi } from '../hooks/useApi'
+import { deleteApi, postApi, putApi } from '../../utils/api'
+import { useGetApi } from '../../hooks/useApi'
 import { Button, Flex, List, Select, TextInput } from '@mantine/core'
+import Link from 'next/link'
+import { X } from 'tabler-icons-react'
 
-export const CourseList: FC = () => {
+const Courses: NextPage = () => {
   const { data: courses } = useGetApi<Course[]>(`/courses`)
   const [name, setName] = useState('')
   const [selectedCourseId, setselectedCourseId] = useState('')
@@ -41,17 +45,11 @@ export const CourseList: FC = () => {
   }, [selectedCourseId])
 
   return (
-    <div>
-      <h2 className='text-2xl'>コース一覧</h2>
-
-      <List withPadding mt='sm'>
-        {courses?.map(course => (
-          <List.Item key={course.id}>○ {course.name}</List.Item>
-        ))}
-      </List>
+    <Layout>
+      <h1>コース一覧ページ</h1>
 
       <form className='mt-3'>
-        <Flex gap='sm'>
+        <Flex gap='sm' justify='end'>
           <TextInput
             value={name}
             onChange={e => setName(e.currentTarget.value)}
@@ -61,6 +59,22 @@ export const CourseList: FC = () => {
           <Button onClick={createCourse}>作成</Button>
         </Flex>
       </form>
+
+      <ul className='mt-3'>
+        {courses?.map(course => (
+          <li
+            key={course.id}
+            className='rounded-md flex border-2 shadow-md mb-3 py-4 px-4 items-center justify-between'
+          >
+            <Link href={`/courses/${course.id}`}>{course.name}</Link>
+            <X
+              size={44}
+              className='cursor-pointer mt-0.5 p-2.5'
+              // onClick={() => onRemove(curriculum.id)}
+            />
+          </li>
+        ))}
+      </ul>
 
       {courses && (
         <Flex gap='sm' mt='sm'>
@@ -77,6 +91,8 @@ export const CourseList: FC = () => {
           </Button>
         </Flex>
       )}
-    </div>
+    </Layout>
   )
 }
+
+export default Courses
