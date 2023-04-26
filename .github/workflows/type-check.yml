@@ -20,6 +20,11 @@ jobs:
           cd frontend
           yarn install
 
+      - name: generate schema
+        run: |
+          cd frontend
+          yarn prisma generate
+
       - name: type-check
         run: |
           cd frontend
