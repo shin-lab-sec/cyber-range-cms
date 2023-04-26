@@ -67,5 +67,11 @@ http://localhost:3000/
 docker copmose exec yarn prisma migrate dev
 ```
 
-3. コンテナ再起動
+3. 型定義更新
+```
+docker copmose exec yarn prisma generate
+```
+
+4. コンテナ再起動
+5. vscode再起動
 
