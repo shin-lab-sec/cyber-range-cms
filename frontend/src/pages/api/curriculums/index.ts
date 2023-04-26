@@ -10,7 +10,9 @@ export default async function handler(
   switch (method) {
     case 'GET':
       try {
-        const courses = await prisma.curriculum.findMany()
+        const courses = await prisma.curriculum.findMany({
+          orderBy: { createdAt: 'asc' },
+        })
         res.status(200).json({ data: courses, method: method })
       } catch (err) {
         res.status(400).json({ data: err })
