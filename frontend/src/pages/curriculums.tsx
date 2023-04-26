@@ -1,10 +1,13 @@
-import { FC, useCallback, useEffect, useState } from 'react'
+import { NextPage } from 'next'
+import { Layout } from '../components/Layout'
+import { useCallback, useState } from 'react'
 import { Curriculum } from '@prisma/client'
-import { deleteApi, getApi, postApi, putApi } from '../utils/api'
+import { deleteApi, postApi, putApi } from '../utils/api'
 import { useGetApi } from '../hooks/useApi'
 import { Button, Flex, List, Select, Text, TextInput } from '@mantine/core'
+import { X } from 'tabler-icons-react'
 
-export const CurriculumItem: FC = () => {
+const Curriculums: NextPage = () => {
   const { data: curriculums } = useGetApi<Curriculum[]>(`/curriculums`)
 
   const [name, setName] = useState('')
@@ -42,16 +45,10 @@ export const CurriculumItem: FC = () => {
   }, [selectedCurriculumId])
 
   return (
-    <div>
-      <Text className='text-xl'>カリキュラム一覧</Text>
-      <List withPadding mt='sm'>
-        {curriculums?.map(curriculum => (
-          <List.Item key={curriculum.id}>○ {curriculum.name}</List.Item>
-        ))}
-      </List>
-
+    <Layout>
+      <h1>カリキュラム一覧ページ</h1>
       <form className='mt-3'>
-        <Flex gap='sm'>
+        <Flex gap='sm' justify='end'>
           <TextInput
             value={name}
             onChange={e => setName(e.currentTarget.value)}
@@ -61,6 +58,22 @@ export const CurriculumItem: FC = () => {
           <Button onClick={createCurriculum}>作成</Button>
         </Flex>
       </form>
+
+      <ul className='mt-3'>
+        {curriculums?.map(curriculum => (
+          <li
+            key={curriculum.id}
+            className='rounded-md flex border-2 shadow-md mb-3 py-4 px-4 items-center justify-between'
+          >
+            {curriculum.name}
+            <X
+              size={44}
+              className='cursor-pointer mt-0.5 p-2.5'
+              // onClick={() => onRemove(curriculum.id)}
+            />
+          </li>
+        ))}
+      </ul>
 
       {curriculums && (
         <Flex gap='sm' mt='sm'>
@@ -78,6 +91,8 @@ export const CurriculumItem: FC = () => {
         </Flex>
       )}
       {selectedCurriculumId}
-    </div>
+    </Layout>
   )
 }
+
+export default Curriculums
