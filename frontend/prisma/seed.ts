@@ -6,10 +6,6 @@ async function main() {
     update: {},
     create: {
       name: 'コース1',
-      // url: '',
-      // article: '',
-      // imageUrl: '',
-      // description: '',
     },
   })
   const course2 = await prisma.course.upsert({
@@ -63,7 +59,6 @@ async function main() {
       curriculum: {
         connect: { id: curriculum1.id },
       },
-      // order: 0,
     },
   })
   const relation2 = await prisma.courseCurriculumRelation.upsert({
@@ -81,35 +76,8 @@ async function main() {
       curriculum: {
         connect: { id: curriculum2.id },
       },
-      // order: 1,
     },
   })
-  // const relation3 = await prisma.courseCurriculumRelation.upsert({
-  //   where: {
-  //     courseId_curriculumId: {
-  //       courseId: course1.id,
-  //       curriculumId: curriculum3.id,
-  //     },
-  //   },
-  //   update: {},
-  //   create: {
-  //     course: {
-  //       connect: { id: course1.id },
-  //     },
-  //     curriculum: {
-  //       connect: { id: curriculum3.id },
-  //     },
-  //     // order: 2,
-  //   },
-  // })
-  // await prisma.courseCurriculumRelation.delete({
-  //   where: {
-  //     courseId_curriculumId: {
-  //       courseId: course1.id,
-  //       curriculumId: curriculum3.id,
-  //     },
-  //   },
-  // })
 
   // curiculumIds 追加
   await prisma.course.update({
@@ -127,8 +95,6 @@ async function main() {
       }${curriculum2.id}`,
     },
   })
-
-  // console.log({ alice })
 }
 
 main()
