@@ -33,10 +33,11 @@ export const CourseItem: FC<{ id: string }> = ({ id }) => {
   const updateCourse = useCallback(
     async (curriculums: Curriculum[]) => {
       const newOrder = curriculums.map(v => v.id).join(',')
+      console.log('newOrder: ', newOrder)
 
       try {
         const res = await putApi(`/courses/${id}`, { curriculumIds: newOrder })
-        console.log('更新に成功', res)
+        console.log('更新ffに成功', res)
       } catch (e) {
         console.error(e)
       }
