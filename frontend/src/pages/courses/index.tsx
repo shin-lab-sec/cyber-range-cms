@@ -7,17 +7,14 @@ import { useGetApi } from '../../hooks/useApi'
 import { Button, Flex, List, Select, TextInput } from '@mantine/core'
 import Link from 'next/link'
 import { X } from 'tabler-icons-react'
-import {
-  CourseForm,
-  CreateCourseButton,
-} from '../../components/course/CreateCourseButton'
+import { CreateCourseButton } from '../../components/course/CreateCourseButton'
+import { UpdateCourseButton } from '../../components/course/UpdateCourseButton'
+import { CourseFormRequest } from '../../components/course/CourseForm'
 
 const Courses: NextPage = () => {
   const { data: courses } = useGetApi<Course[]>(`/courses`)
-  const [name, setName] = useState('')
-  const [selectedCourseId, setselectedCourseId] = useState('')
 
-  const createCourse = useCallback(async (params: CourseForm) => {
+  const createCourse = useCallback(async (params: CourseFormRequest) => {
     try {
       const res = await postApi('/courses', params)
       console.log('追加に成功', res)
@@ -25,30 +22,17 @@ const Courses: NextPage = () => {
       console.error(e)
     }
   }, [])
-  const createCourse2 = useCallback(async () => {
-    try {
-      const res = await postApi('/courses', {
-        name: 'a',
-        level: 3,
-        description: 'ffffa',
-      })
-      console.log('追加に成功', res)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [])
-
-  const updateCourse = useCallback(async () => {
-    try {
-      if (!name) return
-      const res = await putApi(`/courses/${selectedCourseId}`, {
-        name,
-      })
-      console.log('更新に成功', res)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [name, selectedCourseId])
+  const updateCourse = useCallback(
+    async (id: string, params: CourseFormRequest) => {
+      try {
+        const res = await putApi(`/courses/${id}`, params)
+        console.log('更新に成功', res)
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    [],
+  )
 
   const deleteCourse = useCallback(async (id: string) => {
     try {
@@ -75,37 +59,33 @@ const Courses: NextPage = () => {
       </form>
 
       <ul className='mt-3'>
-        {courses?.map(course => (
-          <li
-            key={course.id}
-            className='rounded-md flex border-2 shadow-md mb-3 py-4 px-4 items-center justify-between'
-          >
-            <Link href={`/courses/${course.id}`}>{course.name}</Link>
-            <X
-              size={44}
-              className='cursor-pointer mt-0.5 p-2.5'
-              onClick={() => deleteCourse(course.id)}
-            />
-          </li>
-        ))}
+        {courses?.map(course => {
+          const courseFormRequest: CourseFormRequest = {
+            name: course.name,
+            level: course.level as 1 | 2 | 3,
+            description: course.description ?? '',
+          }
+          return (
+            <li
+              key={course.id}
+              className='rounded-md flex border-2 shadow-md mb-3 py-4 px-4 items-center justify-between'
+            >
+              <Link href={`/courses/${course.id}`}>{course.name}</Link>
+              <Flex align='center'>
+                <UpdateCourseButton
+                  onSubmit={v => updateCourse(course.id, v)}
+                  initValue={courseFormRequest}
+                />
+                <X
+                  size={44}
+                  className='cursor-pointer mt-0.5 p-2.5'
+                  onClick={() => deleteCourse(course.id)}
+                />
+              </Flex>
+            </li>
+          )
+        })}
       </ul>
-
-      {courses && (
-        <Flex gap='sm' mt='sm'>
-          <Select
-            placeholder='コースを選択してください'
-            onChange={(e: string) => setselectedCourseId(e)}
-            data={courses.map(v => ({ value: v.id, label: v.name }))}
-            className='max-w-300px w-300px'
-          />
-
-          <Button onClick={createCourse2}>作成</Button>
-          <Button onClick={updateCourse}>更新</Button>
-          {/* <Button color='red' onClick={deleteCourse}>
-            削除
-          </Button> */}
-        </Flex>
-      )}
     </Layout>
   )
 }
