@@ -7,42 +7,41 @@ import { useGetApi } from '../../hooks/useApi'
 import { Button, Flex, List, Select, TextInput } from '@mantine/core'
 import Link from 'next/link'
 import { X } from 'tabler-icons-react'
+import { CreateCourseButton } from '../../components/course/CreateCourseButton'
+import { UpdateCourseButton } from '../../components/course/UpdateCourseButton'
+import { CourseFormRequest } from '../../components/course/CourseForm'
 
 const Courses: NextPage = () => {
   const { data: courses } = useGetApi<Course[]>(`/courses`)
-  const [name, setName] = useState('')
-  const [selectedCourseId, setselectedCourseId] = useState('')
 
-  const createCourse = useCallback(async () => {
-    if (!name) return
+  const createCourse = useCallback(async (params: CourseFormRequest) => {
     try {
-      const res = await postApi('/courses', { name })
+      const res = await postApi('/courses', params)
       console.log('追加に成功', res)
     } catch (e) {
       console.error(e)
     }
-  }, [name])
+  }, [])
+  const updateCourse = useCallback(
+    async (id: string, params: CourseFormRequest) => {
+      try {
+        const res = await putApi(`/courses/${id}`, params)
+        console.log('更新に成功', res)
+      } catch (e) {
+        console.error(e)
+      }
+    },
+    [],
+  )
 
-  const updateCourse = useCallback(async () => {
+  const deleteCourse = useCallback(async (id: string) => {
     try {
-      if (!name) return
-      const res = await putApi(`/courses/${selectedCourseId}`, {
-        name,
-      })
-      console.log('更新に成功', res)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [name, selectedCourseId])
-
-  const deleteCourse = useCallback(async () => {
-    try {
-      const res = await deleteApi(`/courses/${selectedCourseId}`)
+      const res = await deleteApi(`/courses/${id}`)
       console.log('削除に成功', res)
     } catch (e) {
       console.error(e)
     }
-  }, [selectedCourseId])
+  }, [])
 
   return (
     <Layout>
@@ -50,47 +49,43 @@ const Courses: NextPage = () => {
 
       <form className='mt-3'>
         <Flex gap='sm' justify='end'>
-          <TextInput
-            value={name}
-            onChange={e => setName(e.currentTarget.value)}
-            placeholder='コース名を入力して下さい'
-            className='max-w-300px w-300px'
+          <CreateCourseButton
+            onSubmit={a => {
+              console.log('送信じゃ', a)
+              createCourse(a)
+            }}
           />
-          <Button onClick={createCourse}>作成</Button>
         </Flex>
       </form>
 
       <ul className='mt-3'>
-        {courses?.map(course => (
-          <li
-            key={course.id}
-            className='rounded-md flex border-2 shadow-md mb-3 py-4 px-4 items-center justify-between'
-          >
-            <Link href={`/courses/${course.id}`}>{course.name}</Link>
-            <X
-              size={44}
-              className='cursor-pointer mt-0.5 p-2.5'
-              // onClick={() => onRemove(curriculum.id)}
-            />
-          </li>
-        ))}
+        {courses?.map(course => {
+          const courseFormRequest: CourseFormRequest = {
+            name: course.name,
+            level: course.level as 1 | 2 | 3,
+            description: course.description ?? '',
+          }
+          return (
+            <li
+              key={course.id}
+              className='rounded-md flex border-2 shadow-md mb-3 py-4 px-4 items-center justify-between'
+            >
+              <Link href={`/courses/${course.id}`}>{course.name}</Link>
+              <Flex align='center'>
+                <UpdateCourseButton
+                  onSubmit={v => updateCourse(course.id, v)}
+                  initValue={courseFormRequest}
+                />
+                <X
+                  size={44}
+                  className='cursor-pointer mt-0.5 p-2.5'
+                  onClick={() => deleteCourse(course.id)}
+                />
+              </Flex>
+            </li>
+          )
+        })}
       </ul>
-
-      {courses && (
-        <Flex gap='sm' mt='sm'>
-          <Select
-            placeholder='コースを選択してください'
-            onChange={(e: string) => setselectedCourseId(e)}
-            data={courses.map(v => ({ value: v.id, label: v.name }))}
-            className='max-w-300px w-300px'
-          />
-
-          <Button onClick={updateCourse}>更新</Button>
-          <Button color='red' onClick={deleteCourse}>
-            削除
-          </Button>
-        </Flex>
-      )}
     </Layout>
   )
 }
