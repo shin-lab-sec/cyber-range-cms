@@ -21,11 +21,12 @@ export default async function handler(
           orderBy: { createdAt: 'asc' },
         })
 
-        const resulut = courses.map(course => ({
+        // {id, name, description, level, curriculumIds, curriculums: [{}]}
+        const result = courses.map(course => ({
           ...course,
           curriculums: course.curriculums.map(c => c.curriculum),
         }))
-        res.status(200).json({ data: resulut, method: method })
+        res.status(200).json({ data: result, method: method })
       } catch (err) {
         res.status(400).json({ data: err })
       }
@@ -36,10 +37,8 @@ export default async function handler(
         const createCourse = await prisma.course.create({
           data: {
             name: body.name,
-            url: body.url,
-            article: body.article,
-            imageUrl: body.imageUrl,
             description: body.description,
+            level: body.level,
           },
         })
         res.status(200).json({ data: createCourse })

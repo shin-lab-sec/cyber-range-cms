@@ -45,10 +45,8 @@ export default async function handler(
           },
           data: {
             name: body.name,
-            url: body.url,
-            article: body.article,
-            imageUrl: body.imageUrl,
             description: body.description,
+            level: body.level,
             curriculumIds: body.curriculumIds,
           },
         })

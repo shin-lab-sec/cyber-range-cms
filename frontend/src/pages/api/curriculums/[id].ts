@@ -31,8 +31,10 @@ export default async function handler(
           },
           data: {
             name: body.name,
-            level: body.level,
             description: body.description,
+            gitHubUrl: body.gitHubUrl,
+            imageUrl: body.imageUrl,
+            articleUrl: body.articleUrl,
           },
         })
         res.status(200).json({ data: curriculum })

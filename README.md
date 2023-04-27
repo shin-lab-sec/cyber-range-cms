@@ -58,13 +58,19 @@ docker compse up
 http://localhost:3000/
 
 
+## パッケージを追加・削除する時
+```
+docker copmose exec app yarn add ~
+docker copmose exec app yarn remove ~
+```
+
 ## スキーマを変える手順
 
 1. prisma/schema.prismaでスキーマを変更
 2. マイグレーション
 
 ```
-docker copmose exec yarn prisma migrate dev
+docker copmose exec app yarn prisma migrate dev
 ```
 
 3. 型定義更新
