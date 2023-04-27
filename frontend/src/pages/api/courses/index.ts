@@ -43,7 +43,7 @@ export default async function handler(
         })
         res.status(200).json({ data: createCourse })
       } catch (err) {
-        res.status(400).json({ data: err, req: body })
+        res.status(400).json({ data: err, aaaa: body })
       }
       break
 

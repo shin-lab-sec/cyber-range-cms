@@ -7,22 +7,36 @@ import { useGetApi } from '../../hooks/useApi'
 import { Button, Flex, List, Select, TextInput } from '@mantine/core'
 import Link from 'next/link'
 import { X } from 'tabler-icons-react'
-import { CreateCourseButton } from '../../components/course/CreateCourseButton'
+import {
+  CourseForm,
+  CreateCourseButton,
+} from '../../components/course/CreateCourseButton'
 
 const Courses: NextPage = () => {
   const { data: courses } = useGetApi<Course[]>(`/courses`)
   const [name, setName] = useState('')
   const [selectedCourseId, setselectedCourseId] = useState('')
 
-  const createCourse = useCallback(async () => {
-    if (!name) return
+  const createCourse = useCallback(async (params: CourseForm) => {
     try {
-      const res = await postApi('/courses', { name })
+      const res = await postApi('/courses', params)
       console.log('追加に成功', res)
     } catch (e) {
       console.error(e)
     }
-  }, [name])
+  }, [])
+  const createCourse2 = useCallback(async () => {
+    try {
+      const res = await postApi('/courses', {
+        name: 'a',
+        level: 3,
+        description: 'ffffa',
+      })
+      console.log('追加に成功', res)
+    } catch (e) {
+      console.error(e)
+    }
+  }, [])
 
   const updateCourse = useCallback(async () => {
     try {
@@ -36,14 +50,14 @@ const Courses: NextPage = () => {
     }
   }, [name, selectedCourseId])
 
-  const deleteCourse = useCallback(async () => {
+  const deleteCourse = useCallback(async (id: string) => {
     try {
-      const res = await deleteApi(`/courses/${selectedCourseId}`)
+      const res = await deleteApi(`/courses/${id}`)
       console.log('削除に成功', res)
     } catch (e) {
       console.error(e)
     }
-  }, [selectedCourseId])
+  }, [])
 
   return (
     <Layout>
@@ -51,14 +65,12 @@ const Courses: NextPage = () => {
 
       <form className='mt-3'>
         <Flex gap='sm' justify='end'>
-          {/* <TextInput
-            value={name}
-            onChange={e => setName(e.currentTarget.value)}
-            placeholder='コース名を入力して下さい'
-            className='max-w-300px w-300px'
+          <CreateCourseButton
+            onSubmit={a => {
+              console.log('送信じゃ', a)
+              createCourse(a)
+            }}
           />
-          <Button onClick={createCourse}>作成</Button> */}
-          <CreateCourseButton />
         </Flex>
       </form>
 
@@ -72,7 +84,7 @@ const Courses: NextPage = () => {
             <X
               size={44}
               className='cursor-pointer mt-0.5 p-2.5'
-              // onClick={() => onRemove(curriculum.id)}
+              onClick={() => deleteCourse(course.id)}
             />
           </li>
         ))}
@@ -87,10 +99,11 @@ const Courses: NextPage = () => {
             className='max-w-300px w-300px'
           />
 
+          <Button onClick={createCourse2}>作成</Button>
           <Button onClick={updateCourse}>更新</Button>
-          <Button color='red' onClick={deleteCourse}>
+          {/* <Button color='red' onClick={deleteCourse}>
             削除
-          </Button>
+          </Button> */}
         </Flex>
       )}
     </Layout>
