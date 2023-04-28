@@ -22,7 +22,6 @@ export const Layout: FC<Props> = ({ title, children }) => {
         </h1>
         <nav className='flex gap-3'>
           <Link href='/courses'>コース一覧</Link>
-          <Link href='/courses/aa'>コース個別</Link>
           <Link href='/curriculums'>カリキュラム一覧</Link>
         </nav>
       </header>
