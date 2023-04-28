@@ -1,8 +1,6 @@
 import { NextPage } from 'next'
 import { Layout } from '../components/Layout'
-import { useCallback, useState } from 'react'
 import { Curriculum } from '@prisma/client'
-import { deleteApi, postApi, putApi } from '../utils/api'
 import { useGetApi } from '../hooks/useApi'
 import { Flex } from '@mantine/core'
 import { X } from 'tabler-icons-react'
@@ -10,58 +8,17 @@ import {
   CreateCurriculumButton,
   CurriculumFormRequest,
   UpdateCurriculumButton,
+  useCreateCurriculum,
+  useDeleteCurriculum,
+  useUpdateCurriculum,
 } from '../features/curriculum'
 
 const Curriculums: NextPage = () => {
   const { data: curriculums } = useGetApi<Curriculum[]>(`/curriculums`)
 
-  const [name, setName] = useState('')
-  const [selectedCurriculumId, setselectedCurriculumId] = useState('')
-
-  const createCurriculum = useCallback(
-    async (params: CurriculumFormRequest) => {
-      try {
-        const res = await postApi('/curriculums', params)
-        console.log('追加に成功', res)
-      } catch (e) {
-        console.error(e)
-      }
-    },
-    [],
-  )
-
-  const updateCurriculum1 = useCallback(async () => {
-    try {
-      const res = await putApi(`/curriculums/${selectedCurriculumId}`, {
-        name,
-        level: 2,
-      })
-      console.log('更新に成功', res)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [name, selectedCurriculumId])
-
-  const updateCurriculum = useCallback(
-    async (id: string, params: CurriculumFormRequest) => {
-      try {
-        const res = await putApi(`/curriculums/${id}`, params)
-        console.log('更新に成功', res)
-      } catch (e) {
-        console.error(e)
-      }
-    },
-    [],
-  )
-
-  const deleteCurriculum = useCallback(async (id: string) => {
-    try {
-      const res = await deleteApi(`/curriculums/${id}`)
-      console.log('削除に成功', res)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [])
+  const { createCurriculum } = useCreateCurriculum()
+  const { updateCurriculum } = useUpdateCurriculum()
+  const { deleteCurriculum } = useDeleteCurriculum()
 
   return (
     <Layout>
@@ -101,7 +58,6 @@ const Curriculums: NextPage = () => {
           )
         })}
       </ul>
-      {selectedCurriculumId}
     </Layout>
   )
 }
