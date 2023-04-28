@@ -5,18 +5,19 @@ import { CurriculumForm, CurriculumFormRequest } from './CurriculumForm'
 
 type Props = {
   onSubmit: (params: CurriculumFormRequest) => void
+  initValue: CurriculumFormRequest
 }
 
-export const CreateCurriculumButton: FC<Props> = ({ onSubmit }) => {
+export const UpdateCurriculumButton: FC<Props> = ({ onSubmit, initValue }) => {
   const isOpen = useBoolean()
 
   return (
     <>
-      <Button onClick={isOpen.setTrue}>新規カリキュラム作成</Button>
+      <Button onClick={isOpen.setTrue}>編集</Button>
       <Modal
         opened={isOpen.v}
         onClose={isOpen.setFalse}
-        title='新規カリキュラム作成'
+        title='カリキュラム編集'
         centered
         classNames={{ title: 'text-xl' }}
       >
@@ -25,7 +26,8 @@ export const CreateCurriculumButton: FC<Props> = ({ onSubmit }) => {
             onSubmit(v)
             isOpen.setFalse()
           }}
-          submitButtonName='作成する'
+          submitButtonName='更新する'
+          initValue={initValue}
         />
       </Modal>
     </>

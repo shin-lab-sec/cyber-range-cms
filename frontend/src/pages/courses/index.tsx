@@ -47,16 +47,9 @@ const Courses: NextPage = () => {
     <Layout>
       <h1>コース一覧ページ</h1>
 
-      <form className='mt-3'>
-        <Flex gap='sm' justify='end'>
-          <CreateCourseButton
-            onSubmit={a => {
-              console.log('送信じゃ', a)
-              createCourse(a)
-            }}
-          />
-        </Flex>
-      </form>
+      <Flex gap='sm' justify='end'>
+        <CreateCourseButton onSubmit={createCourse} />
+      </Flex>
 
       <ul className='mt-3'>
         {courses?.map(course => {
