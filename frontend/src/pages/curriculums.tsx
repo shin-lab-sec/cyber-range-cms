@@ -4,11 +4,13 @@ import { useCallback, useState } from 'react'
 import { Curriculum } from '@prisma/client'
 import { deleteApi, postApi, putApi } from '../utils/api'
 import { useGetApi } from '../hooks/useApi'
-import { Button, Flex, List, Select, Text, TextInput } from '@mantine/core'
+import { Flex } from '@mantine/core'
 import { X } from 'tabler-icons-react'
-import { CreateCurriculumButton } from '../components/curriculum/CreateCurriculumButton'
-import { CurriculumFormRequest } from '../components/curriculum/CurriculumForm'
-import { UpdateCurriculumButton } from '../components/curriculum/UpdateCurriculumButton'
+import {
+  CreateCurriculumButton,
+  CurriculumFormRequest,
+  UpdateCurriculumButton,
+} from '../features/curriculum'
 
 const Curriculums: NextPage = () => {
   const { data: curriculums } = useGetApi<Curriculum[]>(`/curriculums`)

@@ -7,9 +7,11 @@ import { useGetApi } from '../../hooks/useApi'
 import { Button, Flex, List, Select, TextInput } from '@mantine/core'
 import Link from 'next/link'
 import { X } from 'tabler-icons-react'
-import { CreateCourseButton } from '../../components/course/CreateCourseButton'
-import { UpdateCourseButton } from '../../components/course/UpdateCourseButton'
-import { CourseFormRequest } from '../../components/course/CourseForm'
+import {
+  CreateCourseButton,
+  UpdateCourseButton,
+  CourseFormRequest,
+} from '../../features/course'
 
 const Courses: NextPage = () => {
   const { data: courses } = useGetApi<Course[]>(`/courses`)

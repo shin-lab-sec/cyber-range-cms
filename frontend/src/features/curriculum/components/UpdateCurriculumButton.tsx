@@ -1,14 +1,14 @@
 import { Button, Modal } from '@mantine/core'
 import { FC } from 'react'
-import { useBoolean } from '../../hooks/useBoolean'
-import { CourseForm, CourseFormRequest } from './CourseForm'
+import { useBoolean } from '../../../hooks/useBoolean'
+import { CurriculumForm, CurriculumFormRequest } from './CurriculumForm'
 
 type Props = {
-  onSubmit: (params: CourseFormRequest) => void
-  initValue: CourseFormRequest
+  onSubmit: (params: CurriculumFormRequest) => void
+  initValue: CurriculumFormRequest
 }
 
-export const UpdateCourseButton: FC<Props> = ({ onSubmit, initValue }) => {
+export const UpdateCurriculumButton: FC<Props> = ({ onSubmit, initValue }) => {
   const isOpen = useBoolean()
 
   return (
@@ -17,11 +17,11 @@ export const UpdateCourseButton: FC<Props> = ({ onSubmit, initValue }) => {
       <Modal
         opened={isOpen.v}
         onClose={isOpen.setFalse}
-        title='コース編集'
+        title='カリキュラム編集'
         centered
         classNames={{ title: 'text-xl' }}
       >
-        <CourseForm
+        <CurriculumForm
           onSubmit={v => {
             onSubmit(v)
             isOpen.setFalse()
