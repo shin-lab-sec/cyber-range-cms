@@ -1,47 +1,25 @@
 import { NextPage } from 'next'
 import { Layout } from '../../components/Layout'
-import { useCallback, useState } from 'react'
 import { Course } from '@prisma/client'
-import { deleteApi, postApi, putApi } from '../../utils/api'
 import { useGetApi } from '../../hooks/useApi'
-import { Button, Flex, List, Select, TextInput } from '@mantine/core'
+import { Flex } from '@mantine/core'
 import Link from 'next/link'
 import { X } from 'tabler-icons-react'
-import { CreateCourseButton } from '../../components/course/CreateCourseButton'
-import { UpdateCourseButton } from '../../components/course/UpdateCourseButton'
-import { CourseFormRequest } from '../../components/course/CourseForm'
+import {
+  CreateCourseButton,
+  UpdateCourseButton,
+  CourseFormRequest,
+  useCreateCourse,
+  useUpdateCourse,
+  useDeleteCourse,
+} from '../../features/course'
 
 const Courses: NextPage = () => {
   const { data: courses } = useGetApi<Course[]>(`/courses`)
 
-  const createCourse = useCallback(async (params: CourseFormRequest) => {
-    try {
-      const res = await postApi('/courses', params)
-      console.log('追加に成功', res)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [])
-  const updateCourse = useCallback(
-    async (id: string, params: CourseFormRequest) => {
-      try {
-        const res = await putApi(`/courses/${id}`, params)
-        console.log('更新に成功', res)
-      } catch (e) {
-        console.error(e)
-      }
-    },
-    [],
-  )
-
-  const deleteCourse = useCallback(async (id: string) => {
-    try {
-      const res = await deleteApi(`/courses/${id}`)
-      console.log('削除に成功', res)
-    } catch (e) {
-      console.error(e)
-    }
-  }, [])
+  const { createCourse } = useCreateCourse()
+  const { updateCourse } = useUpdateCourse()
+  const { deleteCourse } = useDeleteCourse()
 
   return (
     <Layout>

@@ -6,7 +6,7 @@ import { Course, Curriculum } from '@prisma/client'
 import { deleteApi, getApi, postApi, putApi } from '../../utils/api'
 import { useGetApi } from '../../hooks/useApi'
 import { Button, Code, Flex, List, Select, Text } from '@mantine/core'
-import { DraggableCurriculums } from '../../components/curriculum/DraggableCurriculums'
+import { DraggableCurriculums } from '../../features/curriculum'
 
 type CourseWithCurriculums = Course & { curriculums: Curriculum[] }
 
