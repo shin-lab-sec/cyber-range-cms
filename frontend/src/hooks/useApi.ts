@@ -8,9 +8,6 @@ export const useGetApi = <Data = any>(
     params?: Record<string, any>
     headers?: Record<string, string>
     fallbackData?: Data
-    options: {
-      revalidateIfStale?: boolean
-    }
   },
 ): SWRResponse<Data, HttpError> => {
   const fetcher = useCallback(
@@ -23,7 +20,6 @@ export const useGetApi = <Data = any>(
     fetcher,
     {
       revalidateOnReconnect: false,
-      revalidateIfStale: props?.options?.revalidateIfStale,
       revalidateOnFocus: false,
       fallbackData: props?.fallbackData,
     },
