@@ -1,11 +1,10 @@
 import { NextPage } from 'next'
 import { Layout } from '../../components/Layout'
 import { useSearchParams } from 'next/navigation'
-import { FC, useCallback, useEffect, useMemo, useState } from 'react'
-import { Course, Curriculum } from '@prisma/client'
-import { deleteApi, getApi, postApi, putApi } from '../../utils/api'
+import { useMemo, useState } from 'react'
+import { Curriculum } from '@prisma/client'
 import { useGetApi } from '../../hooks/useApi'
-import { Button, Code, Flex, List, Select, Text } from '@mantine/core'
+import { Button, Flex, Select } from '@mantine/core'
 import { DraggableCurriculums } from '../../features/curriculum'
 import {
   CourseWithCurriculums,
@@ -14,12 +13,11 @@ import {
   useUpdateCourseCurriculumOrder,
 } from '../../features/course'
 
-// type CourseWithCurriculums = Course & { curriculums: Curriculum[] }
-
 const Courses: NextPage = () => {
   const searchParams = useSearchParams()
   const id = searchParams.get('id') || '' // 一回目のレンダリングで正常なidが取得できる
   const { data: course } = useGetApi<CourseWithCurriculums>(`/courses/${id}`)
+
   // セレクトボックス
   const { data: curriculums } = useGetApi<Curriculum[]>(`/curriculums`)
   const [selectedCurriculumId, setSelectedCurriculumId] = useState('')
@@ -29,7 +27,8 @@ const Courses: NextPage = () => {
     [course?.curriculumIds],
   )
 
-  // // 順番に並び替えたカリキュラム
+  // 順番に並び替えたカリキュラム
+  // curriculumIdsで順番に見つかったid順にソート。見つからなかったら後ろに回す
   const orderedCurriculums = useMemo(() => {
     return structuredClone(course?.curriculums)?.sort((a, b) => {
       const indexA = curriculumIds.findIndex(id => id === a.id)
@@ -40,7 +39,8 @@ const Courses: NextPage = () => {
     })
   }, [course?.curriculums, curriculumIds])
 
-  // curriculumIdsとカリキュラムを合わせる
+  // orderedCurriculumsを元にcurriculumIdsを生成
+  // curriculumIdsが破損している可能性があるため
   const orderedCurriculumIds = orderedCurriculums
     ? orderedCurriculums.map(v => v.id)
     : []
@@ -83,6 +83,7 @@ const Courses: NextPage = () => {
 
         {orderedCurriculums?.length ? (
           <DraggableCurriculums
+            key={orderedCurriculumIds.join('')}
             curriculums={orderedCurriculums}
             onUpdateOrder={(curriculums: Curriculum[]) =>
               updateCourseCurriculumOrder(curriculums)

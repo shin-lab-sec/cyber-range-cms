@@ -1,6 +1,6 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { postApi, putApi, deleteApi } from '../../../utils/api'
-import { Course, Curriculum } from '@prisma/client'
+import { CourseCurriculumRelation, Curriculum } from '@prisma/client'
 import { useGetApi } from '../../../hooks/useApi'
 import { CourseWithCurriculums } from '../'
 
@@ -8,12 +8,11 @@ export const useAddCurriculumToCourse = (
   courseId: string,
   curriculumIds: string[],
 ) => {
-  // mutate　curriculumIds, curriculums
-  const { data: course } = useGetApi<CourseWithCurriculums>(
+  const { mutate: courseMutate } = useGetApi<CourseWithCurriculums>(
     `/courses/${courseId}`,
   )
+
   const addCurriculumToCourse = useCallback(
-    // async (courseId: string, curriculumId: string, curriculumIds: string[]) => {
     async (curriculumId: string) => {
       if (curriculumIds.includes(curriculumId)) {
         console.log(
@@ -22,26 +21,31 @@ export const useAddCurriculumToCourse = (
         return
       }
 
-      const newOrder = [curriculumIds, curriculumId].join(',')
-      console.log(newOrder)
+      // 引数のcurriculumIdを追加したcurriculumIdsを生成
+      const newCurriculumIds = [curriculumIds, curriculumId].join(',')
 
       try {
         // 中間テーブルに追加
-        const res = await postApi(
+        const res = await postApi<CourseCurriculumRelation>(
           `/courses/${courseId}/curriculums/${curriculumId}`,
         )
         console.log('中間テーブルに追加', res)
 
         // curriculumIds更新
-        const res2 = await putApi(`/courses/${courseId}`, {
-          curriculumIds: newOrder,
-        })
-        console.log('更新に成功', res2)
+        const updateCourse = await putApi<CourseWithCurriculums>(
+          `/courses/${courseId}`,
+          {
+            curriculumIds: newCurriculumIds,
+          },
+        )
+        console.log('更新に成功', updateCourse)
+
+        courseMutate(updateCourse, false) // mutate処理
       } catch (e) {
         console.error(e)
       }
     },
-    [courseId, curriculumIds],
+    [courseId, courseMutate, curriculumIds],
   )
 
   return { addCurriculumToCourse }
@@ -51,6 +55,10 @@ export const useRemoveCurriculumFromCourse = (
   courseId: string,
   curriculumIds: string[],
 ) => {
+  const { mutate: courseMutate } = useGetApi<CourseWithCurriculums>(
+    `/courses/${courseId}`,
+  )
+
   const removeCurriculumFromCourse = useCallback(
     async (curriculumId: string) => {
       if (!curriculumIds.includes(curriculumId)) {
@@ -58,8 +66,10 @@ export const useRemoveCurriculumFromCourse = (
         return
       }
 
-      const newOrder = curriculumIds.filter(id => id !== curriculumId).join(',')
-      console.log('splice', newOrder, curriculumIds)
+      // 引数のcurriculumIdを除いたcurriculumIdsを生成
+      const newCurriculumIds = curriculumIds
+        .filter(id => id !== curriculumId)
+        .join(',')
 
       try {
         // 中間テーブル削除
@@ -69,34 +79,50 @@ export const useRemoveCurriculumFromCourse = (
         console.log('中間テーブル削除', res)
 
         // curriculumIds更新
-        const res1 = await putApi(`/courses/${courseId}`, {
-          curriculumIds: newOrder,
-        })
-        console.log('更新に成功', res1)
+        const updateCourse = await putApi<CourseWithCurriculums>(
+          `/courses/${courseId}`,
+          {
+            curriculumIds: newCurriculumIds,
+          },
+        )
+        console.log('更新に成功', updateCourse)
+
+        courseMutate(updateCourse, false) // mutate処理
       } catch (e) {
         console.error(e)
       }
     },
-    [courseId, curriculumIds],
+    [courseId, courseMutate, curriculumIds],
   )
   return { removeCurriculumFromCourse }
 }
 
 export const useUpdateCourseCurriculumOrder = (courseId: string) => {
+  const { mutate: courseMutate } = useGetApi<CourseWithCurriculums>(
+    `/courses/${courseId}`,
+  )
+
   const updateCourseCurriculumOrder = useCallback(
     async (curriculums: Curriculum[]) => {
-      const newOrder = curriculums.map(v => v.id).join(',')
+      // 引数のcurriculumsからcurriculumIdsを生成
+      const newCurriculumIds = curriculums.map(v => v.id).join(',')
 
       try {
-        const res = await putApi(`/courses/${courseId}`, {
-          curriculumIds: newOrder,
-        })
-        console.log('更新に成功', res)
+        // curriculumIds更新
+        const updateCourse = await putApi<CourseWithCurriculums>(
+          `/courses/${courseId}`,
+          {
+            curriculumIds: newCurriculumIds,
+          },
+        )
+        console.log('更新に成功', updateCourse)
+
+        courseMutate(updateCourse, false) // mutate処理
       } catch (e) {
         console.error(e)
       }
     },
-    [courseId],
+    [courseId, courseMutate],
   )
 
   return { updateCourseCurriculumOrder }
