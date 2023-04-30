@@ -15,7 +15,7 @@ export const useCreateCourse = () => {
         console.log('追加に成功', res)
 
         if (!courses || !res) return
-        mutateCourses([...courses, res], false)
+        mutateCourses([...courses, res])
       } catch (e) {
         console.error(e)
       }
@@ -38,7 +38,7 @@ export const useUpdateCourse = () => {
 
         if (!courses || !res) return
         const newCourses = courses.map(v => (v.id === id ? res : v))
-        mutateCourses(newCourses, false)
+        mutateCourses(newCourses)
       } catch (e) {
         console.error(e)
       }
@@ -60,7 +60,7 @@ export const useDeleteCourse = () => {
 
         if (!courses) return
         const newCourses = courses.filter(v => v.id !== id)
-        mutateCourses(newCourses, false)
+        mutateCourses(newCourses)
       } catch (e) {
         console.error(e)
       }

@@ -42,7 +42,7 @@ export const useAddCurriculumToCourse = (
         )
         console.log('更新に成功', updateCourse)
 
-        courseMutate(updateCourse, false) // mutate処理
+        courseMutate(updateCourse) // mutate処理
       } catch (e) {
         console.error(e)
       }
@@ -91,7 +91,7 @@ export const useRemoveCurriculumFromCourse = (
         )
         console.log('更新に成功', updateCourse)
 
-        courseMutate(updateCourse, false) // mutate処理
+        courseMutate(updateCourse) // mutate処理
       } catch (e) {
         console.error(e)
       }
@@ -121,7 +121,7 @@ export const useUpdateCourseCurriculumOrder = (courseId: string) => {
         )
         console.log('更新に成功', updateCourse)
 
-        courseMutate(updateCourse, false) // mutate処理
+        courseMutate(updateCourse) // mutate処理
       } catch (e) {
         console.error(e)
       }

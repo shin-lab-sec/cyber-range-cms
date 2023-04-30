@@ -15,7 +15,7 @@ export const useCreateCurriculum = () => {
         console.log('追加に成功', res)
 
         if (!curriculums || !res) return
-        mutateCurriculums([...curriculums, res], false)
+        mutateCurriculums([...curriculums, res])
       } catch (e) {
         console.error(e)
       }
@@ -38,7 +38,7 @@ export const useUpdateCurriculum = () => {
 
         if (!curriculums || !res) return
         const newCurriculums = curriculums.map(v => (v.id === id ? res : v))
-        mutateCurriculums(newCurriculums, false)
+        mutateCurriculums(newCurriculums)
       } catch (e) {
         console.error(e)
       }
@@ -60,7 +60,7 @@ export const useDeleteCurriculum = () => {
 
         if (!curriculums) return
         const newCurriculums = curriculums.filter(v => v.id !== id)
-        mutateCurriculums(newCurriculums, false)
+        mutateCurriculums(newCurriculums)
       } catch (e) {
         console.error(e)
       }
