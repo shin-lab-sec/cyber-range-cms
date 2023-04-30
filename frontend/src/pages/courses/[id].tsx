@@ -14,33 +14,36 @@ import {
   useUpdateCourseCurriculumOrder,
 } from '../../features/course'
 
-type CourseWithCurriculums = Course & { curriculums: Curriculum[] }
+// type CourseWithCurriculums = Course & { curriculums: Curriculum[] }
 
 const Courses: NextPage = () => {
   const searchParams = useSearchParams()
-  const id = searchParams.get('id')
-
+  const id = searchParams.get('id') || '' // 一回目のレンダリングで正常なidが取得できる
   const { data: course } = useGetApi<CourseWithCurriculums>(`/courses/${id}`)
   // セレクトボックス
   const { data: curriculums } = useGetApi<Curriculum[]>(`/curriculums`)
   const [selectedCurriculumId, setSelectedCurriculumId] = useState('')
 
-  let curriculumIds = useMemo(
+  const curriculumIds = useMemo(
     () => course?.curriculumIds?.split(',') || [],
     [course?.curriculumIds],
   )
 
-  // 順番に並び替えたカリキュラム
-  const orderedCurriculums = structuredClone(course?.curriculums)
-  orderedCurriculums?.sort((a, b) => {
-    const indexA = curriculumIds.findIndex(id => id === a.id)
-    const indexB = curriculumIds.findIndex(id => id === b.id)
-    if (indexA === -1) return 1
-    if (indexB === -1) return -1
-    return indexA - indexB
-  })
+  // // 順番に並び替えたカリキュラム
+  const orderedCurriculums = useMemo(() => {
+    return structuredClone(course?.curriculums)?.sort((a, b) => {
+      const indexA = curriculumIds.findIndex(id => id === a.id)
+      const indexB = curriculumIds.findIndex(id => id === b.id)
+      if (indexA === -1) return 1
+      if (indexB === -1) return -1
+      return indexA - indexB
+    })
+  }, [course?.curriculums, curriculumIds])
+
   // curriculumIdsとカリキュラムを合わせる
-  curriculumIds = orderedCurriculums ? orderedCurriculums.map(v => v.id) : []
+  const orderedCurriculumIds = orderedCurriculums
+    ? orderedCurriculums.map(v => v.id)
+    : []
 
   const { addCurriculumToCourse } = useAddCurriculumToCourse(
     id,
