@@ -29,6 +29,8 @@ export const useAddCurriculumToCourse = (
         const res = await postApi<CourseCurriculumRelation>(
           `/courses/${courseId}/curriculums/${curriculumId}`,
         )
+        if (!res) return // 上の処理が失敗したら、下を実行しない
+
         console.log('中間テーブルに追加', res)
 
         // curriculumIds更新
@@ -76,6 +78,8 @@ export const useRemoveCurriculumFromCourse = (
         const res = await deleteApi(
           `/courses/${courseId}/curriculums/${curriculumId}`,
         )
+        if (!res) return // 上の処理が失敗したら、下を実行しない
+
         console.log('中間テーブル削除', res)
 
         // curriculumIds更新

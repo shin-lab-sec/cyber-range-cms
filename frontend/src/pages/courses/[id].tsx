@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import { Curriculum } from '@prisma/client'
 import { useGetApi } from '../../hooks/useApi'
-import { Button, Flex, Select } from '@mantine/core'
+import { Button, Code, Flex, Select } from '@mantine/core'
 import { DraggableCurriculums } from '../../features/curriculum'
 import {
   CourseWithCurriculums,
@@ -80,6 +80,8 @@ const Courses: NextPage = () => {
             </Button>
           </Flex>
         )}
+
+        {/* <Code block>{JSON.stringify(course.curriculumIds)}</Code> */}
 
         {orderedCurriculums?.length ? (
           <DraggableCurriculums
