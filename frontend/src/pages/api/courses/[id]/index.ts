@@ -49,8 +49,22 @@ export default async function handler(
             level: body.level,
             curriculumIds: body.curriculumIds,
           },
+          include: {
+            curriculums: {
+              include: {
+                curriculum: true,
+              },
+              orderBy: { createdAt: 'asc' },
+            },
+          },
         })
-        res.status(200).json({ data: course })
+
+        // courseがnullならnullを返す
+        const result = course && {
+          ...course,
+          curriculums: course?.curriculums.map(ccr => ccr.curriculum),
+        }
+        res.status(200).json({ data: result })
       } catch (err) {
         res.status(400).json({ data: err })
       }
