@@ -1,13 +1,25 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { postApi, putApi, deleteApi } from '../../utils/api'
-import { Curriculum } from '@prisma/client'
+import { Course, Curriculum } from '@prisma/client'
+import { useGetApi } from '../../hooks/useApi'
 
-// TODO: curriculumIdsは受け取らないでSWRでfetchする
-export const useAddCurriculumToCourse = () => {
+export type CourseWithCurriculums = Course & { curriculums: Curriculum[] }
+
+export const useAddCurriculumToCourse = (
+  courseId: string,
+  curriculumIds: string[],
+) => {
+  // mutate　curriculumIds, curriculums
+  const { data: course } = useGetApi<CourseWithCurriculums>(
+    `/courses/${courseId}`,
+  )
   const addCurriculumToCourse = useCallback(
-    async (courseId: string, curriculumId: string, curriculumIds: string[]) => {
+    // async (courseId: string, curriculumId: string, curriculumIds: string[]) => {
+    async (curriculumId: string) => {
       if (curriculumIds.includes(curriculumId)) {
-        console.log('既にそのカリキュラムはコースに含まれています')
+        console.log(
+          `id ${curriculumId} のカリキュラムは既にコースに含まれています`,
+        )
         return
       }
 
@@ -30,23 +42,25 @@ export const useAddCurriculumToCourse = () => {
         console.error(e)
       }
     },
-    [],
+    [courseId, curriculumIds],
   )
 
   return { addCurriculumToCourse }
 }
 
-export const useRemoveCurriculumFromCourse = () => {
+export const useRemoveCurriculumFromCourse = (
+  courseId: string,
+  curriculumIds: string[],
+) => {
   const removeCurriculumFromCourse = useCallback(
-    async (courseId: string, curriculumId: string, curriculumIds: string[]) => {
-      if (!curriculumId) {
-        console.log('カリキュラムidが空です', curriculumId)
+    async (curriculumId: string) => {
+      if (!curriculumIds.includes(curriculumId)) {
+        console.log(`id ${curriculumId} のカリキュラムはコースに存在しません`)
         return
       }
 
-      // spliceでやる。もう少し増やす
       const newOrder = curriculumIds.filter(id => id !== curriculumId).join(',')
-      console.log('splice', newOrder, curriculumId)
+      console.log('splice', newOrder, curriculumIds)
 
       try {
         // 中間テーブル削除
@@ -64,24 +78,26 @@ export const useRemoveCurriculumFromCourse = () => {
         console.error(e)
       }
     },
-    [],
+    [courseId, curriculumIds],
   )
   return { removeCurriculumFromCourse }
 }
 
-export const useUpdateCourseCurriculumOrder = () => {
+export const useUpdateCourseCurriculumOrder = (courseId: string) => {
   const updateCourseCurriculumOrder = useCallback(
-    async (id: string, curriculums: Curriculum[]) => {
+    async (curriculums: Curriculum[]) => {
       const newOrder = curriculums.map(v => v.id).join(',')
 
       try {
-        const res = await putApi(`/courses/${id}`, { curriculumIds: newOrder })
+        const res = await putApi(`/courses/${courseId}`, {
+          curriculumIds: newOrder,
+        })
         console.log('更新に成功', res)
       } catch (e) {
         console.error(e)
       }
     },
-    [],
+    [courseId],
   )
 
   return { updateCourseCurriculumOrder }

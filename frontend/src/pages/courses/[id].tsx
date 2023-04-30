@@ -8,6 +8,7 @@ import { useGetApi } from '../../hooks/useApi'
 import { Button, Code, Flex, List, Select, Text } from '@mantine/core'
 import { DraggableCurriculums } from '../../features/curriculum'
 import {
+  CourseWithCurriculums,
   useAddCurriculumToCourse,
   useRemoveCurriculumFromCourse,
   useUpdateCourseCurriculumOrder,
@@ -41,82 +42,15 @@ const Courses: NextPage = () => {
   // curriculumIdsとカリキュラムを合わせる
   curriculumIds = orderedCurriculums ? orderedCurriculums.map(v => v.id) : []
 
-  // 順番を入れ替えるのは、ライブラリ
-  // const updateCourse = useCallback(
-  //   async (curriculums: Curriculum[]) => {
-  //     const newOrder = curriculums.map(v => v.id).join(',')
-
-  //     try {
-  //       const res = await putApi(`/courses/${id}`, { curriculumIds: newOrder })
-  //       console.log('更新に成功', res)
-  //     } catch (e) {
-  //       console.error(e)
-  //     }
-  //   },
-  //   [id],
-  // )
-
-  // const addCurriculum = useCallback(async () => {
-  //   if (!selectedCurriculumId) {
-  //     console.log('カリキュラムidが空です', selectedCurriculumId)
-  //     return
-  //   }
-  //   if (curriculumIds.includes(selectedCurriculumId)) {
-  //     console.log('既にそのカリキュラムはコースに含まれています')
-  //     return
-  //   }
-
-  //   const newOrder = [curriculumIds, selectedCurriculumId].join(',')
-  //   console.log(newOrder)
-
-  //   try {
-  //     // 中間テーブルに追加
-  //     const res = await postApi(
-  //       `/courses/${id}/curriculums/${selectedCurriculumId}`,
-  //     )
-  //     console.log('中間テーブルに追加', res)
-
-  //     // curriculumIds更新
-  //     const res1 = await putApi(`/courses/${id}`, { curriculumIds: newOrder })
-  //     console.log('更新に成功', res1)
-  //   } catch (e) {
-  //     console.error(e)
-  //   }
-  // }, [curriculumIds, id, selectedCurriculumId])
-
-  // const removeCurriculum = useCallback(
-  //   async (curriculumId: string) => {
-  //     if (!curriculumId) {
-  //       console.log('カリキュラムidが空です', curriculumId)
-  //       return
-  //     }
-
-  //     // spliceでやる。もう少し増やす
-  //     const newOrder = curriculumIds.filter(id => id !== curriculumId).join(',')
-  //     console.log('splice', newOrder, curriculumId)
-
-  //     try {
-  //       // 中間テーブル削除
-  //       const res = await deleteApi(
-  //         `/courses/${id}/curriculums/${curriculumId}`,
-  //       )
-  //       console.log('中間テーブル削除', res)
-
-  //       // curriculumIds更新
-  //       const res1 = await putApi(`/courses/${id}`, {
-  //         curriculumIds: newOrder,
-  //       })
-  //       console.log('更新に成功', res1)
-  //     } catch (e) {
-  //       console.error(e)
-  //     }
-  //   },
-  //   [curriculumIds, id],
-  // )
-
-  const { addCurriculumToCourse } = useAddCurriculumToCourse()
-  const { removeCurriculumFromCourse } = useRemoveCurriculumFromCourse()
-  const { updateCourseCurriculumOrder } = useUpdateCourseCurriculumOrder()
+  const { addCurriculumToCourse } = useAddCurriculumToCourse(
+    id,
+    orderedCurriculumIds,
+  )
+  const { removeCurriculumFromCourse } = useRemoveCurriculumFromCourse(
+    id,
+    orderedCurriculumIds,
+  )
+  const { updateCourseCurriculumOrder } = useUpdateCourseCurriculumOrder(id)
 
   if (!course || !id) {
     return (
@@ -138,11 +72,7 @@ const Courses: NextPage = () => {
               data={curriculums.map(v => ({ value: v.id, label: v.name }))}
               className='max-w-300px w-300px'
             />
-            <Button
-              onClick={() =>
-                addCurriculumToCourse(id, selectedCurriculumId, curriculumIds)
-              }
-            >
+            <Button onClick={() => addCurriculumToCourse(selectedCurriculumId)}>
               追加
             </Button>
           </Flex>
@@ -152,10 +82,10 @@ const Courses: NextPage = () => {
           <DraggableCurriculums
             curriculums={orderedCurriculums}
             onUpdateOrder={(curriculums: Curriculum[]) =>
-              updateCourseCurriculumOrder(id, curriculums)
+              updateCourseCurriculumOrder(curriculums)
             }
             onRemove={(curriculumId: string) =>
-              removeCurriculumFromCourse(id, curriculumId, curriculumIds)
+              removeCurriculumFromCourse(curriculumId)
             }
             className='mx-auto mt-6'
           />
