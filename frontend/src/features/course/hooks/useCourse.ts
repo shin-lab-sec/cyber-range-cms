@@ -11,11 +11,12 @@ export const useCreateCourse = () => {
   const createCourse = useCallback(
     async (params: CourseFormRequest) => {
       try {
-        const res = await postApi<Course>('/courses', params)
-        console.log('追加に成功', res)
+        const newCourse = await postApi<Course>('/courses', params)
+        console.log('追加に成功', newCourse)
 
-        if (!courses || !res) return
-        mutateCourses([...courses, res])
+        if (!courses) return
+        // 再度データを取得しキャッシュを更新する
+        mutateCourses([...courses, newCourse])
       } catch (e) {
         console.error(e)
       }
@@ -33,12 +34,16 @@ export const useUpdateCourse = () => {
   const updateCourse = useCallback(
     async (id: string, params: CourseFormRequest) => {
       try {
-        const res = await putApi<Course>(`/courses/${id}`, params)
-        console.log('更新に成功', res)
+        const updatedCourse = await putApi<Course>(`/courses/${id}`, params)
+        console.log('更新に成功', updatedCourse)
 
-        if (!courses || !res) return
-        const newCourses = courses.map(v => (v.id === id ? res : v))
-        mutateCourses(newCourses)
+        if (!courses) return
+        // 対象のidだけ更新されたコースに置き換える
+        const updatedCourses = courses.map(v =>
+          v.id === id ? updatedCourse : v,
+        )
+        // 再度データを取得しキャッシュを更新する
+        mutateCourses(updatedCourses)
       } catch (e) {
         console.error(e)
       }
@@ -55,12 +60,14 @@ export const useDeleteCourse = () => {
   const deleteCourse = useCallback(
     async (id: string) => {
       try {
-        const res = await deleteApi(`/courses/${id}`)
-        console.log('削除に成功', res)
+        await deleteApi(`/courses/${id}`)
+        console.log('削除に成功')
 
         if (!courses) return
-        const newCourses = courses.filter(v => v.id !== id)
-        mutateCourses(newCourses)
+        // コース一覧から対象のidのコースを除く
+        const filteredCourses = courses.filter(v => v.id !== id)
+        // 再度データを取得しキャッシュを更新する
+        mutateCourses(filteredCourses)
       } catch (e) {
         console.error(e)
       }

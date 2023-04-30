@@ -11,11 +11,12 @@ export const useCreateCurriculum = () => {
   const createCurriculum = useCallback(
     async (params: CurriculumFormRequest) => {
       try {
-        const res = await postApi<Curriculum>('/curriculums', params)
-        console.log('追加に成功', res)
+        const newCurriculum = await postApi<Curriculum>('/curriculums', params)
+        console.log('追加に成功', newCurriculum)
 
-        if (!curriculums || !res) return
-        mutateCurriculums([...curriculums, res])
+        if (!curriculums) return
+        // 再度データを取得しキャッシュを更新する
+        mutateCurriculums([...curriculums, newCurriculum])
       } catch (e) {
         console.error(e)
       }
@@ -33,12 +34,19 @@ export const useUpdateCurriculum = () => {
   const updateCurriculum = useCallback(
     async (id: string, params: CurriculumFormRequest) => {
       try {
-        const res = await putApi<Curriculum>(`/curriculums/${id}`, params)
-        console.log('更新に成功', res)
+        const updatedCurriculum = await putApi<Curriculum>(
+          `/curriculums/${id}`,
+          params,
+        )
+        console.log('更新に成功', updatedCurriculum)
 
-        if (!curriculums || !res) return
-        const newCurriculums = curriculums.map(v => (v.id === id ? res : v))
-        mutateCurriculums(newCurriculums)
+        if (!curriculums) return
+        // 対象のidだけ更新されたカリキュラムに置き換える
+        const updatedCurriculums = curriculums.map(v =>
+          v.id === id ? updatedCurriculum : v,
+        )
+        // 再度データを取得しキャッシュを更新する
+        mutateCurriculums(updatedCurriculums)
       } catch (e) {
         console.error(e)
       }
@@ -55,12 +63,14 @@ export const useDeleteCurriculum = () => {
   const deleteCurriculum = useCallback(
     async (id: string) => {
       try {
-        const res = await deleteApi(`/curriculums/${id}`)
-        console.log('削除に成功', res)
+        await deleteApi(`/curriculums/${id}`)
+        console.log('削除に成功')
 
         if (!curriculums) return
-        const newCurriculums = curriculums.filter(v => v.id !== id)
-        mutateCurriculums(newCurriculums)
+        // カリキュラム一覧から対象のidのカリキュラムを除く
+        const filteredCurriculums = curriculums.filter(v => v.id !== id)
+        // 再度データを取得しキャッシュを更新する
+        mutateCurriculums(filteredCurriculums)
       } catch (e) {
         console.error(e)
       }

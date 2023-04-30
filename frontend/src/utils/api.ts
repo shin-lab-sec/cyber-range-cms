@@ -65,7 +65,7 @@ export const fetchApi = async <T>(
     if (error instanceof HttpError) {
       throw error
     }
-    console.error(error)
+    throw error
   }
 
   return (result ? result.data : result) as unknown as T
