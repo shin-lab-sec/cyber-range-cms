@@ -9,53 +9,46 @@
 ```
 git clone https://github.com/shin-lab-sec/cyber-range-cms
 ```
+cyber-range-cmsをVSCodeで開く
+```
+code cyber-range-cms
+```
 
 ### step2　Docker起動
-cyber-range-cmsの階層に移動
-```
-cd cyber-range-cms
-```
+1. Docker Desktopを起動
 
-Docker Desktopを起動
-
-コンテナを起動
+2. コンテナを起動
 ```
 docker compose up
 ```
 
 
-VSCodeの拡張機能で、Dockerを入れる
-
-.envに追加
-
+### step3 envファイルの作成
+プロジェクト直下に.envを作成し、以下のコードを追加
 ```
 DATABASE_URL="mysql://root:password@db:3306/prisma"
 ```
 
-
-### step3 prismaの設定
-appコンテナに入る
-1. VSCodeのDockerに移動
-2. cyber-range-cms_appを右クリック
-3. Attach Visual Studio Codeを押す
-
-appコンテナのターミナルで、以下を実行。
+### step4 ローカルで作業するための準備
 ```
-yarn prisma migrate dev
-yarn prisma generate
-
+cd frontend
+yarn
 ```
 
-コンテナを再起動する。
+### step5 prismaの設定
+```
+docker compose exec app yarn prisma migrate dev
+```
+
+### step6 起動したローカルサーバーへアクセス
+http://localhost:3000/
+
+ここまでやって上手く行かない場合はコンテナを再起動する。
 
 ```
 docker compose stop
 docker compse up
 ```
-
-
-### step4 起動したローカルサーバーへアクセス
-http://localhost:3000/
 
 
 ## パッケージを追加・削除する時
@@ -81,3 +74,7 @@ docker copmose exec yarn prisma generate
 4. コンテナ再起動
 5. vscode再起動
 
+## Dockerfileを変更する時
+```
+docker compose up --build
+```
