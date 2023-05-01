@@ -3,19 +3,9 @@ import { FC } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { curriculumSchema } from '../../../lib/validates/curriculum'
 
-// "" | URLの形式
-const regex = new RegExp('^(https?://.+|)$')
-
-const schema = z.object({
-  name: z.string().nonempty('コース名は必須です'),
-  gitHubUrl: z.string().regex(regex, { message: 'URLの形式で入力して下さい' }), // regixする
-  imageUrl: z.string().regex(regex, { message: 'URLの形式で入力して下さい' }),
-  articleUrl: z.string().regex(regex, { message: 'URLの形式で入力して下さい' }),
-  description: z.string(),
-})
-
-export type CurriculumFormRequest = z.infer<typeof schema>
+export type CurriculumFormRequest = z.infer<typeof curriculumSchema>
 
 type Props = {
   onSubmit: (params: CurriculumFormRequest) => void
@@ -33,7 +23,7 @@ export const CurriculumForm: FC<Props> = ({
     handleSubmit,
     formState: { errors },
   } = useForm<CurriculumFormRequest>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(curriculumSchema),
     criteriaMode: 'all',
     defaultValues: initValue,
   })

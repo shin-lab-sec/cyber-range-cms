@@ -3,14 +3,9 @@ import { FC } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { courseSchema } from '../../../lib/validates/course'
 
-const schema = z.object({
-  name: z.string().nonempty('コース名は必須です'),
-  description: z.string(),
-  level: z.union([z.literal(1), z.literal(2), z.literal(3)]).default(1),
-})
-
-export type CourseFormRequest = z.infer<typeof schema>
+export type CourseFormRequest = z.infer<typeof courseSchema>
 
 type Props = {
   onSubmit: (params: CourseFormRequest) => void
@@ -29,7 +24,7 @@ export const CourseForm: FC<Props> = ({
     setValue,
     formState: { errors },
   } = useForm<CourseFormRequest>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(courseSchema),
     criteriaMode: 'all',
     defaultValues: initValue,
   })
