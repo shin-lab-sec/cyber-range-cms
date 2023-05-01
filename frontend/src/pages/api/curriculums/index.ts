@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../lib/prisma'
+import { apiValidation } from '../../../lib/validates/apiValidation'
+import { curriculumSchema } from '../../../lib/validates/curriculum'
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,7 +22,7 @@ export default async function handler(
       break
 
     case 'POST':
-      try {
+      apiValidation(req, res, curriculumSchema, async () => {
         const createdCurriculum = await prisma.curriculum.create({
           data: {
             name: body.name,
@@ -31,9 +33,7 @@ export default async function handler(
           },
         })
         res.status(200).json({ data: createdCurriculum })
-      } catch (err) {
-        res.status(400).json({ data: err })
-      }
+      })
       break
 
     default:
