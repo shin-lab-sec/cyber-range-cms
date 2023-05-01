@@ -13,7 +13,7 @@ export default async function handler(
   switch (method) {
     case 'POST':
       try {
-        const course = await prisma.courseCurriculumRelation.create({
+        const createdCourse = await prisma.courseCurriculumRelation.create({
           data: {
             course: {
               connect: {
@@ -27,7 +27,7 @@ export default async function handler(
             },
           },
         })
-        res.status(200).json({ data: course })
+        res.status(200).json({ data: createdCourse })
       } catch (err) {
         res.status(400).json({ data: err })
       }
@@ -36,7 +36,7 @@ export default async function handler(
     // courses/1
     case 'DELETE':
       try {
-        const course = await prisma.courseCurriculumRelation.delete({
+        const deletedCourse = await prisma.courseCurriculumRelation.delete({
           where: {
             courseId_curriculumId: {
               courseId: id,
@@ -44,7 +44,7 @@ export default async function handler(
             },
           },
         })
-        res.status(200).json({ data: course })
+        res.status(200).json({ data: deletedCourse })
       } catch (err) {
         res.status(400).json({ data: err })
       }

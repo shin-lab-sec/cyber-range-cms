@@ -27,11 +27,11 @@ export default async function handler(
         })
 
         // courseがnullならnullを返す
-        const result = course && {
+        const courseWithCurriculums = course && {
           ...course,
           curriculums: course?.curriculums.map(ccr => ccr.curriculum),
         }
-        res.status(200).json({ data: result })
+        res.status(200).json({ data: courseWithCurriculums })
       } catch (err) {
         res.status(400).json({ data: err })
       }
@@ -39,7 +39,7 @@ export default async function handler(
 
     case 'PUT':
       try {
-        const course = await prisma.course.update({
+        const updatedCourse = await prisma.course.update({
           where: {
             id: id,
           },
@@ -60,11 +60,11 @@ export default async function handler(
         })
 
         // courseがnullならnullを返す
-        const result = course && {
-          ...course,
-          curriculums: course?.curriculums.map(ccr => ccr.curriculum),
+        const courseWithCurriculums = updatedCourse && {
+          ...updatedCourse,
+          curriculums: updatedCourse?.curriculums.map(ccr => ccr.curriculum),
         }
-        res.status(200).json({ data: result })
+        res.status(200).json({ data: courseWithCurriculums })
       } catch (err) {
         res.status(400).json({ data: err })
       }
@@ -72,12 +72,12 @@ export default async function handler(
 
     case 'DELETE':
       try {
-        const course = await prisma.course.delete({
+        const deletedCourse = await prisma.course.delete({
           where: {
             id: id,
           },
         })
-        res.status(200).json({ data: course })
+        res.status(200).json({ data: deletedCourse })
       } catch (err) {
         res.status(400).json({ data: err })
       }
