@@ -10,10 +10,10 @@ export default async function handler(
   switch (method) {
     case 'GET':
       try {
-        const courses = await prisma.curriculum.findMany({
+        const curriculums = await prisma.curriculum.findMany({
           orderBy: { createdAt: 'asc' },
         })
-        res.status(200).json({ data: courses, method: method })
+        res.status(200).json({ data: curriculums })
       } catch (err) {
         res.status(400).json({ data: err })
       }
@@ -21,7 +21,7 @@ export default async function handler(
 
     case 'POST':
       try {
-        const createCourse = await prisma.curriculum.create({
+        const createdCurriculum = await prisma.curriculum.create({
           data: {
             name: body.name,
             description: body.description,
@@ -30,7 +30,7 @@ export default async function handler(
             articleUrl: body.articleUrl,
           },
         })
-        res.status(200).json({ data: createCourse })
+        res.status(200).json({ data: createdCurriculum })
       } catch (err) {
         res.status(400).json({ data: err })
       }

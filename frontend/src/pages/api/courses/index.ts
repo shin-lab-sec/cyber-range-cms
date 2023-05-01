@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../lib/prisma'
+import { z } from 'zod'
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,11 +23,11 @@ export default async function handler(
         })
 
         // {id, name, description, level, curriculumIds, curriculums: [{}]}
-        const result = courses.map(course => ({
+        const coursesWithCurriculums = courses.map(course => ({
           ...course,
           curriculums: course.curriculums.map(c => c.curriculum),
         }))
-        res.status(200).json({ data: result, method: method })
+        res.status(200).json({ data: coursesWithCurriculums })
       } catch (err) {
         res.status(400).json({ data: err })
       }
@@ -34,16 +35,16 @@ export default async function handler(
 
     case 'POST':
       try {
-        const createCourse = await prisma.course.create({
+        const createdCourse = await prisma.course.create({
           data: {
             name: body.name,
             description: body.description,
             level: body.level,
           },
         })
-        res.status(200).json({ data: createCourse })
+        res.status(200).json({ data: createdCourse })
       } catch (err) {
-        res.status(400).json({ data: err, aaaa: body })
+        res.status(400).json({ data: err })
       }
       break
 

@@ -12,12 +12,12 @@ export default async function handler(
   switch (method) {
     case 'GET':
       try {
-        const courses = await prisma.curriculum.findUnique({
+        const curriculum = await prisma.curriculum.findUnique({
           where: {
             id: id,
           },
         })
-        res.status(200).json({ data: courses, method: method })
+        res.status(200).json({ data: curriculum })
       } catch (err) {
         res.status(400).json({ data: err })
       }
@@ -25,7 +25,7 @@ export default async function handler(
 
     case 'PUT':
       try {
-        const curriculum = await prisma.curriculum.update({
+        const updatedCurriculum = await prisma.curriculum.update({
           where: {
             id: id,
           },
@@ -37,7 +37,7 @@ export default async function handler(
             articleUrl: body.articleUrl,
           },
         })
-        res.status(200).json({ data: curriculum })
+        res.status(200).json({ data: updatedCurriculum })
       } catch (err) {
         res.status(400).json({ data: err })
       }
@@ -45,12 +45,12 @@ export default async function handler(
 
     case 'DELETE':
       try {
-        const curriculum = await prisma.curriculum.delete({
+        const deletedCurriculum = await prisma.curriculum.delete({
           where: {
             id: id,
           },
         })
-        res.status(200).json({ data: curriculum })
+        res.status(200).json({ data: deletedCurriculum })
       } catch (err) {
         res.status(400).json({ data: err })
       }
