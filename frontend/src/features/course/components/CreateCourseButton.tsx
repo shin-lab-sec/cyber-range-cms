@@ -1,6 +1,6 @@
 import { Button, Modal } from '@mantine/core'
 import { FC } from 'react'
-import { useBoolean } from '../../../hooks/useBoolean'
+import { useBoolean } from '@/hooks/useBoolean'
 import { CourseForm, CourseFormRequest } from './CourseForm'
 
 type Props = {

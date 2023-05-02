@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { curriculumSchema } from '../../../lib/validates/curriculum'
+import { curriculumSchema } from '@/lib/validates/curriculum'
 
 export type CurriculumFormRequest = z.infer<typeof curriculumSchema>
 

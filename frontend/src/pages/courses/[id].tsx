@@ -1,11 +1,11 @@
 import { NextPage } from 'next'
-import { Layout } from '../../components/Layout'
+import { Layout } from '@/components/Layout'
 import { useSearchParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import { Curriculum } from '@prisma/client'
-import { useGetApi } from '../../hooks/useApi'
-import { Button, Code, Flex, Select } from '@mantine/core'
-import { DraggableCurriculums } from '../../features/curriculum'
+import { useGetApi } from '@/hooks/useApi'
+import { Button, Flex, Select } from '@mantine/core'
+import { DraggableCurriculums } from '@/features/curriculum'
 import {
   CourseWithCurriculums,
   useAddCurriculumToCourse,
