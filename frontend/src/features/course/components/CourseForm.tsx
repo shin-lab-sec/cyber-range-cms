@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { courseSchema } from '../../../lib/validates/course'
+import { courseSchema } from '@/lib/validates/course'
 
 export type CourseFormRequest = z.infer<typeof courseSchema>
 

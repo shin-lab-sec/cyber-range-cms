@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
-import { Layout } from '../components/Layout'
+import { Layout } from '@/components/Layout'
 import { Curriculum } from '@prisma/client'
-import { useGetApi } from '../hooks/useApi'
+import { useGetApi } from '@/hooks/useApi'
 import { Flex } from '@mantine/core'
 import { X } from 'tabler-icons-react'
 import {

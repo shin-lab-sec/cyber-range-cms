@@ -12,7 +12,6 @@ export const apiValidation = async (
     await onSuccess() // prismaのエラーが出たらcatchに行く
   } catch (err) {
     if (err instanceof Error) {
-      // res.status(400).json({ message: err.message })
       res.status(400).json({ message: `ZodError: ${err.message}` })
       return
     }

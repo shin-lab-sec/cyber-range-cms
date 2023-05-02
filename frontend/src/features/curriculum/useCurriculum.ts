@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
-import { postApi, putApi, deleteApi } from '../../utils/api'
+import { postApi, putApi, deleteApi } from '@/utils/api'
 import { CurriculumFormRequest } from '.'
-import { useGetApi } from '../../hooks/useApi'
+import { useGetApi } from '@/hooks/useApi'
 import { Curriculum } from '@prisma/client'
 
 export const useCreateCurriculum = () => {

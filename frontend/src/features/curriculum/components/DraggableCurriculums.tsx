@@ -1,6 +1,6 @@
-import { Button, Code } from '@mantine/core'
+import { Button } from '@mantine/core'
 import { Curriculum } from '@prisma/client'
-import { FC, ReactNode } from 'react'
+import { FC } from 'react'
 import { useEffect, useState } from 'react'
 import { X } from 'tabler-icons-react'
 
