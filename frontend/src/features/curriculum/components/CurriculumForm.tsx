@@ -1,9 +1,10 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Flex, Stack, TextInput, Textarea } from '@mantine/core'
 import { FC } from 'react'
-import { z } from 'zod'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { curriculumSchema } from '@/lib/validates/curriculum'
+import { z } from 'zod'
+
+import { curriculumSchema } from '@/libs/validates/curriculum'
 
 export type CurriculumFormRequest = z.infer<typeof curriculumSchema>
 

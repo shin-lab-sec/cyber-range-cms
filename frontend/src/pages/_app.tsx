@@ -1,5 +1,6 @@
-import type { AppProps } from 'next/app'
 import { MantineProvider } from '@mantine/core'
+import type { AppProps } from 'next/app'
+/* eslint-disable-next-line */
 import 'windi.css'
 
 function MyApp({ Component, pageProps }: AppProps) {

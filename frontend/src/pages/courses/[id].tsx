@@ -1,17 +1,19 @@
+import { Button, Flex, Select } from '@mantine/core'
+import { Curriculum } from '@prisma/client'
 import { NextPage } from 'next'
-import { Layout } from '@/components/Layout'
 import { useSearchParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
-import { Curriculum } from '@prisma/client'
-import { useGetApi } from '@/hooks/useApi'
-import { Button, Flex, Select } from '@mantine/core'
-import { DraggableCurriculums } from '@/features/curriculum'
+
+import { Layout } from '@/components/Layout'
 import {
   CourseWithCurriculums,
   useAddCurriculumToCourse,
   useRemoveCurriculumFromCourse,
   useUpdateCourseCurriculumOrder,
-} from '../../features/course'
+} from '@/features/course'
+// import { CourseWithCurriculums } from '@/features/course/components/CourseForm'
+import { DraggableCurriculums } from '@/features/curriculum'
+import { useGetApi } from '@/hooks/useApi'
 
 const Courses: NextPage = () => {
   const searchParams = useSearchParams()

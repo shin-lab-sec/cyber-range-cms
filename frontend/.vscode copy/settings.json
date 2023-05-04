@@ -1,0 +1,6 @@
+{
+  "eslint.enable": true, // みんな使えるように
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}

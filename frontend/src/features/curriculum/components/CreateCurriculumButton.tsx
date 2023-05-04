@@ -1,6 +1,8 @@
 import { Button, Modal } from '@mantine/core'
 import { FC } from 'react'
+
 import { useBoolean } from '@/hooks/useBoolean'
+
 import { CurriculumForm, CurriculumFormRequest } from './CurriculumForm'
 
 type Props = {

@@ -1,10 +1,10 @@
-import { NextPage } from 'next'
-import { Layout } from '@/components/Layout'
-import { Course } from '@prisma/client'
-import { useGetApi } from '@/hooks/useApi'
 import { Flex } from '@mantine/core'
+import { Course } from '@prisma/client'
+import { NextPage } from 'next'
 import Link from 'next/link'
 import { X } from 'tabler-icons-react'
+
+import { Layout } from '@/components/Layout'
 import {
   CreateCourseButton,
   UpdateCourseButton,
@@ -12,7 +12,8 @@ import {
   useCreateCourse,
   useUpdateCourse,
   useDeleteCourse,
-} from '../../features/course'
+} from '@/features/course'
+import { useGetApi } from '@/hooks/useApi'
 
 const Courses: NextPage = () => {
   const { data: courses } = useGetApi<Course[]>(`/courses`)
