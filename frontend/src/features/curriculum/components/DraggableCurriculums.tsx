@@ -1,15 +1,13 @@
 import { Button } from '@mantine/core'
 import { Curriculum } from '@prisma/client'
-import { FC } from 'react'
-import { useEffect, useState } from 'react'
-import { X } from 'tabler-icons-react'
-
+import { FC, useEffect, useState } from 'react'
 import {
   DragDropContext,
   Draggable,
   Droppable,
   DropResult,
 } from 'react-beautiful-dnd'
+import { X } from 'tabler-icons-react'
 
 type Props = {
   curriculums: Curriculum[]

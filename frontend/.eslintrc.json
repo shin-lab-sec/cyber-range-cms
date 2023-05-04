@@ -1,3 +1,104 @@
 {
-  "extends": "next/core-web-vitals"
+  "plugins": ["unused-imports", "import", "filenames", "@typescript-eslint"],
+  // .eslintrcは下に書くほど優先が高い(上書きされていく)
+  // prettierは最後に書く
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "plugin:import/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {} // 絶対パス@/を認識する
+    }
+  },
+  "overrides": [
+    {
+      // componentsはパスカルケース
+      "files": ["**/components/**"],
+      "rules": { "filenames/match-regex": ["error", "^([A-Z][a-z]*)+$"] }
+    },
+    {
+      // hooksはuse + パスカルケース
+      "files": ["**/hooks/**"],
+      "rules": {
+        "filenames/match-regex": ["error", "^use([A-Z][a-z]*)+$"]
+      }
+    },
+    {
+      // pagesはケバブケース、[], _にも対応
+      "files": ["src/pages/**"],
+      "rules": {
+        "filenames/match-regex": ["error", "^([a-z_[)([a-zA-Z]+-?)+(])?$"]
+      }
+    },
+    {
+      // typesはキャメルケース
+      "files": ["**/types/**"],
+      "rules": {
+        "filenames/match-regex": ["error", "^[a-z][a-zA-Z]+$"]
+      }
+    },
+    {
+      // utils, libsはキャメルケース。useから始めない
+      "files": ["**/utils/**", "**/libs/**"],
+      "rules": {
+        "filenames/match-regex": ["error", "^(?!use)[a-z][a-zA-Z]+$"]
+      }
+    }
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-empty-function": "error",
+    "unused-imports/no-unused-imports": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["sibling", "parent"],
+          "object"
+        ],
+        "newlines-between": "always", // グループ間で改行
+        "alphabetize": {
+          "order": "asc"
+        }
+      }
+    ],
+    // 依存関係の禁止リスト
+    "import/no-restricted-paths": [
+      "error",
+      {
+        "zones": [
+          // pages, features以外でfeaturesを呼ぶとエラー
+          {
+            "from": "src/features/**",
+            "target": "src/!(pages|features)/**"
+          },
+          // featuresをpagesで呼ぶときは、ドメイン名のindex.tsで呼ぶ
+          {
+            "from": ["src/features/*/!(index.ts)", "src/features/*/*/**"],
+            "target": "src/pages/**"
+          },
+          // componentsはpages|componentsのみ
+          {
+            "from": "**/components/**",
+            "target": [
+              "src/!(pages|features)/**",
+              "src/features/*/!(components)/**"
+            ]
+          },
+          // 直下componentsが、featuresはダメ
+          {
+            "from": "src/features/*/components/**",
+            "target": "src/components/**"
+          }
+        ]
+      }
+    ]
+  }
 }

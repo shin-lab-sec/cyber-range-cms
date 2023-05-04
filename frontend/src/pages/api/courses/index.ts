@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '@/lib/prisma'
-import { apiValidation } from '@/lib/validates/apiValidation'
-import { courseSchema } from '@/lib/validates/course'
+
+import prisma from '@/libs/prisma'
+import { apiValidation } from '@/libs/validates/apiValidation'
+import { courseSchema } from '@/libs/validates/course'
 
 export default async function handler(
   req: NextApiRequest,

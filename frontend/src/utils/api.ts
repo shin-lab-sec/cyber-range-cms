@@ -89,7 +89,7 @@ export const putApi = async <Data>(
   headers?: Record<string, string>,
 ) => fetchApi<Data>(url, 'PUT', params, headers)
 
-export const deleteApi = async <Data>(
+export const deleteApi = async (
   url: string,
   params?: any,
   headers?: Record<string, string>,

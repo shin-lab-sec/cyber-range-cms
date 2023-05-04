@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import useSWR, { SWRResponse } from 'swr'
+
 import { fetchApi, HttpError } from '@/utils/api'
 
 export const useGetApi = <Data = any>(
