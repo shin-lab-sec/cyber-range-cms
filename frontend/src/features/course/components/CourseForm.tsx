@@ -4,7 +4,7 @@ import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { courseSchema } from '@/libs/validates/course'
+import { courseSchema } from '@/libs/validates'
 
 export type CourseFormRequest = z.infer<typeof courseSchema>
 
