@@ -17,4 +17,5 @@ export const apiValidation = async (
     }
     res.status(400).json({ message: `Invalid request: ${JSON.stringify(err)}` })
   }
+  return
 }
