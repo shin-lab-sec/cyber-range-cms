@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "rvest.vs-code-prettier-eslint",
+    "esbenp.prettier-vscode",
+    "streetsidesoftware.code-spell-checker",
+    "usernamehw.errorlens",
+    "ms-ceintl.vscode-language-pack-ja",
+    "ms-azuretools.vscode-docker",
+    "dsznajder.es7-react-js-snippets",
+    "ms-vscode.vscode-typescript-next",
+    "prisma.prisma",
+    "voorjaar.windicss-intellisense",
+    "formulahendry.auto-rename-tag",
+    "jduponchelle.rainbow-end",
+    "oderwat.indent-rainbow",
+    "deque-systems.vscode-axe-linter"
+  ]
+}
