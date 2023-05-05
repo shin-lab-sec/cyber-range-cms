@@ -1,4 +1,4 @@
-name: Build Test
+name: type-check and eslint
 on: push
 jobs:
   build:
@@ -29,3 +29,8 @@ jobs:
         run: |
           cd frontend
           yarn tsc --noEmit
+
+      - name: eslint-check
+        run: |
+          cd frontend
+          yarn lint
