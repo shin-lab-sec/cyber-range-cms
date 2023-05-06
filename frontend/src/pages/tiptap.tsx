@@ -10,7 +10,7 @@ import { StarterKit } from '@tiptap/starter-kit'
 import { useState } from 'react'
 
 const content =
-  '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>'
+  '<h2 style="text-align: center">Welcome to Mantine rich text editor</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a target="_blank" rel="noopener noreferrer nofollow" href="https://tiptap.dev/">Tiptap.dev</a> and supports all of its features:</p><ul><li><p>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s></p><ul><li><p>Headings (h1-h6)</p><ul><li><p>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</p><ul><li><p>Ordered and bullet lists</p></li></ul></li><li><p>Text align&nbsp;</p></li></ul></li><li><p>And all <a target="_blank" rel="noopener noreferrer nofollow" href="https://tiptap.dev/extensions">other extensions</a></p></li></ul></li></ul><ol><li><p><strong>aaaaa</strong></p><ol><li><p><em>iiii</em></p></li></ol></li><li><p><em><s><u>sssss</u></s></em></p></li><li><p><mark>aaaaaaaf</mark></p></li></ol><h1>h1</h1><h2>h2</h2><p style="text-align: center">aaa</p><p style="text-align: right">bbb</p><p>ccc</p><p><code>code</code></p><pre><code>code code code</code></pre>'
 
 export default function Tiptap() {
   const [editorContent, setEditorContent] = useState('')
@@ -85,6 +85,8 @@ export default function Tiptap() {
         HTMLを保存
       </Button>
       {editorContent}
+      <br />
+      <br />
       {/* {editor.view} */}
       <div dangerouslySetInnerHTML={{ __html: editorContent }} />
     </>
