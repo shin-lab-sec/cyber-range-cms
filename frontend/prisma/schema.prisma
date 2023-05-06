@@ -25,7 +25,7 @@ model Curriculum {
   description String?
   gitHubUrl   String?
   imageUrl    String?
-  articleUrl  String?
+  articleUrl  String? @db.Text
   courses     CourseCurriculumRelation[]
   createdAt   DateTime                   @default(now())
   updatedAt   DateTime                   @default(now()) @updatedAt()
