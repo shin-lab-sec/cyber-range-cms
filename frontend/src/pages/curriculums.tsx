@@ -54,39 +54,44 @@ const Curriculums: NextPage = () => {
                 />
 
                 <style jsx global>{`
+                  .ProseMirror {
+                    word-break: break-word;
+                    word-wrap: break-word;
+                  }
+
                   .ProseMirror h1 {
-                    margin: 1.5em 0 1em;
-                    font-size: 2em;
+                    margin: 1.5rem 0 1rem;
+                    font-size: 2rem;
                     font-weight: bold;
                     line-height: 1.2;
                   }
                   .ProseMirror h2 {
-                    margin: 1.5em 0 1em;
-                    font-size: 1.5em;
+                    margin: 1.5rem 0 1rem;
+                    font-size: 1.5rem;
                     font-weight: bold;
                     line-height: 1.2;
                   }
                   .ProseMirror h3 {
-                    margin: 1.5em 0 1em;
-                    font-size: 1.17em;
+                    margin: 1.5rem 0 1rem;
+                    font-size: 1.17rem;
                     font-weight: bold;
                     line-height: 1.2;
                   }
                   .ProseMirror h4 {
-                    margin: 1.5em 0 1em;
-                    font-size: 1em;
+                    margin: 1.5rem 0 1rem;
+                    font-size: 1rem;
                     font-weight: bold;
                     line-height: 1.2;
                   }
                   .ProseMirror h5 {
-                    margin: 1.5em 0 1em;
-                    font-size: 0.83em;
+                    margin: 1.5rem 0 1rem;
+                    font-size: 0.83rem;
                     font-weight: bold;
                     line-height: 1.2;
                   }
                   .ProseMirror h6 {
-                    margin: 1.5em 0 1em;
-                    font-size: 0.67em;
+                    margin: 1.5rem 0 1rem;
+                    font-size: 0.67rem;
                     font-weight: bold;
                     line-height: 1.2;
                   }
@@ -94,7 +99,7 @@ const Curriculums: NextPage = () => {
                   .ProseMirror ul,
                   .ProseMirror ol {
                     margin: 0;
-                    padding-left: 20px;
+                    padding-left: 1.5rem;
                   }
                   .ProseMirror ul {
                     list-style: disc;
@@ -102,25 +107,33 @@ const Curriculums: NextPage = () => {
                   .ProseMirror ol {
                     list-style: decimal;
                   }
-                  .ProseMirror li {
-                    margin: 0.5em 0;
+                  .ProseMirror li p {
+                    margin: 0.5rem 0;
                   }
 
                   .ProseMirror code {
-                    font-family: 'Courier New', Courier, monospace;
+                    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco,
+                      Consolas, 'Liberation Mono', 'Courier New', monospace;
                     background-color: #f5f5f5;
-                    padding: 0.2em 0.4em;
-                    border-radius: 0.2em;
+                    padding: 0.2rem 0.4rem;
+                    font-size: 0.75rem;
+                    border-radius: 0.2rem;
                     border: 1px solid #ccc;
+                  }
+                  .ProseMirror pre {
+                    display: block;
+                    background-color: #f5f5f5;
+                    padding: 1rem;
+                    overflow: auto;
+                    border-radius: 0.2rem;
+                    border: 1px solid #ccc;
+                    white-space: pre-wrap;
                   }
                   .ProseMirror pre code {
                     display: block;
-                    font-family: 'Courier New', Courier, monospace;
-                    background-color: #f5f5f5;
-                    padding: 1em;
-                    overflow: auto;
-                    border-radius: 0.2em;
-                    white-space: pre-wrap;
+                    padding: 0;
+                    font-size: 0.875rem;
+                    border: none;
                   }
 
                   .ProseMirror a {
@@ -130,41 +143,40 @@ const Curriculums: NextPage = () => {
                     text-decoration: underline;
                   }
 
+                  .ProseMirror p {
+                    font-size: 1rem;
+                    line-height: 1.5;
+                    margin: 1rem 0;
+                  }
+
                   .ProseMirror hr {
                     border: none;
                     height: 1px;
                     background-color: #ccc;
-                    margin: 1em 0;
+                    margin: 1rem 0;
                   }
 
                   .ProseMirror blockquote {
-                    border-left: 4px solid #ccc;
+                    border-left: 0.25rem solid #ccc;
                     color: #555;
                     font-style: italic;
                     margin: 0;
-                    padding: 1em;
+                    padding: 1rem;
                   }
                   .ProseMirror blockquote p {
                     margin: 0;
                   }
-
-                  .ProseMirror p {
-                    font-size: 16px;
-                    line-height: 1.5;
-                    margin: 1em 0;
-                  }
-
                   .ProseMirror sup,
                   .ProseMirror sub {
-                    font-size: 0.8em;
+                    font-size: 0.8rem;
                     position: relative;
                     vertical-align: baseline;
                   }
                   .ProseMirror sup {
-                    top: -0.5em;
+                    top: -0.5rem;
                   }
                   .ProseMirror sub {
-                    bottom: -0.25em;
+                    bottom: -0.25rem;
                   }
 
                   .ProseMirror strong {
@@ -178,6 +190,9 @@ const Curriculums: NextPage = () => {
                   }
                   .ProseMirror u {
                     text-decoration: underline;
+                  }
+                  .ProseMirror mark {
+                    background-color: yellow;
                   }
                 `}</style>
               </div>
