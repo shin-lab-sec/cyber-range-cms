@@ -47,6 +47,16 @@ const Courses: NextPage = () => {
     ? orderedCurriculums.map(v => v.id)
     : []
 
+  const selectBoxOptions = useMemo(
+    () =>
+      curriculums
+        ?.filter(v => !curriculumIds.includes(v.id))
+        .map(v => ({ value: v.id, label: v.name })) || [
+        { value: '', label: '' },
+      ],
+    [curriculumIds, curriculums],
+  )
+
   const { addCurriculumToCourse } = useAddCurriculumToCourse(
     id,
     orderedCurriculumIds,
@@ -74,7 +84,7 @@ const Courses: NextPage = () => {
             <Select
               placeholder='カリキュラムを選択してください'
               onChange={(e: string) => setSelectedCurriculumId(e)}
-              data={curriculums.map(v => ({ value: v.id, label: v.name }))}
+              data={selectBoxOptions}
               className='max-w-300px w-300px'
             />
             <Button onClick={() => addCurriculumToCourse(selectedCurriculumId)}>
