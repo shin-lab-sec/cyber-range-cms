@@ -24,8 +24,8 @@ export const UpdateCurriculumButton: FC<Props> = ({ onSubmit, initValue }) => {
         classNames={{ title: 'text-xl' }}
       >
         <CurriculumForm
-          onSubmit={v => {
-            onSubmit(v)
+          onSubmit={async v => {
+            await onSubmit(v)
             isOpen.setFalse()
           }}
           submitButtonName='更新する'

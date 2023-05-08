@@ -23,8 +23,8 @@ export const CreateCourseButton: FC<Props> = ({ onSubmit }) => {
         classNames={{ title: 'text-xl' }}
       >
         <CourseForm
-          onSubmit={v => {
-            onSubmit(v)
+          onSubmit={async v => {
+            await onSubmit(v)
             isOpen.setFalse()
           }}
           submitButtonName='作成する'
