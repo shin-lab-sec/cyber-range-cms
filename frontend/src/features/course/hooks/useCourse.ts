@@ -21,6 +21,10 @@ export const useCreateCourse = () => {
         mutateCourses([...courses, newCourse])
       } catch (e) {
         console.error(e)
+        if (e instanceof Error) {
+          throw e.message
+        }
+        throw JSON.stringify(e)
       }
     },
     [courses, mutateCourses],
@@ -48,6 +52,10 @@ export const useUpdateCourse = () => {
         mutateCourses(updatedCourses)
       } catch (e) {
         console.error(e)
+        if (e instanceof Error) {
+          throw e.message
+        }
+        throw JSON.stringify(e)
       }
     },
     [courses, mutateCourses],

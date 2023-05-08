@@ -21,6 +21,10 @@ export const useCreateCurriculum = () => {
         mutateCurriculums([...curriculums, newCurriculum])
       } catch (e) {
         console.error(e)
+        if (e instanceof Error) {
+          throw e.message
+        }
+        throw JSON.stringify(e)
       }
     },
     [curriculums, mutateCurriculums],
@@ -51,6 +55,10 @@ export const useUpdateCurriculum = () => {
         mutateCurriculums(updatedCurriculums)
       } catch (e) {
         console.error(e)
+        if (e instanceof Error) {
+          throw e.message
+        }
+        throw JSON.stringify(e)
       }
     },
     [curriculums, mutateCurriculums],
