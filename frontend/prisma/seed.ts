@@ -1,50 +1,89 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 async function main() {
-  const course1 = await prisma.course.upsert({
-    where: { name: 'コース1' },
-    update: {},
-    create: {
-      name: 'コース1',
-    },
-  })
-  const course2 = await prisma.course.upsert({
-    where: { name: 'コース2' },
-    update: {},
-    create: {
-      name: 'コース2',
-    },
-  })
-  const course3 = await prisma.course.upsert({
-    where: { name: 'コース3' },
-    update: {},
-    create: {
-      name: 'コース3',
-    },
-  })
-
   const curriculum1 = await prisma.curriculum.upsert({
-    where: { name: 'カリキュラム1' },
+    where: { name: 'サンプルカリキュラム-システムの基本設定の確認方法' },
     update: {},
     create: {
-      name: 'カリキュラム1',
+      name: 'サンプルカリキュラム-システムの基本設定の確認方法',
+      description:
+        'このカリキュラムでは、システムの基本設定を確認する方法について詳しく学びます。システムの稼働状況を正確に把握するために必要な知識が身につきます。',
+      gitHubUrl: 'https://github.com/tosssssy/sample-curriculum',
+      articleUrl: 'https://github.com/tosssssy/sample-curriculum',
+      imageUrl: 'https://source.unsplash.com/Vp8Ep9jZ5p0',
     },
   })
   const curriculum2 = await prisma.curriculum.upsert({
-    where: { name: 'カリキュラム2' },
+    where: { name: 'サンプルカリキュラム-パスワードポリシーの設定方法' },
     update: {},
     create: {
-      name: 'カリキュラム2',
+      name: 'サンプルカリキュラム-パスワードポリシーの設定方法',
+      description:
+        'このカリキュラムでは、パスワードポリシーの設定方法について学びます。強力なパスワードポリシーの設定により、セキュリティを強化する方法が分かります。',
+      gitHubUrl: 'https://github.com/tosssssy/sample-curriculum',
+      articleUrl: 'https://github.com/tosssssy/sample-curriculum',
+      imageUrl: 'https://source.unsplash.com/1Y5A0cagQP8',
     },
   })
   const curriculum3 = await prisma.curriculum.upsert({
-    where: { name: 'カリキュラム3' },
+    where: { name: 'サンプルカリキュラム-脆弱性の理解' },
     update: {},
     create: {
-      name: 'カリキュラム3',
+      name: 'サンプルカリキュラム-脆弱性の理解',
+      description:
+        'このカリキュラムでは、脆弱性の概念や種類について学びます。攻撃者が悪用する可能性がある脆弱性を把握することで、セキュリティ対策を行う方法が分かります。',
+      gitHubUrl: 'https://github.com/tosssssy/sample-curriculum',
+      articleUrl: 'https://github.com/tosssssy/sample-curriculum',
+      imageUrl: 'https://source.unsplash.com/TLqU-IBNBGM',
     },
   })
-  const relation1 = await prisma.courseCurriculumRelation.upsert({
+  const curriculum4 = await prisma.curriculum.upsert({
+    where: { name: 'サンプルカリキュラム-セキュリティログの確認' },
+    update: {},
+    create: {
+      name: 'サンプルカリキュラム-セキュリティログの確認',
+      description:
+        'のカリキュラムでは、セキュリティログの確認方法について学びます。ログの分析により、不正アクセスや攻撃の痕跡を見つける方法が分かります。',
+      gitHubUrl: 'https://github.com/tosssssy/sample-curriculum',
+      articleUrl: 'https://github.com/tosssssy/sample-curriculum',
+      imageUrl: 'https://source.unsplash.com/QKD4Pq6UPAY',
+    },
+  })
+
+  const course1 = await prisma.course.upsert({
+    where: { name: 'サンプルコース初級編' },
+    update: {},
+    create: {
+      name: 'サンプルコース初級編',
+      level: 1,
+      description:
+        'このサンプルコースは、セキュリティ演習システムの初級編にあたります。このコースを体験することで、システムの概要を学ぶことができます。',
+      curriculumIds: `${curriculum1.id},${curriculum3.id},${curriculum4.id}`,
+    },
+  })
+  const course2 = await prisma.course.upsert({
+    where: { name: 'サンプルコース中級編' },
+    update: {},
+    create: {
+      name: 'サンプルコース中級編',
+      level: 2,
+      description:
+        'このサンプルコースは、セキュリティ演習システムの中級編にあたります。このコースは脆弱性のあるアプリケーションでの攻撃を体験学ぶことができます。',
+      curriculumIds: `${curriculum3.id},${curriculum4.id}`,
+    },
+  })
+  const course3 = await prisma.course.upsert({
+    where: { name: 'サンプルコース上級編' },
+    update: {},
+    create: {
+      name: 'サンプルコース上級編',
+      level: 3,
+      description:
+        'このサンプルコースは、セキュリティ演習システムの上級編にあたります。このコースは攻撃者側を体験することで、攻撃の対処法を学ぶことができます。',
+    },
+  })
+
+  await prisma.courseCurriculumRelation.upsert({
     where: {
       courseId_curriculumId: {
         courseId: course1.id,
@@ -61,11 +100,11 @@ async function main() {
       },
     },
   })
-  const relation2 = await prisma.courseCurriculumRelation.upsert({
+  await prisma.courseCurriculumRelation.upsert({
     where: {
       courseId_curriculumId: {
         courseId: course1.id,
-        curriculumId: curriculum2.id,
+        curriculumId: curriculum3.id,
       },
     },
     update: {},
@@ -74,7 +113,59 @@ async function main() {
         connect: { id: course1.id },
       },
       curriculum: {
-        connect: { id: curriculum2.id },
+        connect: { id: curriculum3.id },
+      },
+    },
+  })
+  await prisma.courseCurriculumRelation.upsert({
+    where: {
+      courseId_curriculumId: {
+        courseId: course1.id,
+        curriculumId: curriculum4.id,
+      },
+    },
+    update: {},
+    create: {
+      course: {
+        connect: { id: course1.id },
+      },
+      curriculum: {
+        connect: { id: curriculum4.id },
+      },
+    },
+  })
+
+  await prisma.courseCurriculumRelation.upsert({
+    where: {
+      courseId_curriculumId: {
+        courseId: course2.id,
+        curriculumId: curriculum3.id,
+      },
+    },
+    update: {},
+    create: {
+      course: {
+        connect: { id: course2.id },
+      },
+      curriculum: {
+        connect: { id: curriculum3.id },
+      },
+    },
+  })
+  await prisma.courseCurriculumRelation.upsert({
+    where: {
+      courseId_curriculumId: {
+        courseId: course2.id,
+        curriculumId: curriculum4.id,
+      },
+    },
+    update: {},
+    create: {
+      course: {
+        connect: { id: course2.id },
+      },
+      curriculum: {
+        connect: { id: curriculum4.id },
       },
     },
   })
