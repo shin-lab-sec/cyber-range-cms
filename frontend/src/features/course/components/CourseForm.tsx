@@ -8,7 +8,7 @@ import {
   TextInput,
   Textarea,
 } from '@mantine/core'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { AlertCircle } from 'tabler-icons-react'
 import { z } from 'zod'
@@ -22,18 +22,20 @@ type Props = {
   onSubmit: (params: CourseFormRequest) => void
   submitButtonName?: string
   initValue?: CourseFormRequest
+  onDirty: () => void
 }
 
 export const CourseForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
+  onDirty,
 }) => {
   const {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<CourseFormRequest>({
     resolver: zodResolver(courseSchema),
     criteriaMode: 'all',
@@ -42,6 +44,11 @@ export const CourseForm: FC<Props> = ({
 
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<CourseFormRequest>(onSubmitProps)
+
+  // useEffectを使わないと、レンダリング中にsetStateを呼ぶことになりWarningが出る
+  useEffect(() => {
+    if (isDirty) onDirty()
+  }, [isDirty, onDirty])
 
   return (
     <>
