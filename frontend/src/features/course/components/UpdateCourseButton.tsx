@@ -1,7 +1,7 @@
 import { Button, Modal } from '@mantine/core'
 import { FC } from 'react'
 
-import { useBoolean } from '@/hooks/useBoolean'
+import { useModalForm } from '@/hooks/useModalForm'
 
 import { CourseForm, CourseFormRequest } from './CourseForm'
 
@@ -10,24 +10,26 @@ type Props = {
   initValue: CourseFormRequest
 }
 
-export const UpdateCourseButton: FC<Props> = ({ onSubmit, initValue }) => {
-  const isOpen = useBoolean()
+export const UpdateCourseButton: FC<Props> = ({
+  onSubmit: onSubmitProps,
+  initValue,
+}) => {
+  const { isOpen, isDirtyForm, onClose, onSubmit } = useModalForm(onSubmitProps)
 
   return (
     <>
       <Button onClick={isOpen.setTrue}>編集</Button>
       <Modal
         opened={isOpen.v}
-        onClose={isOpen.setFalse}
+        onClose={onClose}
         title='コース編集'
         centered
         classNames={{ title: 'text-xl' }}
       >
         <CourseForm
-          onSubmit={async v => {
-            await onSubmit(v)
-            isOpen.setFalse()
-          }}
+          key={String(isOpen.v)}
+          onSubmit={onSubmit}
+          onDirty={isDirtyForm.setTrue}
           submitButtonName='更新する'
           initValue={initValue}
         />
