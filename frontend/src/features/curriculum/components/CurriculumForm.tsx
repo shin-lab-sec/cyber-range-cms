@@ -10,7 +10,7 @@ import {
 } from '@mantine/core'
 import { UserAgent } from '@prisma/client'
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { AlertCircle } from 'tabler-icons-react'
 import { z } from 'zod'
@@ -25,12 +25,14 @@ type Props = {
   onSubmit: (params: CurriculumFormRequest) => void
   submitButtonName?: string
   initValue?: CurriculumFormRequest
+  onDirty: () => void
 }
 
 export const CurriculumForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
+  onDirty,
 }) => {
   const { data: userAgents } = useGetApi<UserAgent[]>('/useragents')
   const {
@@ -38,7 +40,7 @@ export const CurriculumForm: FC<Props> = ({
     handleSubmit,
     setValue,
     clearErrors,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<CurriculumFormRequest>({
     resolver: zodResolver(curriculumSchema),
     criteriaMode: 'all',
@@ -47,6 +49,11 @@ export const CurriculumForm: FC<Props> = ({
 
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<CurriculumFormRequest>(onSubmitProps)
+
+  // useEffectを使わないと、レンダリング中にsetStateを呼ぶことになりWarningが出る
+  useEffect(() => {
+    if (isDirty) onDirty()
+  }, [isDirty, onDirty])
 
   return (
     <>
@@ -113,7 +120,8 @@ export const CurriculumForm: FC<Props> = ({
               disabled
               error={
                 <p>
-                  ユーザーエージェントをまだ作成されていません。
+                  ユーザーエージェントが存在しません。
+                  カリキュラムを作成するには、ユーザーエージェントが必要です。
                   <Link href='useragents' className='text-xs'>
                     ユーザーエージェントを作成する
                   </Link>

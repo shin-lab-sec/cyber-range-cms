@@ -27,7 +27,7 @@ model Curriculum {
   imageUrl    String?
   articleUrl  String?
   courses     CourseCurriculumRelation[]
-  userAgent   UserAgent                  @relation(fields: [userAgentId], references: [id])
+  userAgent   UserAgent                  @relation(fields: [userAgentId], references: [id], onDelete: Cascade)
   userAgentId String
   createdAt   DateTime                   @default(now())
   updatedAt   DateTime                   @default(now()) @updatedAt()
