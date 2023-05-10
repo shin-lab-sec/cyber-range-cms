@@ -1,7 +1,7 @@
 import { Button, Modal } from '@mantine/core'
-import { FC, useCallback } from 'react'
+import { FC } from 'react'
 
-import { useBoolean } from '@/hooks/useBoolean'
+import { useModalForm } from '@/hooks/useModalForm'
 
 import { CourseForm, CourseFormRequest } from './CourseForm'
 
@@ -9,22 +9,8 @@ type Props = {
   onSubmit: (params: CourseFormRequest) => void
 }
 
-export const CreateCourseButton: FC<Props> = ({ onSubmit }) => {
-  const isOpen = useBoolean()
-  const isDirtyForm = useBoolean()
-
-  const onClose = useCallback(() => {
-    if (!isDirtyForm.v) {
-      isOpen.setFalse()
-      isDirtyForm.setFalse()
-      return
-    }
-
-    if (window.confirm('編集内容を破棄しますか？')) {
-      isOpen.setFalse()
-      isDirtyForm.setFalse()
-    }
-  }, [isDirtyForm, isOpen])
+export const CreateCourseButton: FC<Props> = ({ onSubmit: onSubmitProps }) => {
+  const { isOpen, isDirtyForm, onClose, onSubmit } = useModalForm(onSubmitProps)
 
   return (
     <>
@@ -38,10 +24,7 @@ export const CreateCourseButton: FC<Props> = ({ onSubmit }) => {
       >
         <CourseForm
           key={String(isOpen.v)}
-          onSubmit={async v => {
-            await onSubmit(v)
-            isOpen.setFalse()
-          }}
+          onSubmit={onSubmit}
           onDirty={isDirtyForm.setTrue}
           submitButtonName='作成する'
         />
