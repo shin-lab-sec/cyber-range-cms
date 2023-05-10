@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Alert, Button, Flex, Stack, TextInput, Textarea } from '@mantine/core'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { AlertCircle } from 'tabler-icons-react'
 import { z } from 'zod'
@@ -14,17 +14,19 @@ type Props = {
   onSubmit: (params: CurriculumFormRequest) => void
   submitButtonName?: string
   initValue?: CurriculumFormRequest
+  onDirty: () => void
 }
 
 export const CurriculumForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
+  onDirty,
 }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<CurriculumFormRequest>({
     resolver: zodResolver(curriculumSchema),
     criteriaMode: 'all',
@@ -33,6 +35,11 @@ export const CurriculumForm: FC<Props> = ({
 
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<CurriculumFormRequest>(onSubmitProps)
+
+  // useEffectを使わないと、レンダリング中にsetStateを呼ぶことになりWarningが出る
+  useEffect(() => {
+    if (isDirty) onDirty()
+  }, [isDirty, onDirty])
 
   return (
     <>
