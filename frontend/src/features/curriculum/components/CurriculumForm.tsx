@@ -1,10 +1,21 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Alert, Button, Flex, Stack, TextInput, Textarea } from '@mantine/core'
+import {
+  Alert,
+  Button,
+  Flex,
+  Select,
+  Stack,
+  TextInput,
+  Textarea,
+} from '@mantine/core'
+import { UserAgent } from '@prisma/client'
+import Link from 'next/link'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { AlertCircle } from 'tabler-icons-react'
 import { z } from 'zod'
 
+import { useGetApi } from '@/hooks/useApi'
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
 import { curriculumSchema } from '@/libs/validates'
 
@@ -21,9 +32,12 @@ export const CurriculumForm: FC<Props> = ({
   submitButtonName,
   initValue,
 }) => {
+  const { data: userAgents } = useGetApi<UserAgent[]>('/useragents')
   const {
     register,
     handleSubmit,
+    setValue,
+    clearErrors,
     formState: { errors },
   } = useForm<CurriculumFormRequest>({
     resolver: zodResolver(curriculumSchema),
@@ -77,6 +91,36 @@ export const CurriculumForm: FC<Props> = ({
             error={errors.articleUrl?.message}
             {...register('articleUrl')}
           />
+          {userAgents ? (
+            <Select
+              label='ユーザーエージェント'
+              placeholder='体験する時の環境を選択してください'
+              withAsterisk
+              onChange={(e: string) => {
+                setValue('userAgentId', e)
+                clearErrors('userAgentId')
+              }}
+              data={userAgents.map(v => ({ value: v.id, label: v.name }))}
+              defaultValue={initValue?.userAgentId}
+              error={errors.userAgentId?.message}
+            />
+          ) : (
+            <Select
+              label='ユーザーエージェント'
+              placeholder='体験する時の環境を選択してください'
+              withAsterisk
+              data={['']}
+              disabled
+              error={
+                <p>
+                  ユーザーエージェントをまだ作成されていません。
+                  <Link href='useragents' className='text-xs'>
+                    ユーザーエージェントを作成する
+                  </Link>
+                </p>
+              }
+            />
+          )}
           <Textarea
             label='コース詳細'
             autosize

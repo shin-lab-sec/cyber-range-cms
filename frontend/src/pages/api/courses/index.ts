@@ -42,12 +42,6 @@ export default async function handler(
             description: body.description,
             level: body.level,
           },
-          include: {
-            curriculums: {
-              include: { curriculum: { include: { userAgent: true } } },
-              orderBy: { createdAt: 'asc' },
-            },
-          },
         })
         res.status(200).json({ data: createdCourse })
       })

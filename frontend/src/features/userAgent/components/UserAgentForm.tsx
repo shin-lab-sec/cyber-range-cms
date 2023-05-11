@@ -62,6 +62,7 @@ export const UserAgentForm: FC<Props> = ({
           <TextInput
             label='GitHubリポジトリのURL'
             placeholder='https://github.com/example/useragent'
+            withAsterisk
             error={errors.gitHubUrl?.message}
             {...register('gitHubUrl')}
           />

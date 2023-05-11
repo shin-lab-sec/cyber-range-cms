@@ -1,5 +1,4 @@
 import { Flex } from '@mantine/core'
-import { Curriculum } from '@prisma/client'
 import { NextPage } from 'next'
 import { X } from 'tabler-icons-react'
 
@@ -7,16 +6,17 @@ import { Layout } from '@/components/Layout'
 import {
   CreateCurriculumButton,
   CurriculumFormRequest,
+  CurriculumsWithUserAgent,
   UpdateCurriculumButton,
   useCreateCurriculum,
   useDeleteCurriculum,
   useUpdateCurriculum,
 } from '@/features/curriculum'
 import { useGetApi } from '@/hooks/useApi'
-import { deleteApi } from '@/utils/api'
+
 const Curriculums: NextPage = () => {
-  const { data: curriculums } = useGetApi<Curriculum[]>(`/curriculums`)
-  deleteApi
+  const { data: curriculums } =
+    useGetApi<CurriculumsWithUserAgent[]>(`/curriculums`)
 
   const { createCurriculum } = useCreateCurriculum()
   const { updateCurriculum } = useUpdateCurriculum()
@@ -38,6 +38,7 @@ const Curriculums: NextPage = () => {
             imageUrl: curriculum.imageUrl ?? '',
             articleUrl: curriculum.articleUrl ?? '',
             description: curriculum.description ?? '',
+            userAgentId: curriculum.userAgentId,
           }
           return (
             <li
