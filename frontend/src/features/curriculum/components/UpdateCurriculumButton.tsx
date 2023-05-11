@@ -1,7 +1,7 @@
 import { Button, Modal } from '@mantine/core'
 import { FC } from 'react'
 
-import { useBoolean } from '@/hooks/useBoolean'
+import { useModalForm } from '@/hooks/useModalForm'
 
 import { CurriculumForm, CurriculumFormRequest } from './CurriculumForm'
 
@@ -10,24 +10,26 @@ type Props = {
   initValue: CurriculumFormRequest
 }
 
-export const UpdateCurriculumButton: FC<Props> = ({ onSubmit, initValue }) => {
-  const isOpen = useBoolean()
+export const UpdateCurriculumButton: FC<Props> = ({
+  onSubmit: onSubmitProps,
+  initValue,
+}) => {
+  const { isOpen, isDirtyForm, onClose, onSubmit } = useModalForm(onSubmitProps)
 
   return (
     <>
       <Button onClick={isOpen.setTrue}>編集</Button>
       <Modal
         opened={isOpen.v}
-        onClose={isOpen.setFalse}
+        onClose={onClose}
         title='カリキュラム編集'
         centered
         classNames={{ title: 'text-xl' }}
       >
         <CurriculumForm
-          onSubmit={async v => {
-            await onSubmit(v)
-            isOpen.setFalse()
-          }}
+          key={String(isOpen.v)}
+          onSubmit={onSubmit}
+          onDirty={isDirtyForm.setTrue}
           submitButtonName='更新する'
           initValue={initValue}
         />
