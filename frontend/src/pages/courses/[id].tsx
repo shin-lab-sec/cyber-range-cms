@@ -11,8 +11,10 @@ import {
   useRemoveCurriculumFromCourse,
   useUpdateCourseCurriculumOrder,
 } from '@/features/course'
-// import { CourseWithCurriculums } from '@/features/course/components/CourseForm'
-import { DraggableCurriculums } from '@/features/curriculum'
+import {
+  CurriculumsWithUserAgent,
+  DraggableCurriculums,
+} from '@/features/curriculum'
 import { useGetApi } from '@/hooks/useApi'
 
 const Courses: NextPage = () => {
@@ -21,7 +23,8 @@ const Courses: NextPage = () => {
   const { data: course } = useGetApi<CourseWithCurriculums>(`/courses/${id}`)
 
   // セレクトボックス
-  const { data: curriculums } = useGetApi<Curriculum[]>(`/curriculums`)
+  const { data: curriculums } =
+    useGetApi<CurriculumsWithUserAgent[]>(`/curriculums`)
   const [selectedCurriculumId, setSelectedCurriculumId] = useState('')
 
   const curriculumIds = useMemo(

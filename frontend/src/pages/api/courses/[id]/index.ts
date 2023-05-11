@@ -20,9 +20,7 @@ export default async function handler(
           },
           include: {
             curriculums: {
-              include: {
-                curriculum: true,
-              },
+              include: { curriculum: { include: { userAgent: true } } },
               orderBy: { createdAt: 'asc' },
             },
           },
@@ -53,9 +51,7 @@ export default async function handler(
           },
           include: {
             curriculums: {
-              include: {
-                curriculum: true,
-              },
+              include: { curriculum: { include: { userAgent: true } } },
               orderBy: { createdAt: 'asc' },
             },
           },
