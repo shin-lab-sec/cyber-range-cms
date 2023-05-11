@@ -44,7 +44,7 @@
       // utils, libsはキャメルケース。useから始めない
       "files": ["**/utils/**", "**/libs/**"],
       "rules": {
-        "filenames/match-regex": ["error", "^(?!use)[a-z][a-zA-Z]+$"]
+        "filenames/match-regex": ["error", "^[a-z][a-zA-Z]+$"]
       }
     }
   ],
