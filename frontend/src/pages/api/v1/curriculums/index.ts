@@ -8,6 +8,7 @@ export default async function handler(
 ) {
   try {
     const curriculums = await prisma.curriculum.findMany({
+      include: { userAgent: true },
       orderBy: { createdAt: 'asc' },
     })
     res.status(200).json({ data: curriculums })

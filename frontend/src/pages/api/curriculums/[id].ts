@@ -18,6 +18,7 @@ export default async function handler(
           where: {
             id: id,
           },
+          include: { userAgent: true },
         })
         res.status(200).json({ data: curriculum })
       } catch (err) {
@@ -37,6 +38,10 @@ export default async function handler(
             gitHubUrl: body.gitHubUrl,
             imageUrl: body.imageUrl,
             articleUrl: body.articleUrl,
+            userAgent: { connect: { id: body.userAgentId } },
+          },
+          include: {
+            userAgent: true,
           },
         })
         res.status(200).json({ data: updatedCurriculum })
