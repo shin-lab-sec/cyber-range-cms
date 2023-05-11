@@ -14,7 +14,7 @@ export const CreateUserAgentButton: FC<Props> = ({ onSubmit }) => {
 
   return (
     <>
-      <Button onClick={isOpen.setTrue}>新規カリキュラム作成</Button>
+      <Button onClick={isOpen.setTrue}>新規ユーザーエージェント作成</Button>
       <Modal
         opened={isOpen.v}
         onClose={isOpen.setFalse}

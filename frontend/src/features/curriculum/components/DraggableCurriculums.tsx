@@ -1,5 +1,4 @@
 import { Button } from '@mantine/core'
-import { Curriculum } from '@prisma/client'
 import { FC, useEffect, useState } from 'react'
 import {
   DragDropContext,
@@ -9,9 +8,11 @@ import {
 } from 'react-beautiful-dnd'
 import { X } from 'tabler-icons-react'
 
+import { CurriculumsWithUserAgent } from '../types'
+
 type Props = {
-  curriculums: Curriculum[]
-  onUpdateOrder: (curriculums: Curriculum[]) => void
+  curriculums: CurriculumsWithUserAgent[]
+  onUpdateOrder: (curriculums: CurriculumsWithUserAgent[]) => void
   onRemove: (id: string) => void
   className: string
 }

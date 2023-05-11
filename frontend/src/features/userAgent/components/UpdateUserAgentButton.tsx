@@ -19,7 +19,7 @@ export const UpdateUserAgentButton: FC<Props> = ({ onSubmit, initValue }) => {
       <Modal
         opened={isOpen.v}
         onClose={isOpen.setFalse}
-        title='カリキュラム編集'
+        title='ユーザーエージェント編集'
         centered
         classNames={{ title: 'text-xl' }}
       >
