@@ -14,6 +14,7 @@ export default async function handler(
       where: {
         id: id,
       },
+      include: { userAgent: true },
     })
     res.status(200).json({ data: curriculum })
   } catch (err) {

@@ -1,6 +1,23 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 async function main() {
+  const userAgent1 = await prisma.userAgent.upsert({
+    where: { name: 'サンプルユーザーエージェント1' },
+    update: {},
+    create: {
+      name: 'サンプルユーザーエージェント1',
+      gitHubUrl: 'https://github.com/tosssssy/kali-wetty-lesson',
+    },
+  })
+  const userAgent2 = await prisma.userAgent.upsert({
+    where: { name: 'サンプルユーザーエージェント2' },
+    update: {},
+    create: {
+      name: 'サンプルユーザーエージェント2',
+      gitHubUrl: 'https://github.com/tosssssy/kali-wetty-lesson',
+    },
+  })
+
   const curriculum1 = await prisma.curriculum.upsert({
     where: { name: 'サンプルカリキュラム-システムの基本設定の確認方法' },
     update: {},
@@ -11,6 +28,7 @@ async function main() {
       gitHubUrl: 'https://github.com/tosssssy/sample-curriculum',
       articleUrl: 'https://github.com/tosssssy/sample-curriculum',
       imageUrl: 'https://source.unsplash.com/Vp8Ep9jZ5p0',
+      userAgent: { connect: { id: userAgent1.id } },
     },
   })
   const curriculum2 = await prisma.curriculum.upsert({
@@ -23,6 +41,7 @@ async function main() {
       gitHubUrl: 'https://github.com/tosssssy/sample-curriculum',
       articleUrl: 'https://github.com/tosssssy/sample-curriculum',
       imageUrl: 'https://source.unsplash.com/1Y5A0cagQP8',
+      userAgent: { connect: { id: userAgent1.id } },
     },
   })
   const curriculum3 = await prisma.curriculum.upsert({
@@ -35,6 +54,7 @@ async function main() {
       gitHubUrl: 'https://github.com/tosssssy/sample-curriculum',
       articleUrl: 'https://github.com/tosssssy/sample-curriculum',
       imageUrl: 'https://source.unsplash.com/TLqU-IBNBGM',
+      userAgent: { connect: { id: userAgent2.id } },
     },
   })
   const curriculum4 = await prisma.curriculum.upsert({
@@ -47,6 +67,7 @@ async function main() {
       gitHubUrl: 'https://github.com/tosssssy/sample-curriculum',
       articleUrl: 'https://github.com/tosssssy/sample-curriculum',
       imageUrl: 'https://source.unsplash.com/QKD4Pq6UPAY',
+      userAgent: { connect: { id: userAgent2.id } },
     },
   })
 

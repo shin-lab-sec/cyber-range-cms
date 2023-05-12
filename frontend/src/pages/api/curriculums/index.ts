@@ -13,6 +13,7 @@ export default async function handler(
     case 'GET':
       try {
         const curriculums = await prisma.curriculum.findMany({
+          include: { userAgent: true },
           orderBy: { createdAt: 'asc' },
         })
         res.status(200).json({ data: curriculums })
@@ -30,7 +31,9 @@ export default async function handler(
             gitHubUrl: body.gitHubUrl,
             imageUrl: body.imageUrl,
             articleUrl: body.articleUrl,
+            userAgent: { connect: { id: body.userAgentId } },
           },
+          include: { userAgent: true },
         })
         res.status(200).json({ data: createdCurriculum })
       })

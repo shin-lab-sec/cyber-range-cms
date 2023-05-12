@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/libs/prisma'
-import { apiValidation, curriculumSchema } from '@/libs/validates'
+import { apiValidation, userAgentSchema } from '@/libs/validates'
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,52 +10,44 @@ export default async function handler(
   const { method, body } = req
   const id = String(req.query.id)
 
-  // curriculums/[id]
+  // useragents/[id]
   switch (method) {
     case 'GET':
       try {
-        const curriculum = await prisma.curriculum.findUnique({
+        const userAgent = await prisma.userAgent.findUnique({
           where: {
             id: id,
           },
-          include: { userAgent: true },
         })
-        res.status(200).json({ data: curriculum })
+        res.status(200).json({ data: userAgent })
       } catch (err) {
         res.status(400).json({ data: err })
       }
       break
 
     case 'PUT':
-      apiValidation(req, res, curriculumSchema, async () => {
-        const updatedCurriculum = await prisma.curriculum.update({
+      apiValidation(req, res, userAgentSchema, async () => {
+        const updatedUserAgent = await prisma.userAgent.update({
           where: {
             id: id,
           },
           data: {
             name: body.name,
-            description: body.description,
             gitHubUrl: body.gitHubUrl,
-            imageUrl: body.imageUrl,
-            articleUrl: body.articleUrl,
-            userAgent: { connect: { id: body.userAgentId } },
-          },
-          include: {
-            userAgent: true,
           },
         })
-        res.status(200).json({ data: updatedCurriculum })
+        res.status(200).json({ data: updatedUserAgent })
       })
       break
 
     case 'DELETE':
       try {
-        const deletedCurriculum = await prisma.curriculum.delete({
+        const deletedUserAgent = await prisma.userAgent.delete({
           where: {
             id: id,
           },
         })
-        res.status(200).json({ data: deletedCurriculum })
+        res.status(200).json({ data: deletedUserAgent })
       } catch (err) {
         res.status(400).json({ data: err })
       }

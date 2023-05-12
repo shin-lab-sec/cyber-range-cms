@@ -9,4 +9,7 @@ export const curriculumSchema = z.object({
   imageUrl: z.string().regex(regex, { message: 'URLの形式で入力して下さい' }),
   articleUrl: z.string().regex(regex, { message: 'URLの形式で入力して下さい' }),
   description: z.string(),
+  userAgentId: z
+    .string({ required_error: 'ユーザーエージェントは必須です' }) // {...register("userAgent")}をしないので空の時は、string以外になる
+    .nonempty('ユーザーエージェントは必須です'),
 })
