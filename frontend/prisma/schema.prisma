@@ -23,7 +23,7 @@ model Curriculum {
   id          String                     @id @default(cuid())
   name        String                     @unique
   description String?
-  gitHubUrl   String
+  gitHubUrl   String?
   imageUrl    String?
   articleUrl  String?
   courses     CourseCurriculumRelation[]

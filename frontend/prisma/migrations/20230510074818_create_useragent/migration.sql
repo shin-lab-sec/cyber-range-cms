@@ -6,8 +6,7 @@
 
 */
 -- AlterTable
-ALTER TABLE `Curriculum` ADD COLUMN `userAgentId` VARCHAR(191) NOT NULL,
-    MODIFY `gitHubUrl` VARCHAR(191) NOT NULL;
+ALTER TABLE `Curriculum` ADD COLUMN `userAgentId` VARCHAR(191) NOT NULL;
 
 -- CreateTable
 CREATE TABLE `UserAgent` (
