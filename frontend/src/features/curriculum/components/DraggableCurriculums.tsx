@@ -1,4 +1,4 @@
-import { Button } from '@mantine/core'
+import { Button, Flex } from '@mantine/core'
 import { FC, useEffect, useState } from 'react'
 import {
   DragDropContext,
@@ -6,7 +6,7 @@ import {
   Droppable,
   DropResult,
 } from 'react-beautiful-dnd'
-import { X } from 'tabler-icons-react'
+import { X, GripVertical } from 'tabler-icons-react'
 
 import { CurriculumsWithUserAgent } from '../types'
 
@@ -56,14 +56,18 @@ export const DraggableCurriculums: FC<Props> = ({
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           ref={provided.innerRef}
-                          className='rounded-md flex border-2 shadow-md mb-3 py-4 px-4 items-center justify-between'
                         >
-                          <div>{curriculum.name}</div>
-                          <X
-                            size={44}
-                            className='cursor-pointer mt-0.5 p-2.5'
-                            onClick={() => onRemove(curriculum.id)}
-                          />
+                          <Flex align='center' gap='sm'>
+                            <GripVertical size={25} />
+                            <span className='rounded-md flex border-2 shadow-md mb-3 w-full py-4 px-4 items-center justify-between'>
+                              {curriculum.name}
+                              <X
+                                size={44}
+                                className='cursor-pointer mt-0.5 p-2.5'
+                                onClick={() => onRemove(curriculum.id)}
+                              />
+                            </span>
+                          </Flex>
                         </li>
                       )}
                     </Draggable>
