@@ -1,17 +1,14 @@
 import { Center, Flex, ScrollArea, Table } from '@mantine/core'
 import { Course } from '@prisma/client'
 import { NextPage } from 'next'
-import Link from 'next/link'
-import { X } from 'tabler-icons-react'
 
 import { Layout } from '@/components/Layout'
 import {
   CreateCourseButton,
-  UpdateCourseButton,
-  CourseFormRequest,
   useCreateCourse,
   useUpdateCourse,
   useDeleteCourse,
+  CourseItem,
 } from '@/features/course'
 import { useGetApi } from '@/hooks/useApi'
 
@@ -52,50 +49,14 @@ const Courses: NextPage = () => {
               </tr>
             </thead>
             <tbody>
-              {/* {[...courses!, ...courses!, ...courses!, ...courses!]?.map(  */}
-              {courses?.map(course => {
-                const courseFormRequest: CourseFormRequest = {
-                  name: course.name,
-                  level: course.level as 1 | 2 | 3,
-                  description: course.description ?? '',
-                }
-                return (
-                  <tr key={course.id} className='break-words'>
-                    <td className='min-w-300px max-w-400px'>
-                      <Link href={`/courses/${course.id}`}>{course.name}</Link>
-                    </td>
-                    <td className='min-w-300px max-w-600px'>
-                      {course.description}
-                    </td>
-                    <td className='text-center min-w-120px'>
-                      {course.curriculumIds
-                        ? course.curriculumIds.split(',').length
-                        : 0}
-                    </td>
-                    <td className='text-center min-w-100px'>{course.level}</td>
-                    <td className='text-center min-w-100px'>
-                      {String(course.createdAt).slice(0, 10)}
-                    </td>
-                    <td className='text-center min-w-100px'>
-                      {String(course.updatedAt).slice(0, 10)}
-                    </td>
-
-                    <td>
-                      <UpdateCourseButton
-                        onSubmit={v => updateCourse(course.id, v)}
-                        initValue={courseFormRequest}
-                      />
-                    </td>
-                    <td>
-                      <X
-                        size={44}
-                        className='cursor-pointer mt-0.5 p-2.5'
-                        onClick={() => deleteCourse(course.id)}
-                      />
-                    </td>
-                  </tr>
-                )
-              })}
+              {courses?.map(course => (
+                <CourseItem
+                  key={course.id}
+                  course={course}
+                  onUpdate={updateCourse}
+                  onDelete={deleteCourse}
+                />
+              ))}
             </tbody>
           </Table>
         </ScrollArea>

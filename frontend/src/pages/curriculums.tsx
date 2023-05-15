@@ -1,16 +1,14 @@
 import { Center, Flex, ScrollArea, Table } from '@mantine/core'
 import { NextPage } from 'next'
-import { X } from 'tabler-icons-react'
 
 import { Layout } from '@/components/Layout'
 import {
   CreateCurriculumButton,
-  CurriculumFormRequest,
   CurriculumsWithUserAgent,
-  UpdateCurriculumButton,
   useCreateCurriculum,
   useDeleteCurriculum,
   useUpdateCurriculum,
+  CurriculumItem,
 } from '@/features/curriculum'
 import { useGetApi } from '@/hooks/useApi'
 
@@ -49,49 +47,14 @@ const Curriculums: NextPage = () => {
               </tr>
             </thead>
             <tbody>
-              {curriculums?.map(curriculum => {
-                const curriculumFormRequest: CurriculumFormRequest = {
-                  name: curriculum.name,
-                  gitHubUrl: curriculum.gitHubUrl ?? '',
-                  imageUrl: curriculum.imageUrl ?? '',
-                  articleUrl: curriculum.articleUrl ?? '',
-                  description: curriculum.description ?? '',
-                  userAgentId: curriculum.userAgentId,
-                }
-                return (
-                  <tr key={curriculum.id} className='break-words'>
-                    <td className='min-w-300px max-w-400px'>
-                      {curriculum.name}
-                    </td>
-                    <td className='min-w-300px max-w-400px'>
-                      {curriculum.description}
-                    </td>
-                    <td className='max-w-200px'>{curriculum.gitHubUrl}</td>
-                    <td className='max-w-200px'>{curriculum.imageUrl}</td>
-                    <td className='max-w-200px'>{curriculum.articleUrl}</td>
-                    <td className='text-center min-w-100px'>
-                      {String(curriculum.createdAt).slice(0, 10)}
-                    </td>
-                    <td className='text-center min-w-100px'>
-                      {String(curriculum.updatedAt).slice(0, 10)}
-                    </td>
-
-                    <td>
-                      <UpdateCurriculumButton
-                        onSubmit={v => updateCurriculum(curriculum.id, v)}
-                        initValue={curriculumFormRequest}
-                      />
-                    </td>
-                    <td>
-                      <X
-                        size={44}
-                        className='cursor-pointer mt-0.5 p-2.5'
-                        onClick={() => deleteCurriculum(curriculum.id)}
-                      />
-                    </td>
-                  </tr>
-                )
-              })}
+              {curriculums?.map(curriculum => (
+                <CurriculumItem
+                  key={curriculum.id}
+                  curriculum={curriculum}
+                  onUpdate={updateCurriculum}
+                  onDelete={deleteCurriculum}
+                />
+              ))}
             </tbody>
           </Table>
         </ScrollArea>

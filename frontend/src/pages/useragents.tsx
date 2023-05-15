@@ -1,13 +1,11 @@
 import { Center, Flex, ScrollArea, Table } from '@mantine/core'
 import { UserAgent } from '@prisma/client'
 import { NextPage } from 'next'
-import { X } from 'tabler-icons-react'
 
 import { Layout } from '@/components/Layout'
 import {
   CreateUserAgentButton,
-  UpdateUserAgentButton,
-  UserAgentFormRequest,
+  UserAgentItem,
   useCreateUserAgent,
   useDeleteUserAgent,
   useUpdateUserAgent,
@@ -45,42 +43,14 @@ const UserAgents: NextPage = () => {
               </tr>
             </thead>
             <tbody>
-              {userAgents?.map(userAgent => {
-                const UserAgentFormRequest: UserAgentFormRequest = {
-                  name: userAgent.name,
-                  gitHubUrl: userAgent.gitHubUrl,
-                }
-                return (
-                  <tr key={userAgent.id} className='break-words'>
-                    <td className='min-w-300px max-w-400px'>
-                      {userAgent.name}
-                    </td>
-                    <td className='min-w-300px max-w-600px'>
-                      {userAgent.gitHubUrl}
-                    </td>
-                    <td className='text-center min-w-100px'>
-                      {String(userAgent.createdAt).slice(0, 10)}
-                    </td>
-                    <td className='text-center min-w-100px'>
-                      {String(userAgent.updatedAt).slice(0, 10)}
-                    </td>
-
-                    <td>
-                      <UpdateUserAgentButton
-                        onSubmit={v => updateUserAgent(userAgent.id, v)}
-                        initValue={UserAgentFormRequest}
-                      />
-                    </td>
-                    <td>
-                      <X
-                        size={44}
-                        className='cursor-pointer mt-0.5 p-2.5'
-                        onClick={() => deleteUserAgent(userAgent.id)}
-                      />
-                    </td>
-                  </tr>
-                )
-              })}
+              {userAgents?.map(userAgent => (
+                <UserAgentItem
+                  key={userAgent.id}
+                  userAgent={userAgent}
+                  onUpdate={updateUserAgent}
+                  onDelete={deleteUserAgent}
+                />
+              ))}
             </tbody>
           </Table>
         </ScrollArea>
