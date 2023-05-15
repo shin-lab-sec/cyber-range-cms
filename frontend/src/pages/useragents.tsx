@@ -32,12 +32,12 @@ const UserAgents: NextPage = () => {
           <Table striped highlightOnHover withColumnBorders>
             <thead>
               <tr>
-                <th>名前</th>
-                <th>GitHub</th>
-                <th>
+                <th className='whitespace-nowrap'>名前</th>
+                <th className='whitespace-nowrap'>GitHub</th>
+                <th className='whitespace-nowrap'>
                   <Center>作成日</Center>
                 </th>
-                <th>
+                <th className='whitespace-nowrap'>
                   <Center>最終更新日</Center>
                 </th>
               </tr>

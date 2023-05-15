@@ -19,7 +19,7 @@ export const UserAgentItem: FC<Props> = ({ userAgent, onUpdate, onDelete }) => {
   return (
     <tr key={userAgent.id} className='break-words'>
       <td className='min-w-300px max-w-400px'>{userAgent.name}</td>
-      <td className='min-w-300px max-w-600px'>{userAgent.gitHubUrl}</td>
+      <td className='max-w-200px'>{userAgent.gitHubUrl}</td>
       <td className='text-center min-w-100px'>
         {String(userAgent.createdAt).slice(0, 10)}
       </td>

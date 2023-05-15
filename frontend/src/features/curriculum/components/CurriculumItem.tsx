@@ -1,12 +1,12 @@
-import { Curriculum } from '@prisma/client'
 import { FC } from 'react'
 import { X } from 'tabler-icons-react'
 
 import { CurriculumFormRequest } from './CurriculumForm'
 import { UpdateCurriculumButton } from './UpdateCurriculumButton'
+import { CurriculumsWithUserAgent } from '../types'
 
 type Props = {
-  curriculum: Curriculum
+  curriculum: CurriculumsWithUserAgent
   onUpdate: (id: string, v: CurriculumFormRequest) => void
   onDelete: (id: string) => void
 }
@@ -31,6 +31,8 @@ export const CurriculumItem: FC<Props> = ({
       <td className='max-w-200px'>{curriculum.gitHubUrl}</td>
       <td className='max-w-200px'>{curriculum.imageUrl}</td>
       <td className='max-w-200px'>{curriculum.articleUrl}</td>
+      <td>{curriculum.userAgent.name}</td>
+      <td className='max-w-165px'>{curriculum.userAgent.gitHubUrl}</td>
       <td className='text-center min-w-100px'>
         {String(curriculum.createdAt).slice(0, 10)}
       </td>

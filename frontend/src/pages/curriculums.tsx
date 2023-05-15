@@ -33,15 +33,21 @@ const Curriculums: NextPage = () => {
           <Table striped highlightOnHover withColumnBorders>
             <thead>
               <tr>
-                <th>名前</th>
-                <th>詳細</th>
-                <th>GitHubリポジトリ</th>
-                <th>画像</th>
-                <th>解説記事</th>
-                <th>
+                <th className='whitespace-nowrap'>名前</th>
+                <th className='whitespace-nowrap'>詳細</th>
+                <th className='whitespace-nowrap'>GitHubリポジトリ</th>
+                <th className='whitespace-nowrap'>画像</th>
+                <th className='whitespace-nowrap'>解説記事</th>
+                <th className='whitespace-nowrap'>ユーザーエージェント名</th>
+                <th className='whitespace-nowrap'>
+                  ユーザーエージェント
+                  <br />
+                  GitHubリポジトリ
+                </th>
+                <th className='whitespace-nowrap'>
                   <Center>作成日</Center>
                 </th>
-                <th>
+                <th className='whitespace-nowrap'>
                   <Center>最終更新日</Center>
                 </th>
               </tr>

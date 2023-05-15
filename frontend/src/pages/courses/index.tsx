@@ -1,5 +1,4 @@
 import { Center, Flex, ScrollArea, Table } from '@mantine/core'
-import { Course } from '@prisma/client'
 import { NextPage } from 'next'
 
 import { Layout } from '@/components/Layout'
@@ -9,11 +8,12 @@ import {
   useUpdateCourse,
   useDeleteCourse,
   CourseItem,
+  CourseWithCurriculums,
 } from '@/features/course'
 import { useGetApi } from '@/hooks/useApi'
 
 const Courses: NextPage = () => {
-  const { data: courses } = useGetApi<Course[]>(`/courses`)
+  const { data: courses } = useGetApi<CourseWithCurriculums[]>(`/courses`)
 
   const { createCourse } = useCreateCourse()
   const { updateCourse } = useUpdateCourse()
@@ -32,18 +32,18 @@ const Courses: NextPage = () => {
           <Table striped highlightOnHover withColumnBorders>
             <thead>
               <tr>
-                <th>名前</th>
-                <th>詳細</th>
-                <th>
+                <th className='whitespace-nowrap'>名前</th>
+                <th className='whitespace-nowrap'>詳細</th>
+                <th className='whitespace-nowrap'>
                   <Center>カリキュラム数</Center>
                 </th>
-                <th>
+                <th className='whitespace-nowrap'>
                   <Center>難易度</Center>
                 </th>
-                <th>
+                <th className='whitespace-nowrap'>
                   <Center>作成日</Center>
                 </th>
-                <th>
+                <th className='whitespace-nowrap'>
                   <Center>最終更新日</Center>
                 </th>
               </tr>
