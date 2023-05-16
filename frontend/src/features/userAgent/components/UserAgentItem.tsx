@@ -1,3 +1,4 @@
+import { Flex } from '@mantine/core'
 import { UserAgent } from '@prisma/client'
 import { FC } from 'react'
 import { X } from 'tabler-icons-react'
@@ -28,17 +29,17 @@ export const UserAgentItem: FC<Props> = ({ userAgent, onUpdate, onDelete }) => {
       </td>
 
       <td>
-        <UpdateUserAgentButton
-          onSubmit={v => onUpdate(userAgent.id, v)}
-          initValue={UserAgentFormRequest}
-        />
-      </td>
-      <td>
-        <X
-          size={44}
-          className='cursor-pointer mt-0.5 p-2.5'
-          onClick={() => onDelete(userAgent.id)}
-        />
+        <Flex align='center'>
+          <UpdateUserAgentButton
+            onSubmit={v => onUpdate(userAgent.id, v)}
+            initValue={UserAgentFormRequest}
+          />
+          <X
+            size={44}
+            className='cursor-pointer mt-0.5 p-2.5'
+            onClick={() => onDelete(userAgent.id)}
+          />
+        </Flex>
       </td>
     </tr>
   )

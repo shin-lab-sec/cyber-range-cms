@@ -31,13 +31,13 @@ const UserAgents: NextPage = () => {
         <ScrollArea mt='xl'>
           <Table striped highlightOnHover withColumnBorders>
             <thead>
-              <tr>
-                <th className='whitespace-nowrap'>名前</th>
-                <th className='whitespace-nowrap'>GitHub</th>
-                <th className='whitespace-nowrap'>
+              <tr className='whitespace-nowrap'>
+                <th>名前</th>
+                <th>GitHub</th>
+                <th>
                   <Center>作成日</Center>
                 </th>
-                <th className='whitespace-nowrap'>
+                <th>
                   <Center>最終更新日</Center>
                 </th>
               </tr>

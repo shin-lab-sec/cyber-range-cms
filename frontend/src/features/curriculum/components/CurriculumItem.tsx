@@ -1,3 +1,4 @@
+import { Flex } from '@mantine/core'
 import { FC } from 'react'
 import { X } from 'tabler-icons-react'
 
@@ -41,17 +42,17 @@ export const CurriculumItem: FC<Props> = ({
       </td>
 
       <td>
-        <UpdateCurriculumButton
-          onSubmit={v => onUpdate(curriculum.id, v)}
-          initValue={curriculumFormRequest}
-        />
-      </td>
-      <td>
-        <X
-          size={44}
-          className='cursor-pointer mt-0.5 p-2.5'
-          onClick={() => onDelete(curriculum.id)}
-        />
+        <Flex align='center'>
+          <UpdateCurriculumButton
+            onSubmit={v => onUpdate(curriculum.id, v)}
+            initValue={curriculumFormRequest}
+          />
+          <X
+            size={44}
+            className='cursor-pointer mt-0.5 p-2.5'
+            onClick={() => onDelete(curriculum.id)}
+          />
+        </Flex>
       </td>
     </tr>
   )
