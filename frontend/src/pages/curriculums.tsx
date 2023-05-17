@@ -1,16 +1,18 @@
 import { Flex } from '@mantine/core'
+import { MantineReactTable, type MRT_ColumnDef } from 'mantine-react-table'
 import { NextPage } from 'next'
+import { useMemo } from 'react'
 import { X } from 'tabler-icons-react'
 
 import { Layout } from '@/components/Layout'
 import {
   CreateCurriculumButton,
-  CurriculumFormRequest,
   CurriculumsWithUserAgent,
-  UpdateCurriculumButton,
   useCreateCurriculum,
   useDeleteCurriculum,
   useUpdateCurriculum,
+  CurriculumFormRequest,
+  UpdateCurriculumButton,
 } from '@/features/curriculum'
 import { useGetApi } from '@/hooks/useApi'
 
@@ -22,16 +24,93 @@ const Curriculums: NextPage = () => {
   const { updateCurriculum } = useUpdateCurriculum()
   const { deleteCurriculum } = useDeleteCurriculum()
 
-  return (
-    <Layout>
-      <h1>カリキュラム一覧ページ</h1>
-
-      <Flex gap='sm' justify='end'>
-        <CreateCurriculumButton onSubmit={createCurriculum} />
-      </Flex>
-
-      <ul className='mt-3'>
-        {curriculums?.map(curriculum => {
+  const columns = useMemo<MRT_ColumnDef<CurriculumsWithUserAgent>[]>(
+    () => [
+      {
+        accessorKey: 'name',
+        header: '名前',
+        Cell: ({ row: { original: curriculum } }) => (
+          <div className='min-w-200px max-w-400px break-words'>
+            {curriculum.name}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'description',
+        header: '詳細',
+        Cell: ({ cell }) => (
+          <div className='min-w-300px max-w-400px break-words'>
+            {String(cell.getValue())}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'gitHubUrl',
+        header: 'GitHubリポジトリ',
+        enableClickToCopy: true,
+        Cell: ({ cell }) => (
+          <div className='max-w-200px break-words'>
+            {String(cell.getValue())}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'imageUrl',
+        header: '画像URL',
+        enableClickToCopy: true,
+        Cell: ({ cell }) => (
+          <div className='max-w-200px break-words'>
+            {String(cell.getValue())}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'articleUrl',
+        header: '解説記事URL',
+        enableClickToCopy: true,
+        Cell: ({ cell }) => (
+          <div className='max-w-200px break-words'>
+            {String(cell.getValue())}
+          </div>
+        ),
+      },
+      {
+        header: 'ユーザーエージェント名',
+        Cell: ({ row: { original: curriculum } }) => (
+          <div className='max-w-200px break-words'>
+            {curriculum.userAgent.name}
+          </div>
+        ),
+      },
+      {
+        header: 'ユーザーエージェントGitHubリポジトリ',
+        Cell: ({ row: { original: curriculum } }) => (
+          <div className='max-w-200px break-words'>
+            {curriculum.userAgent.gitHubUrl}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'createdAt',
+        header: '作成日',
+        maxSize: 0,
+        Cell: ({ cell }) => String(cell.getValue()).slice(0, 10),
+      },
+      {
+        accessorKey: 'updatedAt',
+        header: '最終更新日',
+        maxSize: 0,
+        Cell: ({ cell }) => String(cell.getValue()).slice(0, 10),
+      },
+      // 編集・削除ボタンをCellに置く
+      {
+        header: ' ',
+        // 操作出来なくする
+        enableColumnActions: false,
+        enableColumnDragging: false,
+        enableSorting: false,
+        maxSize: 0,
+        Cell: ({ row: { original: curriculum } }) => {
           const curriculumFormRequest: CurriculumFormRequest = {
             name: curriculum.name,
             gitHubUrl: curriculum.gitHubUrl ?? '',
@@ -40,27 +119,49 @@ const Curriculums: NextPage = () => {
             description: curriculum.description ?? '',
             userAgentId: curriculum.userAgentId,
           }
+
           return (
-            <li
-              key={curriculum.id}
-              className='rounded-md flex border-2 shadow-md mb-3 py-4 px-4 items-center justify-between'
-            >
-              {curriculum.name}
-              <Flex align='center'>
-                <UpdateCurriculumButton
-                  onSubmit={v => updateCurriculum(curriculum.id, v)}
-                  initValue={curriculumFormRequest}
-                />
-                <X
-                  size={44}
-                  className='cursor-pointer mt-0.5 p-2.5'
-                  onClick={() => deleteCurriculum(curriculum.id)}
-                />
-              </Flex>
-            </li>
+            <Flex align='center'>
+              <UpdateCurriculumButton
+                onSubmit={v => updateCurriculum(curriculum.id, v)}
+                initValue={curriculumFormRequest}
+              />
+              <X
+                size={44}
+                className='cursor-pointer mt-0.5 p-2.5'
+                onClick={() => deleteCurriculum(curriculum.id)}
+              />
+            </Flex>
           )
-        })}
-      </ul>
+        },
+      },
+    ],
+    [deleteCurriculum, updateCurriculum],
+  )
+
+  return (
+    <Layout>
+      <h1>カリキュラム一覧ページ</h1>
+
+      <Flex gap='sm' justify='end'>
+        <CreateCurriculumButton onSubmit={createCurriculum} />
+      </Flex>
+
+      {curriculums?.length ? (
+        <div className='mt-3'>
+          <MantineReactTable
+            columns={columns}
+            data={curriculums}
+            enableColumnOrdering
+          />
+        </div>
+      ) : (
+        <p className='mx-auto mt-200px max-w-400px'>
+          まだカリキュラムが作成されていません。
+          <br />
+          右上の「新規カリキュラム作成」ボタンから作成して下さい。
+        </p>
+      )}
     </Layout>
   )
 }
