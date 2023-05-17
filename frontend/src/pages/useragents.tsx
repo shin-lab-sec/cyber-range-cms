@@ -16,6 +16,7 @@ import {
   useUpdateUserAgent,
 } from '@/features/userAgent'
 import { useGetApi } from '@/hooks/useApi'
+import { convertToJapanTime } from '@/utils/convertToJapanTime'
 
 const UserAgents: NextPage = () => {
   const { data: userAgents } = useGetApi<UserAgent[]>(`/useragents`)
@@ -49,13 +50,14 @@ const UserAgents: NextPage = () => {
         accessorKey: 'createdAt',
         header: '作成日',
         maxSize: 0,
-        Cell: ({ cell }) => String(cell.getValue()).slice(0, 10),
+        Cell: ({ cell }) => convertToJapanTime(cell.getValue() as string),
       },
+
       {
         accessorKey: 'updatedAt',
         header: '最終更新日',
         maxSize: 0,
-        Cell: ({ cell }) => String(cell.getValue()).slice(0, 10),
+        Cell: ({ cell }) => convertToJapanTime(cell.getValue() as string),
       },
       // 編集・削除ボタンをCellに置く
       {
