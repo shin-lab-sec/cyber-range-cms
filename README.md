@@ -47,14 +47,14 @@ http://localhost:3000/
 
 ```
 docker compose stop
-docker compse up
+docker compose up
 ```
 
 
 ## パッケージを追加・削除する時
 ```
-docker copmose exec app yarn add ~
-docker copmose exec app yarn remove ~
+docker compose exec app yarn add ~
+docker compose exec app yarn remove ~
 ```
 
 ## スキーマを変える手順
@@ -63,12 +63,12 @@ docker copmose exec app yarn remove ~
 2. マイグレーション
 
 ```
-docker copmose exec app yarn prisma migrate dev
+docker compose exec app yarn prisma migrate dev
 ```
 
 3. 型定義更新
 ```
-docker copmose exec yarn prisma generate
+docker compose exec yarn prisma generate
 ```
 
 4. コンテナ再起動
