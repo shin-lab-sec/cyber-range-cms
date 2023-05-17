@@ -1,10 +1,10 @@
 import { Flex } from '@mantine/core'
 import { UserAgent } from '@prisma/client'
+import { IconX } from '@tabler/icons-react'
 import { MantineReactTable } from 'mantine-react-table'
 import type { MRT_ColumnDef } from 'mantine-react-table'
 import { NextPage } from 'next'
 import { useMemo } from 'react'
-import { X } from 'tabler-icons-react'
 
 import { Layout } from '@/components/Layout'
 import {
@@ -78,7 +78,7 @@ const UserAgents: NextPage = () => {
                 onSubmit={v => updateUserAgent(userAgent.id, v)}
                 initValue={userAgentFormRequest}
               />
-              <X
+              <IconX
                 size={44}
                 className='cursor-pointer mt-0.5 p-2.5'
                 onClick={() => deleteUserAgent(userAgent.id)}

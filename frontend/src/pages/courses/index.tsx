@@ -1,10 +1,10 @@
 import { Flex } from '@mantine/core'
+import { IconX } from '@tabler/icons-react'
 import { MantineReactTable } from 'mantine-react-table'
 import type { MRT_ColumnDef } from 'mantine-react-table'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { useMemo } from 'react'
-import { X } from 'tabler-icons-react'
 
 import { Layout } from '@/components/Layout'
 import {
@@ -101,7 +101,7 @@ const Courses: NextPage = () => {
                 onSubmit={v => updateCourse(course.id, v)}
                 initValue={courseFormRequest}
               />
-              <X
+              <IconX
                 size={44}
                 className='cursor-pointer mt-0.5 p-2.5'
                 onClick={() => deleteCourse(course.id)}
