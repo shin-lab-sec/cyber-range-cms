@@ -17,6 +17,7 @@ import {
   UpdateCourseButton,
 } from '@/features/course'
 import { useGetApi } from '@/hooks/useApi'
+import { convertToJapanTime } from '@/utils/convertToJapanTime'
 
 const Courses: NextPage = () => {
   const { data: courses } = useGetApi<CourseWithCurriculums[]>(`/courses`)
@@ -71,13 +72,13 @@ const Courses: NextPage = () => {
         accessorKey: 'createdAt',
         header: '作成日',
         maxSize: 0,
-        Cell: ({ cell }) => String(cell.getValue()).slice(0, 10),
+        Cell: ({ cell }) => convertToJapanTime(cell.getValue() as string),
       },
       {
         accessorKey: 'updatedAt',
         header: '最終更新日',
         maxSize: 0,
-        Cell: ({ cell }) => String(cell.getValue()).slice(0, 10),
+        Cell: ({ cell }) => convertToJapanTime(cell.getValue() as string),
       },
       // 編集・削除ボタンをCellに置く
       {
