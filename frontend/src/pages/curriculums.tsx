@@ -141,14 +141,13 @@ const Curriculums: NextPage = () => {
 
   return (
     <Layout>
-      <h1>カリキュラム一覧ページ</h1>
-
-      <Flex gap='sm' justify='end'>
+      <Flex gap='sm' justify='space-between' align='center'>
+        <h1>カリキュラム一覧</h1>
         <CreateCurriculumButton onSubmit={createCurriculum} />
       </Flex>
 
       {curriculums?.length ? (
-        <div className='mt-3'>
+        <div className='mt-8'>
           <MantineReactTable
             columns={columns}
             data={curriculums}

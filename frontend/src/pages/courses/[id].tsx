@@ -73,7 +73,7 @@ const Courses: NextPage = () => {
   if (!course || !id) {
     return (
       <Layout>
-        <div>このコースは存在しません</div>
+        <p className='mt-200px text-center '>このコースは存在しません</p>
       </Layout>
     )
   }
