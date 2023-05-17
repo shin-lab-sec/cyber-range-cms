@@ -1,8 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Alert, Button, Flex, Stack, TextInput } from '@mantine/core'
+import { IconAlertCircle } from '@tabler/icons-react'
 import { FC, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { AlertCircle } from 'tabler-icons-react'
 import { z } from 'zod'
 
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
@@ -45,7 +45,7 @@ export const UserAgentForm: FC<Props> = ({
     <>
       {errorMessage && (
         <Alert
-          icon={<AlertCircle size='1rem' />}
+          icon={<IconAlertCircle size='1rem' />}
           title='サーバーでエラーが発生しました'
           color='red'
           onClose={clearErrorMessage}
