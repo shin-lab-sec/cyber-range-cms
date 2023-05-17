@@ -16,11 +16,11 @@ export const CreateCurriculumButton: FC<Props> = ({
 
   return (
     <>
-      <Button onClick={isOpen.setTrue}>新規カリキュラム作成</Button>
+      <Button onClick={isOpen.setTrue}>カリキュラム登録</Button>
       <Modal
         opened={isOpen.v}
         onClose={onClose}
-        title='新規カリキュラム作成'
+        title='カリキュラム登録'
         centered
         classNames={{ title: 'text-xl' }}
       >
@@ -28,7 +28,7 @@ export const CreateCurriculumButton: FC<Props> = ({
           key={String(isOpen.v)}
           onSubmit={onSubmit}
           onDirty={isDirtyForm.setTrue}
-          submitButtonName='作成する'
+          submitButtonName='登録する'
         />
       </Modal>
     </>
