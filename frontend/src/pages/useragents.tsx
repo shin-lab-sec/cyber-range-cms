@@ -91,14 +91,13 @@ const UserAgents: NextPage = () => {
 
   return (
     <Layout>
-      <h1>ユーザーエージェント一覧ページ</h1>
-
-      <Flex gap='sm' justify='end'>
+      <Flex gap='sm' justify='space-between' align='center'>
+        <h1>ユーザーエージェント一覧</h1>
         <CreateUserAgentButton onSubmit={createUserAgent} />
       </Flex>
 
       {userAgents?.length ? (
-        <div className='mt-3'>
+        <div className='mt-8'>
           <MantineReactTable
             columns={columns}
             data={userAgents}

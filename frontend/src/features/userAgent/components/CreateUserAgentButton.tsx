@@ -16,11 +16,11 @@ export const CreateUserAgentButton: FC<Props> = ({
 
   return (
     <>
-      <Button onClick={isOpen.setTrue}>新規ユーザーエージェント作成</Button>
+      <Button onClick={isOpen.setTrue}>ユーザーエージェント登録</Button>
       <Modal
         opened={isOpen.v}
         onClose={onClose}
-        title='新規ユーザーエージェント作成'
+        title='ユーザーエージェント登録'
         centered
         classNames={{ title: 'text-xl' }}
       >
@@ -28,7 +28,7 @@ export const CreateUserAgentButton: FC<Props> = ({
           key={String(isOpen.v)}
           onSubmit={onSubmit}
           onDirty={isDirtyForm.setTrue}
-          submitButtonName='作成する'
+          submitButtonName='登録する'
         />
       </Modal>
     </>

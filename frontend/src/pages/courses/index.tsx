@@ -115,14 +115,13 @@ const Courses: NextPage = () => {
 
   return (
     <Layout>
-      <h1>コース一覧ページ</h1>
-
-      <Flex gap='sm' justify='end'>
+      <Flex gap='sm' justify='space-between' align='center'>
+        <h1>コース一覧</h1>
         <CreateCourseButton onSubmit={createCourse} />
       </Flex>
 
       {courses?.length ? (
-        <div className='mt-3'>
+        <div className='mt-8'>
           <MantineReactTable
             columns={columns}
             data={courses}
