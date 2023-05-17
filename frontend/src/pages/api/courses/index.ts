@@ -42,6 +42,7 @@ export default async function handler(
             description: body.description,
             level: body.level,
           },
+          include: { curriculums: true },
         })
         res.status(200).json({ data: createdCourse })
       })
