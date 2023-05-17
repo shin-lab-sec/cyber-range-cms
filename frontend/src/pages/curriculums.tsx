@@ -1,5 +1,8 @@
-import { Center, Flex, ScrollArea, Table } from '@mantine/core'
+import { Flex } from '@mantine/core'
+import { MantineReactTable, type MRT_ColumnDef } from 'mantine-react-table'
 import { NextPage } from 'next'
+import { useMemo } from 'react'
+import { X } from 'tabler-icons-react'
 
 import { Layout } from '@/components/Layout'
 import {
@@ -8,7 +11,8 @@ import {
   useCreateCurriculum,
   useDeleteCurriculum,
   useUpdateCurriculum,
-  CurriculumItem,
+  CurriculumFormRequest,
+  UpdateCurriculumButton,
 } from '@/features/curriculum'
 import { useGetApi } from '@/hooks/useApi'
 
@@ -20,6 +24,121 @@ const Curriculums: NextPage = () => {
   const { updateCurriculum } = useUpdateCurriculum()
   const { deleteCurriculum } = useDeleteCurriculum()
 
+  const columns = useMemo<MRT_ColumnDef<CurriculumsWithUserAgent>[]>(
+    () => [
+      {
+        accessorKey: 'name',
+        header: '名前',
+        Cell: ({ row: { original: curriculum } }) => (
+          <div className='min-w-200px max-w-400px break-words'>
+            {curriculum.name}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'description',
+        header: '詳細',
+        Cell: ({ cell }) => (
+          <div className='min-w-300px max-w-400px break-words'>
+            {String(cell.getValue())}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'gitHubUrl',
+        header: 'GitHubリポジトリ',
+        enableClickToCopy: true,
+        Cell: ({ cell }) => (
+          <div className='max-w-200px break-words'>
+            {String(cell.getValue())}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'imageUrl',
+        header: '画像URL',
+        enableClickToCopy: true,
+        Cell: ({ cell }) => (
+          <div className='max-w-200px break-words'>
+            {String(cell.getValue())}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'articleUrl',
+        header: '解説記事URL',
+        enableClickToCopy: true,
+        Cell: ({ cell }) => (
+          <div className='max-w-200px break-words'>
+            {String(cell.getValue())}
+          </div>
+        ),
+      },
+      {
+        header: 'ユーザーエージェント名',
+        Cell: ({ row: { original: curriculum } }) => (
+          <div className='max-w-200px break-words'>
+            {curriculum.userAgent.name}
+          </div>
+        ),
+      },
+      {
+        header: 'ユーザーエージェントGitHubリポジトリ',
+        Cell: ({ row: { original: curriculum } }) => (
+          <div className='max-w-200px break-words'>
+            {curriculum.userAgent.gitHubUrl}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'createdAt',
+        header: '作成日',
+        maxSize: 0,
+        Cell: ({ cell }) => String(cell.getValue()).slice(0, 10),
+      },
+      {
+        accessorKey: 'updatedAt',
+        header: '最終更新日',
+        maxSize: 0,
+        Cell: ({ cell }) => String(cell.getValue()).slice(0, 10),
+      },
+      // 編集・削除ボタンをCellに置く
+      {
+        header: ' ',
+        // 操作出来なくする
+        enableColumnActions: false,
+        enableColumnDragging: false,
+        enableSorting: false,
+        maxSize: 0,
+        Cell: ({ row: { original: curriculum } }) => {
+          const curriculumFormRequest: CurriculumFormRequest = {
+            name: curriculum.name,
+            gitHubUrl: curriculum.gitHubUrl ?? '',
+            imageUrl: curriculum.imageUrl ?? '',
+            articleUrl: curriculum.articleUrl ?? '',
+            description: curriculum.description ?? '',
+            userAgentId: curriculum.userAgentId,
+          }
+
+          return (
+            <Flex align='center'>
+              <UpdateCurriculumButton
+                onSubmit={v => updateCurriculum(curriculum.id, v)}
+                initValue={curriculumFormRequest}
+              />
+              <X
+                size={44}
+                className='cursor-pointer mt-0.5 p-2.5'
+                onClick={() => deleteCurriculum(curriculum.id)}
+              />
+            </Flex>
+          )
+        },
+      },
+    ],
+    [deleteCurriculum, updateCurriculum],
+  )
+
   return (
     <Layout>
       <h1>カリキュラム一覧ページ</h1>
@@ -29,41 +148,13 @@ const Curriculums: NextPage = () => {
       </Flex>
 
       {curriculums?.length ? (
-        <ScrollArea mt='xl'>
-          <Table striped highlightOnHover withColumnBorders>
-            <thead>
-              <tr className='whitespace-nowrap'>
-                <th>名前</th>
-                <th>詳細</th>
-                <th>GitHubリポジトリ</th>
-                <th>画像</th>
-                <th>解説記事</th>
-                <th>ユーザーエージェント名</th>
-                <th>
-                  ユーザーエージェント
-                  <br />
-                  GitHubリポジトリ
-                </th>
-                <th>
-                  <Center>作成日</Center>
-                </th>
-                <th>
-                  <Center>最終更新日</Center>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {curriculums?.map(curriculum => (
-                <CurriculumItem
-                  key={curriculum.id}
-                  curriculum={curriculum}
-                  onUpdate={updateCurriculum}
-                  onDelete={deleteCurriculum}
-                />
-              ))}
-            </tbody>
-          </Table>
-        </ScrollArea>
+        <div className='mt-3'>
+          <MantineReactTable
+            columns={columns}
+            data={curriculums}
+            enableColumnOrdering
+          />
+        </div>
       ) : (
         <p className='mx-auto mt-200px max-w-400px'>
           まだカリキュラムが作成されていません。
