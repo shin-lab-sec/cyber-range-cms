@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Alert, Button, Flex, Stack, TextInput } from '@mantine/core'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { AlertCircle } from 'tabler-icons-react'
 import { z } from 'zod'
@@ -14,17 +14,19 @@ type Props = {
   onSubmit: (params: UserAgentFormRequest) => void
   submitButtonName?: string
   initValue?: UserAgentFormRequest
+  onDirty: () => void
 }
 
 export const UserAgentForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
+  onDirty,
 }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<UserAgentFormRequest>({
     resolver: zodResolver(userAgentSchema),
     criteriaMode: 'all',
@@ -33,6 +35,11 @@ export const UserAgentForm: FC<Props> = ({
 
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<UserAgentFormRequest>(onSubmitProps)
+
+  // useEffectを使わないと、レンダリング中にsetStateを呼ぶことになりWarningが出る
+  useEffect(() => {
+    if (isDirty) onDirty()
+  }, [isDirty, onDirty])
 
   return (
     <>
