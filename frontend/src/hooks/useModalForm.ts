@@ -23,8 +23,9 @@ export const useModalForm = <T>(onSubmitProps: (params: T) => void) => {
     async (params: T) => {
       await onSubmitProps(params)
       isOpen.setFalse()
+      isDirtyForm.setFalse()
     },
-    [isOpen, onSubmitProps],
+    [isDirtyForm, isOpen, onSubmitProps],
   )
 
   return { isOpen, isDirtyForm, onClose, onSubmit }
