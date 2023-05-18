@@ -12,16 +12,9 @@ services:
       - next_data:/app/.next
     environment:
       - WATCHPACK_POLLING=true # ホットリロード（同期に必要）
-    # command: 'yarn dev'
-    command: >
-      bash -c "
-      yarn prisma migrate dev --name init &&
-      yarn &&
-      yarn dev
-      "
+    command: 'yarn dev'
     depends_on: # db必須のフロント, dbコンテナが先に立つ
       - db
-    restart: on-failure # 失敗したら再度コンテナを建てる
   db:
     image: 'mysql:latest'
     expose:
