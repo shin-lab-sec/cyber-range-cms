@@ -12,7 +12,6 @@ services:
       - next_data:/app/.next
     environment:
       - WATCHPACK_POLLING=true # ホットリロード（同期に必要）
-    # command: 'yarn dev'
     command: >
       bash -c "
       yarn prisma migrate dev --name init &&
