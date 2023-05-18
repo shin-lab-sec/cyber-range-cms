@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# yarn.lockaも追加する
+# package.json yarn.lockをコピーする
 COPY package.json yarn.lock ./
 
 # yarn.lockを変更させない
