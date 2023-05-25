@@ -10,7 +10,7 @@ export const useUploadFile = () => {
     const { file, name, contentType } = params
 
     try {
-      const res = await fetch(`http://localhost:8003/aaaa/${name}`, {
+      const res = await fetch(`http://localhost:8003/images/${name}`, {
         method: 'PUT',
         headers: {
           'Content-Type': contentType,
@@ -19,7 +19,7 @@ export const useUploadFile = () => {
       })
       console.log('res: ', res)
 
-      return `http://localhost:8003/aaaa/${name}`
+      return `http://localhost:8003/images/${name}`
     } catch (e) {
       console.error(e)
     }
