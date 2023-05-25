@@ -1,6 +1,4 @@
 import { NextPage } from 'next'
-// import Image from 'next/image'
-// import LegacyImage from 'next/legacy/image'
 import { ChangeEvent, useCallback, useState } from 'react'
 
 import { useUploadFile } from '@/hooks/useUploadFile'
@@ -30,31 +28,8 @@ const Minio: NextPage = () => {
   return (
     <>
       <div>minoo</div>
-
       <input type='file' onChange={onChangeFile} />
-
       {imageUrl && <img src={imageUrl} alt='' />}
-      {/* <Image
-        src='https://source.unsplash.com/AwUIE3DdfGE'
-        width={400}
-        height={400}
-        alt=''
-      />
-
-      <Image
-        src='http://localhost:8003/aaaa/BlueHush.png'
-        width={400}
-        height={400}
-        alt=''
-      />
-      <LegacyImage
-        src='http://localhost:8003/aaaa/BlueHush.png'
-        width={400}
-        height={400}
-        alt=''
-      /> */}
-
-      {/* <img src='http://localhost:8003/aaaa/BlueHush.png' alt='' /> */}
     </>
   )
 }
