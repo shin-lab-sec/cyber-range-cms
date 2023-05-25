@@ -11,13 +11,6 @@ const Minio: NextPage = () => {
       console.log(file, fileName, contentType)
 
       try {
-        // const res = await putApi(
-        //   `http://localhost:8003/aaaa/${fileName}`,
-        //   file,
-        //   {
-        //     'Content-Type': contentType,
-        //   },
-        // )
         const res = await fetch(`http://localhost:8003/aaaa/${fileName}`, {
           method: 'PUT',
           headers: {
@@ -43,7 +36,8 @@ const Minio: NextPage = () => {
 
       const file = e.target.files[0] // 1つでも配列になる
       const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random()}.${fileExt}` // storageに保存する名前
+      const dateString = new Date().toLocaleDateString().replace(/\//g, '')
+      const fileName = `${Math.random()}-${dateString}.${fileExt}` // storageに保存する名前
       const contentType = file.type
 
       uploadFile(file, fileName, contentType)
