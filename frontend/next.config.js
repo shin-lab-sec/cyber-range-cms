@@ -9,4 +9,7 @@ module.exports = {
     return config
   },
   optimizeFonts: true,
+  images: {
+    domains: ['localhost'],
+  },
 }
