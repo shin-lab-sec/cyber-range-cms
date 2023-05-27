@@ -5,6 +5,7 @@ import markdownHtml from 'zenn-markdown-html'
 import 'zenn-content-css'
 
 import { Layout } from '@/components/Layout'
+import { Editor } from '@/features/curriculum'
 
 const Minio: NextPage = () => {
   // const markdown = `
@@ -92,6 +93,8 @@ const Minio: NextPage = () => {
   - anpan - uuu
 
   https://github.com/zenn-dev/zenn-editor/issues/432
+
+  <a href="https://anpan.com">anpan</a>
   `
   const html = markdownHtml(markdown, {
     embedOrigin: 'https://embed.zenn.studio',
@@ -107,6 +110,8 @@ const Minio: NextPage = () => {
   return (
     <Layout>
       <div>editor</div>
+
+      <Editor />
 
       {windowReady && (
         <>
