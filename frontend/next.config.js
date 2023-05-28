@@ -11,7 +11,7 @@ module.exports = withTM({
   swcMinify: true,
   optimizeFonts: true,
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'cms-storage.cypas.sec'],
   },
   webpack(config) {
     config.plugins.push(new WindiCSSWebpackPlugin())
