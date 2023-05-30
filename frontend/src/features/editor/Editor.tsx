@@ -1,6 +1,4 @@
-// import { Button, Flex } from '@mantine/core'
 import dynamic from 'next/dynamic'
-// import { FC, useState } from 'react'
 import { FC, SetStateAction } from 'react'
 
 import { usePasteImage } from './usePasteImage'
@@ -9,11 +7,8 @@ const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 type Props = {
   markdown: string
   setMarkdown: (v: SetStateAction<string>) => void
-  onPreview: (v: string) => void
 }
-export const Editor: FC<Props> = ({ markdown, setMarkdown, onPreview }) => {
-  // const [markdown, setMarkdown] = useState<string>('')
-
+export const Editor: FC<Props> = ({ markdown, setMarkdown }) => {
   const { pasteImage } = usePasteImage()
 
   return (
@@ -40,10 +35,6 @@ export const Editor: FC<Props> = ({ markdown, setMarkdown, onPreview }) => {
           }}
         />
       </div>
-
-      {/* <Flex justify='end' mt='sm'>
-        <Button onClick={() => onPreview(markdown || '')}>プレビュー</Button>
-      </Flex> */}
     </div>
   )
 }

@@ -19,7 +19,6 @@ export const Preview: FC<Props> = ({ markdown }) => {
   }, [windowReady])
 
   return (
-    // <div className='mx-auto max-w-790px w-100% break-words'>
     <div className='mx-auto break-words'>
       {windowReady && (
         <>

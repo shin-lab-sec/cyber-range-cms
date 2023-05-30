@@ -40,11 +40,7 @@ const Minio: NextPage = () => {
         }`}
       >
         <div className={`${mode === 'preview' && 'hidden'}`}>
-          <Editor
-            onPreview={v => setMarkdown(v)}
-            markdown={markdown}
-            setMarkdown={setMarkdown}
-          />
+          <Editor markdown={markdown} setMarkdown={setMarkdown} />
         </div>
         <div
           className={`max-h-[calc(100vh-140px)] overflow-y-auto ${
