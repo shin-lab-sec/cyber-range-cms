@@ -14,7 +14,14 @@ cyber-range-cmsをVSCodeで開く
 code cyber-range-cms
 ```
 
-### step2　Docker起動
+
+### step2 envファイルの作成
+frontend ディレクトリ直下に.envを作成し、以下のコードを追加
+```
+DATABASE_URL="mysql://root:password@db:3306/prisma"
+```
+
+### step3　Docker起動
 1. Docker Desktopを起動
 
 2. コンテナを起動
@@ -22,12 +29,6 @@ code cyber-range-cms
 docker compose up
 ```
 
-
-### step3 envファイルの作成
-プロジェクト直下に.envを作成し、以下のコードを追加
-```
-DATABASE_URL="mysql://root:password@db:3306/prisma"
-```
 
 ### step4 ローカルで作業するための準備
 ```
