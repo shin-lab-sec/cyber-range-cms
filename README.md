@@ -44,10 +44,8 @@ docker compose exec app yarn prisma migrate dev
 
 ### step5 起動したローカルサーバーへアクセス
 
-http://localhost:8002/
-
-cypas-local-tls-proxy コンテナも立ち上げているなら、以下にアクセス
-https://cms.cypas.sec/
+- cms: http://localhost:8002/
+- コンソール: http://localhost:9090
 
 ここまでやって上手く行かない場合はコンテナを再起動する。
 
@@ -55,6 +53,12 @@ https://cms.cypas.sec/
 docker compose stop
 docker compose up
 ```
+
+### step6  (httpsで接続)
+
+画像をアップロード、表示するには `cypas-local-tls-proxy` コンテナを立ち上げる必要がある
+（リポジトリ　https://github.com/shin-lab-sec/cypas-local-tls-proxy）
+他にはhosts, ブラウザの設定が複数あるため、としきに聞く
 
 ---
 
