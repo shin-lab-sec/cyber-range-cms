@@ -22,14 +22,15 @@ services:
       - db
     restart: on-failure # 失敗したら再度コンテナを建てる
   db:
-    image: 'mysql:latest'
+    image: 'postgres:latest'
     expose:
-      - 3306 # 他コンテナからアクセスできるポート番号
+      - 5432 # 他コンテナからアクセスできるポート番号
     tty: true
     environment:
-      MYSQL_ROOT_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
     volumes:
-      - mysql-db:/var/lib/mysql
+      - postgres-db:/var/lib/postgresql/data
   minio:
     image: minio/minio:latest
     command: ['server', '/data', '--console-address', ':9090']
@@ -54,7 +55,7 @@ services:
       mc anonymous set public my_minio/images;
       "
 volumes:
-  mysql-db:
+  postgres-db:
   node_modules:
   next_data:
   minio:
