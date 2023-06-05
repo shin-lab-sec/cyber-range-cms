@@ -33,7 +33,7 @@ model Section {
   type              String     @db.VarChar(255) // "quiz" | "article" | "sandbox"
   quizzes           Quiz[]
   quizIds           String[]
-  articles           Article[]
+  articles          Article[]
   articleIds        String[]
   scenarioGitHubUrl String?    @db.VarChar(255) // べた張り or 既存のカリキュラムから選択
   userAgentId       String?    @db.VarChar(255)
@@ -91,7 +91,7 @@ model UserAgent {
   name         String    @db.VarChar(255)
   gitHubUrl    String    @db.VarChar(255)
   type         String    @db.VarChar(255) // "vdi" | "terminal"
-  Sections      Section[]
+  Sections     Section[]
   author       String    @db.VarChar(255)
   organization String    @db.VarChar(255)
   createdAt    DateTime  @default(now())

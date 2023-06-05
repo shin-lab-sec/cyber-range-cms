@@ -14,7 +14,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
-import { courseSchema } from '@/libs/validates'
+import { courseSchema, courseUpdateSchema } from '@/libs/validates'
 
 export type CourseFormRequest = z.infer<typeof courseSchema>
 
@@ -31,6 +31,21 @@ export const CourseForm: FC<Props> = ({
   initValue,
   onDirty,
 }) => {
+  type Type = z.infer<typeof courseUpdateSchema>
+
+  // const params: Type = {
+  //   name: 'a',
+  //   description: 'desc',
+  //   level: 1,
+  //   author: 'a',
+  //   organization: 'a',
+  //   imageUrl:
+  //     'https://cms-storage.cypas.sec/images/0.9887783384628193-2023525.jpg',
+  //   sectionIds: ['a', ''],
+  // }
+  // courseUpdateSchema.parse(params)
+  // console.log(courseUpdateSchema.safeParse(params))
+
   const {
     register,
     handleSubmit,
@@ -42,9 +57,15 @@ export const CourseForm: FC<Props> = ({
     defaultValues: initValue,
   })
 
-  const { onSubmit, errorMessage, clearErrorMessage } =
-    useFormErrorHandling<CourseFormRequest>(onSubmitProps)
+  const {
+    onSubmit: a,
+    errorMessage,
+    clearErrorMessage,
+  } = useFormErrorHandling<CourseFormRequest>(onSubmitProps)
 
+  const onSubmit = e => {
+    console.log(e)
+  }
   // useEffectを使わないと、レンダリング中にsetStateを呼ぶことになりWarningが出る
   useEffect(() => {
     if (isDirty) onDirty()
@@ -89,6 +110,27 @@ export const CourseForm: FC<Props> = ({
             autosize
             placeholder='このコースは、セキュリティの基礎的な概念や攻撃の手法を学習します。また、実践的な演習を通じて、学習した知識を実際にアプリケーションに適用し、攻撃手法を理解することができます。'
             {...register('description')}
+          />
+          <TextInput
+            label='制作者名'
+            error={errors.author?.message}
+            placeholder='サイパス太郎'
+            withAsterisk
+            {...register('author')}
+          />
+          <TextInput
+            label='所属'
+            error={errors.organization?.message}
+            placeholder='サイパス大学'
+            withAsterisk
+            {...register('organization')}
+          />
+          <TextInput
+            label='所属'
+            error={errors.imageUrl?.message}
+            placeholder='サイパス大学'
+            withAsterisk
+            {...register('imageUrl')}
           />
 
           <Flex justify='end'>
