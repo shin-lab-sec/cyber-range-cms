@@ -1,5 +1,5 @@
-import { Course, Curriculum, UserAgent } from '@prisma/client'
+import { Course, Section, UserAgent } from '@prisma/client'
 
-export type CourseWithCurriculums = Course & {
-  curriculums: (Curriculum & { userAgent: UserAgent })[]
+export type CourseWithSections = Course & {
+  sections: (Section & { userAgent: UserAgent })[]
 }

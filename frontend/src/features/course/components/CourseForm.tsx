@@ -14,7 +14,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
-import { courseSchema, courseUpdateSchema } from '@/libs/validates'
+import { courseSchema } from '@/libs/validates'
 
 export type CourseFormRequest = z.infer<typeof courseSchema>
 
@@ -31,21 +31,6 @@ export const CourseForm: FC<Props> = ({
   initValue,
   onDirty,
 }) => {
-  type Type = z.infer<typeof courseUpdateSchema>
-
-  // const params: Type = {
-  //   name: 'a',
-  //   description: 'desc',
-  //   level: 1,
-  //   author: 'a',
-  //   organization: 'a',
-  //   imageUrl:
-  //     'https://cms-storage.cypas.sec/images/0.9887783384628193-2023525.jpg',
-  //   sectionIds: ['a', ''],
-  // }
-  // courseUpdateSchema.parse(params)
-  // console.log(courseUpdateSchema.safeParse(params))
-
   const {
     register,
     handleSubmit,
@@ -57,15 +42,9 @@ export const CourseForm: FC<Props> = ({
     defaultValues: initValue,
   })
 
-  const {
-    onSubmit: a,
-    errorMessage,
-    clearErrorMessage,
-  } = useFormErrorHandling<CourseFormRequest>(onSubmitProps)
+  const { onSubmit, errorMessage, clearErrorMessage } =
+    useFormErrorHandling<CourseFormRequest>(onSubmitProps)
 
-  const onSubmit = e => {
-    console.log(e)
-  }
   // useEffectを使わないと、レンダリング中にsetStateを呼ぶことになりWarningが出る
   useEffect(() => {
     if (isDirty) onDirty()
@@ -125,11 +104,13 @@ export const CourseForm: FC<Props> = ({
             withAsterisk
             {...register('organization')}
           />
+
+          {/* ここは何とかする */}
+          {/* <FileInput {...register("imageUrl")} /> */}
           <TextInput
-            label='所属'
+            label='コース画像'
             error={errors.imageUrl?.message}
-            placeholder='サイパス大学'
-            withAsterisk
+            placeholder='FileInputだと...register()出来ないのでいい感じにする'
             {...register('imageUrl')}
           />
 
