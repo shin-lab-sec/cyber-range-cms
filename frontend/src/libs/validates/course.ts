@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 // "" | cms-storageのimagesバケット内のオブジェクトURL
-const imageUrlRegex = new RegExp('^(https://cms-storage.cypas.sec/images/.+)|$')
+const imageUrlRegex = new RegExp('^(https://cms-storage.cypas.sec/images/.+|)$')
 
 export const courseSchema = z.object({
   name: z
