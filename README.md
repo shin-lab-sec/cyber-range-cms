@@ -50,8 +50,7 @@ docker compose exec app yarn prisma migrate dev
 ここまでやって上手く行かない場合はコンテナを再起動する。
 
 ```
-docker compose stop
-docker compose up
+docker compose restart
 ```
 
 ### step6  (httpsで接続)
@@ -81,10 +80,14 @@ docker compose exec app yarn prisma migrate dev
 3. 型定義更新
 
 ```
-docker compose exec yarn prisma generate
+docker compose exec app yarn prisma generate
 ```
 
 4. コンテナ再起動
+```
+docker compose restart
+```
+
 5. vscode 再起動
 
 ## Dockerfile を変更した後
