@@ -18,11 +18,10 @@ export const Layout: FC<Props> = ({ title, children }) => {
 
       <header className='rounded-md flex border-2 shadow-md mx-2 mt-2 py-4 px-4 items-center justify-between'>
         <h1 className='text-xl'>
-          <Link href='/'>カリキュラム管理システム</Link>
+          <Link href='/'>Cypas CMS</Link>
         </h1>
         <nav className='flex gap-3'>
           <Link href='/courses'>コース一覧</Link>
-          <Link href='/curriculums'>カリキュラム一覧</Link>
           <Link href='/useragents'>ユーザーエージェント一覧</Link>
         </nav>
       </header>
