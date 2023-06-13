@@ -1,74 +1,55 @@
-import { Button, Flex, Select } from '@mantine/core'
-import { Curriculum } from '@prisma/client'
+import { Flex } from '@mantine/core'
+import { Section } from '@prisma/client'
 import { NextPage } from 'next'
 import { useSearchParams } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 import { Layout } from '@/components/Layout'
+import { CourseWithSections } from '@/features/course'
 import {
-  CourseWithCurriculums,
-  useAddCurriculumToCourse,
-  useRemoveCurriculumFromCourse,
-  useUpdateCourseCurriculumOrder,
-} from '@/features/course'
-import {
-  CurriculumsWithUserAgent,
-  DraggableCurriculums,
-} from '@/features/curriculum'
+  CreateSectionButton,
+  DraggableSections,
+  SectionFormRequest,
+  useCreateSection,
+  useDeleteSection,
+  useUpdateCourseSectionOrder,
+  useUpdateSection,
+} from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
 
 const Courses: NextPage = () => {
   const searchParams = useSearchParams()
   const id = searchParams.get('id') || '' // 一回目のレンダリングで正常なidが取得できる
-  const { data: course } = useGetApi<CourseWithCurriculums>(`/courses/${id}`)
+  const { data: course } = useGetApi<CourseWithSections>(`/courses/${id}`)
 
-  // セレクトボックス
-  const { data: curriculums } =
-    useGetApi<CurriculumsWithUserAgent[]>(`/curriculums`)
-  const [selectedCurriculumId, setSelectedCurriculumId] = useState('')
-
-  const curriculumIds = useMemo(
-    () => course?.curriculumIds?.split(',') || [],
-    [course?.curriculumIds],
+  const sectionIds = useMemo(
+    () => course?.sectionIds ?? [],
+    [course?.sectionIds],
   )
 
   // 順番に並び替えたカリキュラム
   // curriculumIdsで順番に見つかったid順にソート。見つからなかったら後ろに回す
-  const orderedCurriculums = useMemo(() => {
-    return structuredClone(course?.curriculums)?.sort((a, b) => {
-      const indexA = curriculumIds.findIndex(id => id === a.id)
-      const indexB = curriculumIds.findIndex(id => id === b.id)
+  const orderedSections = useMemo(() => {
+    return structuredClone(course?.sections)?.sort((a, b) => {
+      const indexA = sectionIds.findIndex(id => id === a.id)
+      const indexB = sectionIds.findIndex(id => id === b.id)
       if (indexA === -1) return 1
       if (indexB === -1) return -1
       return indexA - indexB
     })
-  }, [course?.curriculums, curriculumIds])
+  }, [course?.sections, sectionIds])
 
   // orderedCurriculumsを元にcurriculumIdsを生成
   // curriculumIdsが破損している可能性があるため
-  const orderedCurriculumIds = orderedCurriculums
-    ? orderedCurriculums.map(v => v.id)
+  const orderedSectionIds = orderedSections
+    ? orderedSections.map(v => v.id)
     : []
 
-  const selectBoxOptions = useMemo(
-    () =>
-      curriculums
-        ?.filter(v => !curriculumIds.includes(v.id))
-        .map(v => ({ value: v.id, label: v.name })) || [
-        { value: '', label: '' },
-      ],
-    [curriculumIds, curriculums],
-  )
+  const { createSection } = useCreateSection(id)
+  const { updateSection } = useUpdateSection(id)
+  const { deleteSection } = useDeleteSection(id, orderedSectionIds)
 
-  const { addCurriculumToCourse } = useAddCurriculumToCourse(
-    id,
-    orderedCurriculumIds,
-  )
-  const { removeCurriculumFromCourse } = useRemoveCurriculumFromCourse(
-    id,
-    orderedCurriculumIds,
-  )
-  const { updateCourseCurriculumOrder } = useUpdateCourseCurriculumOrder(id)
+  const { updateCourseSectionOrder } = useUpdateCourseSectionOrder(id)
 
   if (!course || !id) {
     return (
@@ -82,32 +63,22 @@ const Courses: NextPage = () => {
     <Layout>
       <h1>{course.name}</h1>
       <div>
-        {curriculums && (
-          <Flex gap='sm' mt='sm' justify='end'>
-            <Select
-              placeholder='カリキュラムを選択してください'
-              onChange={(e: string) => setSelectedCurriculumId(e)}
-              data={selectBoxOptions}
-              className='max-w-300px w-300px'
-            />
-            <Button onClick={() => addCurriculumToCourse(selectedCurriculumId)}>
-              追加
-            </Button>
-          </Flex>
-        )}
+        <Flex gap='sm' mt='sm' justify='end'>
+          <CreateSectionButton onSubmit={createSection} />
+        </Flex>
 
-        {/* <Code block>{JSON.stringify(course.curriculumIds)}</Code> */}
-
-        {orderedCurriculums?.length ? (
-          <DraggableCurriculums
-            key={orderedCurriculumIds.join('')}
-            curriculums={orderedCurriculums}
-            onUpdateOrder={(curriculums: Curriculum[]) =>
-              updateCourseCurriculumOrder(curriculums)
+        {orderedSections?.length ? (
+          <DraggableSections
+            // key={orderedSectionIds.join('')}
+            key={JSON.stringify(orderedSections)}
+            sections={orderedSections}
+            onUpdateOrder={(sections: Section[]) =>
+              updateCourseSectionOrder(sections)
             }
-            onRemove={(curriculumId: string) =>
-              removeCurriculumFromCourse(curriculumId)
+            onUpdate={(id: string, v: SectionFormRequest) =>
+              updateSection(id, v)
             }
+            onRemove={(sectionId: string) => deleteSection(sectionId)}
             className='mx-auto mt-6'
           />
         ) : null}

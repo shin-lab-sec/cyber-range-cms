@@ -45,7 +45,7 @@ export default async function handler(
             imageUrl: body.imageUrl,
             author: body.author,
             organization: body.organization,
-            sectionIds: body.curriculumIds,
+            sectionIds: body.sectionIds,
           },
           include: {
             sections: {
