@@ -27,13 +27,13 @@ export const DraggableSections: FC<Props> = ({
   onUpdate,
   className,
 }) => {
-  const [sections, setCurriculums] = useState(sectionList)
+  const [sections, setSections] = useState(sectionList)
 
   const onDragEnd = (result: DropResult) => {
     const items = [...sections]
     const deleteItem = items.splice(result.source.index, 1)
     items.splice(result.destination?.index ?? 0, 0, deleteItem[0])
-    setCurriculums(items)
+    setSections(items)
   }
 
   const [windowReady, setWindowReady] = useState(false)

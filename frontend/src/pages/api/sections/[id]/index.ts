@@ -10,17 +10,17 @@ export default async function handler(
   const { method, body } = req
   const id = String(req.query.id)
 
-  // curriculums/[id]
+  // sections/[id]
   switch (method) {
     case 'GET':
       try {
-        const curriculum = await prisma.section.findUnique({
+        const section = await prisma.section.findUnique({
           where: {
             id: id,
           },
           include: { userAgent: true },
         })
-        res.status(200).json({ data: curriculum })
+        res.status(200).json({ data: section })
       } catch (err) {
         res.status(400).json({ data: err })
       }

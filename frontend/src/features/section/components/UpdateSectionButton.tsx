@@ -22,7 +22,7 @@ export const UpdateSectionButton: FC<Props> = ({
       <Modal
         opened={isOpen.v}
         onClose={onClose}
-        title='カリキュラム編集'
+        title='セクション編集'
         centered
         classNames={{ title: 'text-xl' }}
       >

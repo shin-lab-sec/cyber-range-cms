@@ -27,8 +27,8 @@ const Courses: NextPage = () => {
     [course?.sectionIds],
   )
 
-  // 順番に並び替えたカリキュラム
-  // curriculumIdsで順番に見つかったid順にソート。見つからなかったら後ろに回す
+  // 順番に並び替えたセクション
+  // sectionIdsで順番に見つかったid順にソート。見つからなかったら後ろに回す
   const orderedSections = useMemo(() => {
     return structuredClone(course?.sections)?.sort((a, b) => {
       const indexA = sectionIds.findIndex(id => id === a.id)
@@ -39,8 +39,8 @@ const Courses: NextPage = () => {
     })
   }, [course?.sections, sectionIds])
 
-  // orderedCurriculumsを元にcurriculumIdsを生成
-  // curriculumIdsが破損している可能性があるため
+  // orderedSectionsを元にsectionIdsを生成
+  // sectionIdsが破損している可能性があるため
   const orderedSectionIds = orderedSections
     ? orderedSections.map(v => v.id)
     : []

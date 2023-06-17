@@ -29,7 +29,9 @@ const sectionSandboxSchema = z.object({
   scenarioGitHubUrl: z
     .string()
     .regex(gitHubUrlRegex, 'GitHubのURLを入力してください'),
-  userAgentId: z.string({ required_error: 'ユーザーエージェントは必須です' }), //.nonempty('ユーザーエージェントは必須です'),
+  userAgentId: z
+    .string({ required_error: 'ユーザーエージェントは必須です' })
+    .nonempty('ユーザーエージェントは必須です'),
 })
 
 const courseIdSchema = z.string().nonempty('コースが選択されていません')

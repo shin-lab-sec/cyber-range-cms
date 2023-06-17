@@ -28,10 +28,10 @@ export const useCreateSection = (courseId: string) => {
         console.log('セクションを作成', res)
 
         if (!course) return
-        // 引数のcurriculumIdを追加したcurriculumIdsを生成
+        // 引数のsectionIdを追加したsectionIdsを生成
         const newSectionIds = [...course.sectionIds, res.id]
 
-        // curriculumIds更新
+        // sectionIds更新
         const updatedCourse = await putApi<CourseWithSections>(
           `/courses/${courseId}`,
           {
@@ -79,7 +79,7 @@ export const useUpdateSection = (courseId: string) => {
         console.log('更新に成功', updatedSection)
 
         if (!course) return
-        // 対象のsectionIdだけ更新されたカリキュラムに置き換える
+        // 対象のsectionIdだけ更新されたセクションに置き換える
         const updatedSections = course.sections.map(v =>
           v.id === sectionId ? updatedSection : v,
         )
@@ -108,18 +108,18 @@ export const useDeleteSection = (courseId: string, sectionIds: string[]) => {
   const deleteSection = useCallback(
     async (sectionId: string) => {
       try {
-        // 引数のcurriculumIdを除いたcurriculumIdsを生成
+        // 引数のsectionIdを除いたsectionIdsを生成
         const filteredSectionIds = sectionIds.filter(id => id !== sectionId)
 
         // Sectionを削除
         await deleteApi(`/sections/${sectionId}`)
         console.log('削除に成功')
 
-        // curriculumIds更新
+        // sectionIds更新
         const updatedCourse = await putApi<CourseWithSections>(
           `/courses/${courseId}`,
           {
-            curriculumIds: filteredSectionIds,
+            sectionIds: filteredSectionIds,
           },
         )
         console.log('更新に成功', updatedCourse)
@@ -142,11 +142,11 @@ export const useUpdateCourseSectionOrder = (courseId: string) => {
 
   const updateCourseSectionOrder = useCallback(
     async (sections: Section[]) => {
-      // 引数のsectionsからcurriculumIdsを取得
+      // 引数のsectionsからsectionIdsを取得
       const newSectionIds = sections.map(v => v.id)
 
       try {
-        // curriculumIds更新
+        // sectionIds更新
         const updatedCourse = await putApi<CourseWithSections>(
           `/courses/${courseId}`,
           {

@@ -48,7 +48,7 @@ const Courses: NextPage = () => {
       },
       {
         accessorKey: 'id', // 適当
-        header: 'カリキュラム数',
+        header: 'セクション数',
         maxSize: 0,
         Cell: ({
           row: {

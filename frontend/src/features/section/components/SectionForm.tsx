@@ -1,22 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Alert,
-  Button,
-  Flex,
-  Select,
-  Stack,
-  Tabs,
-  TextInput,
-} from '@mantine/core'
+import { Alert, Button, Flex, Select, Stack, TextInput } from '@mantine/core'
 import { UserAgent } from '@prisma/client'
 import {
   IconAlertCircle,
-  IconMessageCircle,
-  IconPhoto,
-  IconSettings,
+  IconCurrencyQuetzal,
+  IconArticle,
+  IconBox,
 } from '@tabler/icons-react'
 import Link from 'next/link'
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import type {
   UseFormRegister,
@@ -198,7 +190,7 @@ const SectionSandboxForm: FC<{
           error={
             <p>
               ユーザーエージェントが存在しません。
-              カリキュラムを作成するには、ユーザーエージェントが必要です。
+              セクションを作成するには、ユーザーエージェントが必要です。
               <Link href='/useragents' className='text-xs'>
                 ユーザーエージェントを作成する
               </Link>
@@ -218,15 +210,14 @@ export const SectionForm: FC<Props> = ({
   initValue,
   onDirty,
 }) => {
-  const [sectionType, setSectionType] = useState<SectionType | undefined>(
-    initValue?.type,
-  )
-  const { data: userAgents } = useGetApi<UserAgent[]>('/useragents')
+  // const [sectionType, setSectionType] = useState<SectionType | undefined>(
+  //   initValue?.type,
+  // )
   const {
     register,
     handleSubmit,
-    getValues,
     setValue,
+    watch,
     clearErrors,
     formState: { errors, isDirty },
   } = useForm<SectionFormRequest>({
@@ -245,6 +236,7 @@ export const SectionForm: FC<Props> = ({
 
   // name, type, courseId, scenarioGitHubUrl, userAgentId
 
+  const sectionType = watch('type')
   return (
     <>
       {errorMessage && (
@@ -260,113 +252,35 @@ export const SectionForm: FC<Props> = ({
           {errorMessage}
         </Alert>
       )}
-
-      <Tabs
-        variant='outline'
-        defaultValue='live'
-        onTabChange={(v: SectionType) => {
-          setSectionType(v)
-          setValue('type', v)
-        }}
-      >
-        <Tabs.List>
-          <Tabs.Tab value='quiz' icon={<IconPhoto size='0.8rem' />}>
-            Quiz
-          </Tabs.Tab>
-          <Tabs.Tab value='article' icon={<IconMessageCircle size='0.8rem' />}>
-            Article
-          </Tabs.Tab>
-          <Tabs.Tab value='sandbox' icon={<IconSettings size='0.8rem' />}>
-            Sandbox
-          </Tabs.Tab>
-        </Tabs.List>
-      </Tabs>
-
-      {/* <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack>
-          <TextInput
-            label='セクション名'
-            error={errors.name?.message}
-            placeholder='ブルートフォース攻撃とは何か'
-            withAsterisk
-            {...register('name')}
-          />
-          <TextInput
-            label='type(消す)'
-            error={errors.type?.message}
-            {...register('type')}
-          />
-          <TextInput
-            label='シナリオGitHubURL'
-            placeholder='https://example.article'
-            error={errors.scenarioGitHubUrl?.message}
-            {...register('scenarioGitHubUrl')}
-          />
-          {userAgents ? (
-            <Select
-              label='ユーザーエージェント'
-              placeholder='体験する時の環境を選択してください'
-              withAsterisk
-              onChange={(e: string) => {
-                setValue('userAgentId', e)
-                clearErrors('userAgentId')
-              }}
-              data={userAgents.map(v => ({ value: v.id, label: v.name }))}
-              defaultValue={initValue?.userAgentId}
-              error={errors.userAgentId?.message}
-            />
-          ) : (
-            <Select
-              label='ユーザーエージェント'
-              placeholder='体験する時の環境を選択してください'
-              withAsterisk
-              data={['']}
-              disabled
-              error={
-                <p>
-                  ユーザーエージェントが存在しません。
-                  カリキュラムを作成するには、ユーザーエージェントが必要です。
-                  <Link href='/useragents' className='text-xs'>
-                    ユーザーエージェントを作成する
-                  </Link>
-                </p>
-              }
-            />
-          )}
-          <Flex justify='end'>
-            <Button type='submit'>{submitButtonName}</Button>
-          </Flex>
-        </Stack>
-      </form> */}
-
-      {/* {sectionType === 'quiz' && (
-        <SectionQuizForm
-          onSubmit={onSubmit}
-          onDirty={onDirty}
-          initValue={initValue}
-          submitButtonName={submitButtonName}
-        />
-      )} */}
-
-      {sectionType === 'sandbox' && (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <SectionSandboxForm
-            register={register}
-            errors={errors}
-            initValue={initValue}
-            setValue={setValue}
-            clearErrors={clearErrors}
-          />
-
-          <Flex justify='end'>
-            <Button type='submit'>{submitButtonName}</Button>
-          </Flex>
-        </form>
+      {!sectionType && (
+        <div className='flex justify-around'>
+          <div
+            className='rounded-md cursor-pointer flex flex-col border-2 shadow-md p-2 gap-1 duration-300 items-center hover:bg-blue-50'
+            onClick={() => setValue('type', 'quiz')}
+          >
+            <IconCurrencyQuetzal size='2rem' />
+            小テスト
+          </div>
+          <div
+            className='rounded-md cursor-pointer flex flex-col border-2 shadow-md p-2 gap-1 duration-300 items-center hover:bg-blue-50'
+            onClick={() => setValue('type', 'article')}
+          >
+            <IconArticle size='2rem' />
+            テキスト
+          </div>
+          <div
+            className='rounded-md cursor-pointer flex flex-col border-2 shadow-md p-2 gap-1 duration-300 items-center hover:bg-blue-50'
+            onClick={() => setValue('type', 'sandbox')}
+          >
+            <IconBox size='2rem' />
+            演習体験
+          </div>
+        </div>
       )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        {(getValues('type') === 'quiz' || getValues('type') === 'article') && (
-          <Stack>
+        <Stack>
+          {(sectionType === 'quiz' || sectionType === 'article') && (
             <TextInput
               label='セクション名'
               error={errors.name?.message}
@@ -374,141 +288,24 @@ export const SectionForm: FC<Props> = ({
               withAsterisk
               {...register('name')}
             />
-            {/* <TextInput
-              label='type(消す)'
-              error={errors.type?.message}
-              {...register('type')}
-            /> */}
+          )}
+          {sectionType === 'sandbox' && (
+            <SectionSandboxForm
+              register={register}
+              errors={errors}
+              initValue={initValue}
+              setValue={setValue}
+              clearErrors={clearErrors}
+            />
+          )}
+
+          {sectionType && (
             <Flex justify='end'>
               <Button type='submit'>{submitButtonName}</Button>
             </Flex>
-          </Stack>
-        )}
-
-        {/* {getValues('type') === 'sandbox' && (
-          <Stack>
-            <TextInput
-              label='セクション名'
-              error={errors.name?.message}
-              placeholder='ブルートフォース攻撃とは何か'
-              withAsterisk
-              {...register('name')}
-            />
-            <TextInput
-              label='type(消す)'
-              error={errors.type?.message}
-              {...register('type')}
-            />
-            <TextInput
-              label='シナリオGitHubURL'
-              placeholder='https://example.article'
-              error={errors.scenarioGitHubUrl?.message}
-              {...register('scenarioGitHubUrl')}
-            />
-            {userAgents ? (
-              <Select
-                label='ユーザーエージェント'
-                placeholder='体験する時の環境を選択してください'
-                withAsterisk
-                onChange={(e: string) => {
-                  setValue('userAgentId', e)
-                  clearErrors('userAgentId')
-                }}
-                data={userAgents.map(v => ({ value: v.id, label: v.name }))}
-                defaultValue={
-                  initValue?.type === 'sandbox' ? initValue?.userAgentId : ''
-                }
-                error={errors?.userAgentId?.message}
-              />
-            ) : (
-              <Select
-                label='ユーザーエージェント'
-                placeholder='体験する時の環境を選択してください'
-                withAsterisk
-                data={[]}
-                disabled
-                error={
-                  <p>
-                    ユーザーエージェントが存在しません。
-                    カリキュラムを作成するには、ユーザーエージェントが必要です。
-                    <Link href='/useragents' className='text-xs'>
-                      ユーザーエージェントを作成する
-                    </Link>
-                  </p>
-                }
-              />
-            )}
-
-            <Flex justify='end'>
-              <Button type='submit'>{submitButtonName}</Button>
-            </Flex>
-          </Stack>
-        )} */}
+          )}
+        </Stack>
       </form>
     </>
   )
 }
-
-// const sandboxForm = () => {
-//   return (
-//     <form onSubmit={handleSubmit(onSubmit)}>
-//       <Stack>
-//         <TextInput
-//           label='セクション名'
-//           error={errors.name?.message}
-//           placeholder='ブルートフォース攻撃とは何か'
-//           withAsterisk
-//           {...register('name')}
-//         />
-//         <TextInput
-//           label='type(消す)'
-//           error={errors.type?.message}
-//           {...register('type')}
-//         />
-//         <TextInput
-//           label='シナリオGitHubURL'
-//           placeholder='https://example.article'
-//           error={errors.scenarioGitHubUrl?.message}
-//           {...register('scenarioGitHubUrl')}
-//         />
-//         {userAgents ? (
-//           <Select
-//             label='ユーザーエージェント'
-//             placeholder='体験する時の環境を選択してください'
-//             withAsterisk
-//             onChange={(e: string) => {
-//               setValue('userAgentId', e)
-//               clearErrors('userAgentId')
-//             }}
-//             data={userAgents.map(v => ({ value: v.id, label: v.name }))}
-//             defaultValue={
-//               initValue?.type === 'sandbox' ? initValue?.userAgentId : ''
-//             }
-//             error={errors?.userAgentId?.message}
-//           />
-//         ) : (
-//           <Select
-//             label='ユーザーエージェント'
-//             placeholder='体験する時の環境を選択してください'
-//             withAsterisk
-//             data={[]}
-//             disabled
-//             error={
-//               <p>
-//                 ユーザーエージェントが存在しません。
-//                 カリキュラムを作成するには、ユーザーエージェントが必要です。
-//                 <Link href='/useragents' className='text-xs'>
-//                   ユーザーエージェントを作成する
-//                 </Link>
-//               </p>
-//             }
-//           />
-//         )}
-
-//         <Flex justify='end'>
-//           <Button type='submit'>{submitButtonName}</Button>
-//         </Flex>
-//       </Stack>
-//     </form>
-//   )
-// }

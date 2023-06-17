@@ -35,7 +35,7 @@ model Section {
   quizIds           String[]
   articles          Article[]
   articleIds        String[]
-  scenarioGitHubUrl String?    @db.VarChar(255) // べた張り or 既存のカリキュラムから選択
+  scenarioGitHubUrl String?    @db.VarChar(255) // べた張り or 既存のシナリオから選択
   userAgentId       String?    @db.VarChar(255)
   userAgent         UserAgent? @relation(fields: [userAgentId], references: [id], onDelete: Cascade)
 
