@@ -70,6 +70,9 @@ const UserAgents: NextPage = () => {
         Cell: ({ row: { original: userAgent } }) => {
           const userAgentFormRequest: UserAgentFormRequest = {
             name: userAgent.name,
+            type: userAgent.type as 'vdi' | 'terminal',
+            author: userAgent.author,
+            organization: userAgent.organization,
             gitHubUrl: userAgent.gitHubUrl,
           }
           return (

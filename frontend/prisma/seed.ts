@@ -2,210 +2,214 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 async function main() {
   const userAgent1 = await prisma.userAgent.upsert({
-    where: { name: 'サンプルユーザーエージェント1' },
+    where: {
+      name_author_organization: {
+        name: 'サンプルユーザーエージェント1',
+        author: '冠城俊樹',
+        organization: '東京大学',
+      },
+    },
     update: {},
     create: {
       name: 'サンプルユーザーエージェント1',
       gitHubUrl: 'https://github.com/tosssssy/kali-wetty-lesson',
+      type: 'terminal',
+      author: '冠城俊樹',
+      organization: '東京大学',
     },
   })
-  const userAgent2 = await prisma.userAgent.upsert({
-    where: { name: 'サンプルユーザーエージェント2' },
+  const userAgent2 = await await prisma.userAgent.upsert({
+    where: {
+      name_author_organization: {
+        name: 'サンプルユーザーエージェント2',
+        author: '冠城俊樹',
+        organization: '東京大学',
+      },
+    },
     update: {},
     create: {
       name: 'サンプルユーザーエージェント2',
       gitHubUrl: 'https://github.com/tosssssy/kali-wetty-lesson',
-    },
-  })
-
-  const curriculum1 = await prisma.curriculum.upsert({
-    where: { name: 'サンプルカリキュラム-システムの基本設定の確認方法' },
-    update: {},
-    create: {
-      name: 'サンプルカリキュラム-システムの基本設定の確認方法',
-      description:
-        'このカリキュラムでは、システムの基本設定を確認する方法について詳しく学びます。システムの稼働状況を正確に把握するために必要な知識が身につきます。',
-      gitHubUrl: 'https://github.com/tosssssy/sample-curriculum',
-      articleUrl: 'https://github.com/tosssssy/sample-curriculum',
-      imageUrl: 'https://source.unsplash.com/Vp8Ep9jZ5p0',
-      userAgent: { connect: { id: userAgent1.id } },
-    },
-  })
-  const curriculum2 = await prisma.curriculum.upsert({
-    where: { name: 'サンプルカリキュラム-パスワードポリシーの設定方法' },
-    update: {},
-    create: {
-      name: 'サンプルカリキュラム-パスワードポリシーの設定方法',
-      description:
-        'このカリキュラムでは、パスワードポリシーの設定方法について学びます。強力なパスワードポリシーの設定により、セキュリティを強化する方法が分かります。',
-      gitHubUrl: 'https://github.com/tosssssy/sample-curriculum',
-      articleUrl: 'https://github.com/tosssssy/sample-curriculum',
-      imageUrl: 'https://source.unsplash.com/1Y5A0cagQP8',
-      userAgent: { connect: { id: userAgent1.id } },
-    },
-  })
-  const curriculum3 = await prisma.curriculum.upsert({
-    where: { name: 'サンプルカリキュラム-脆弱性の理解' },
-    update: {},
-    create: {
-      name: 'サンプルカリキュラム-脆弱性の理解',
-      description:
-        'このカリキュラムでは、脆弱性の概念や種類について学びます。攻撃者が悪用する可能性がある脆弱性を把握することで、セキュリティ対策を行う方法が分かります。',
-      gitHubUrl: 'https://github.com/tosssssy/sample-curriculum',
-      articleUrl: 'https://github.com/tosssssy/sample-curriculum',
-      imageUrl: 'https://source.unsplash.com/TLqU-IBNBGM',
-      userAgent: { connect: { id: userAgent2.id } },
-    },
-  })
-  const curriculum4 = await prisma.curriculum.upsert({
-    where: { name: 'サンプルカリキュラム-セキュリティログの確認' },
-    update: {},
-    create: {
-      name: 'サンプルカリキュラム-セキュリティログの確認',
-      description:
-        'のカリキュラムでは、セキュリティログの確認方法について学びます。ログの分析により、不正アクセスや攻撃の痕跡を見つける方法が分かります。',
-      gitHubUrl: 'https://github.com/tosssssy/sample-curriculum',
-      articleUrl: 'https://github.com/tosssssy/sample-curriculum',
-      imageUrl: 'https://source.unsplash.com/QKD4Pq6UPAY',
-      userAgent: { connect: { id: userAgent2.id } },
+      type: 'terminal',
+      author: '冠城俊樹',
+      organization: '東京大学',
     },
   })
 
   const course1 = await prisma.course.upsert({
-    where: { name: 'サンプルコース初級編' },
+    where: {
+      name_author_organization: {
+        name: 'lsコマンド、マスターコース',
+        author: 'akio',
+        organization: '東海大学',
+      },
+    },
     update: {},
     create: {
-      name: 'サンプルコース初級編',
-      level: 1,
+      name: 'lsコマンド、マスターコース',
       description:
-        'このサンプルコースは、セキュリティ演習システムの初級編にあたります。このコースを体験することで、システムの概要を学ぶことができます。',
-      curriculumIds: `${curriculum1.id},${curriculum3.id},${curriculum4.id}`,
+        'このコースは、lsコマンドを実行することでlsコマンドの概要を学ぶことができます。',
+      level: 1,
+      imageUrl:
+        'https://cms-storage.cypas.sec/images/0.9887783384628193-2023525.jpg',
+      author: 'akio',
+      organization: '東海大学',
+      sectionIds: [],
     },
   })
   const course2 = await prisma.course.upsert({
-    where: { name: 'サンプルコース中級編' },
+    where: {
+      name_author_organization: {
+        name: 'サンプルコース中級編',
+        author: 'tanaka',
+        organization: '東海大学',
+      },
+    },
     update: {},
     create: {
       name: 'サンプルコース中級編',
-      level: 2,
       description:
         'このサンプルコースは、セキュリティ演習システムの中級編にあたります。このコースは脆弱性のあるアプリケーションでの攻撃を体験学ぶことができます。',
-      curriculumIds: `${curriculum3.id},${curriculum4.id}`,
+      level: 1,
+      imageUrl:
+        'https://cms-storage.cypas.sec/images/0.9887783384628193-2023525.jpg',
+      author: 'tanaka',
+      organization: '東海大学',
+      sectionIds: [],
     },
   })
   const course3 = await prisma.course.upsert({
-    where: { name: 'サンプルコース上級編' },
+    where: {
+      name_author_organization: {
+        name: 'サンプルコース上級編',
+        author: 'tanaka',
+        organization: '東海大学',
+      },
+    },
     update: {},
     create: {
       name: 'サンプルコース上級編',
-      level: 3,
       description:
         'このサンプルコースは、セキュリティ演習システムの上級編にあたります。このコースは攻撃者側を体験することで、攻撃の対処法を学ぶことができます。',
+      level: 1,
+      imageUrl:
+        'https://cms-storage.cypas.sec/images/0.9887783384628193-2023525.jpg',
+      author: 'tanaka',
+      organization: '東海大学',
+      sectionIds: [],
     },
   })
 
-  await prisma.courseCurriculumRelation.upsert({
+  const section1 = await prisma.section.upsert({
     where: {
-      courseId_curriculumId: {
+      name_courseId: {
+        name: 'lsコマンドとは',
         courseId: course1.id,
-        curriculumId: curriculum1.id,
       },
     },
     update: {},
     create: {
-      course: {
-        connect: { id: course1.id },
-      },
-      curriculum: {
-        connect: { id: curriculum1.id },
-      },
+      name: 'lsコマンドとは',
+      type: 'article',
+      articleIds: [],
+      course: { connect: { id: course1.id } },
     },
   })
-  await prisma.courseCurriculumRelation.upsert({
+  const section2 = await prisma.section.upsert({
     where: {
-      courseId_curriculumId: {
+      name_courseId: {
+        name: 'lsコマンドの演習',
         courseId: course1.id,
-        curriculumId: curriculum3.id,
       },
     },
     update: {},
     create: {
-      course: {
-        connect: { id: course1.id },
-      },
-      curriculum: {
-        connect: { id: curriculum3.id },
-      },
+      name: 'lsコマンドの演習',
+      type: 'sandbox',
+      scenarioGitHubUrl: 'https://github.com/tosssssy/sample-scenario',
+      course: { connect: { id: course1.id } },
+      userAgent: { connect: { id: userAgent1.id } },
     },
   })
-  await prisma.courseCurriculumRelation.upsert({
+  const section3 = await prisma.section.upsert({
     where: {
-      courseId_curriculumId: {
+      name_courseId: {
+        name: '小テスト（lsコマンド）',
         courseId: course1.id,
-        curriculumId: curriculum4.id,
       },
     },
     update: {},
     create: {
-      course: {
-        connect: { id: course1.id },
-      },
-      curriculum: {
-        connect: { id: curriculum4.id },
-      },
+      name: '小テスト（lsコマンド）',
+      type: 'quiz',
+      quizIds: [],
+      course: { connect: { id: course1.id } },
     },
   })
 
-  await prisma.courseCurriculumRelation.upsert({
+  const quiz1 = await prisma.quiz.upsert({
     where: {
-      courseId_curriculumId: {
-        courseId: course2.id,
-        curriculumId: curriculum3.id,
+      question_sectionId: {
+        question:
+          'ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？',
+        sectionId: section3.id,
       },
     },
     update: {},
     create: {
-      course: {
-        connect: { id: course2.id },
-      },
-      curriculum: {
-        connect: { id: curriculum3.id },
-      },
+      question:
+        'ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？',
+      choices: ['dir', 'ls', 'list', 'show'],
+      answer: '2',
+      explanation:
+        '正解は2のlsです。lsコマンドは、ディレクトリ内のファイルとディレクトリを一覧表示するために使用されます。Windowsではdirコマンドが使われることもありますが、一般的にはUnix/Linux系のシステムでよく使われるのはlsコマンドです。listやshowは一般的なコマンドではありません。',
+      section: { connect: { id: section3.id } },
     },
   })
-  await prisma.courseCurriculumRelation.upsert({
+  const quiz2 = await prisma.quiz.upsert({
     where: {
-      courseId_curriculumId: {
-        courseId: course2.id,
-        curriculumId: curriculum4.id,
+      question_sectionId: {
+        question:
+          'lsコマンドのオプションのうち、ファイルの詳細情報（パーミッション、所有者、サイズなど）を表示するためのオプションはどれでしょうか？',
+        sectionId: section3.id,
       },
     },
     update: {},
     create: {
-      course: {
-        connect: { id: course2.id },
-      },
-      curriculum: {
-        connect: { id: curriculum4.id },
-      },
+      question:
+        'lsコマンドのオプションのうち、ファイルの詳細情報（パーミッション、所有者、サイズなど）を表示するためのオプションはどれでしょうか？',
+      choices: ['-l', '-a', '-h', '-R'],
+      answer: '1',
+      explanation:
+        '正解は1の-lです。-lオプションを使用すると、ファイルの詳細情報が表示されます。具体的には、パーミッション、所有者、グループ、ファイルサイズ、更新日時などが表示されます。',
+      section: { connect: { id: section3.id } },
     },
   })
 
-  // curiculumIds 追加
-  await prisma.course.update({
-    where: { id: course1.id },
-    data: { curriculumIds: curriculum1.id },
-  })
-  const course11 = await prisma.course.findUnique({
-    where: { name: 'コース1' },
-  })
-  await prisma.course.update({
-    where: { id: course1.id },
-    data: {
-      curriculumIds: `${
-        course11?.curriculumIds ? `${course11.curriculumIds},` : ''
-      }${curriculum2.id}`,
-    },
+  // 文字が長いので入らない
+  // const quiz3 = await prisma.quiz.upsert({
+  //   where: {
+  //     question_sectionId: {
+  //       question: '長いクイズ',
+  //       sectionId: section3.id,
+  //     },
+  //   },
+  //   update: {},
+  //   create: {
+  //     question: '長いクイズ',
+  //     choices: ['dir', 'ls', 'list', 'show'],
+  //     answer:
+  //       'ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？',
+  //     explanation:
+  //       '正解は2のlsです。lsコマンドは、ディレクトリ内のファイルとディレクトリを一覧表示するために使用されます。Windowsではdirコマンドが使われることもありますが、一般的にはUnix/Linux系のシステムでよく使われるのはlsコマンドです。listやshowは一般的なコマンドではありません。',
+  //     section: { connect: { id: section3.id } },
+  //   },
+  // })
+
+  // quizIds 追加
+  await prisma.section.update({
+    where: { id: section3.id },
+    data: { quizIds: [quiz1.id, quiz2.id] },
   })
 }
 

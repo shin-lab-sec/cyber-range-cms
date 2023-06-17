@@ -13,14 +13,14 @@ datasource db {
 
 model Course {
   id           String    @id @default(cuid())
-  name         String    @db.VarChar
+  name         String    @db.VarChar(255)
   description  String
   level        Int       @default(1)
-  imageUrl     String?   @db.VarChar
+  imageUrl     String?   @db.VarChar(255)
   sections     Section[]
   sectionIds   String[]
-  author       String    @db.VarChar
-  organization String    @db.VarChar
+  author       String    @db.VarChar(255)
+  organization String    @db.VarChar(255)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @default(now()) @updatedAt()
 
@@ -29,30 +29,32 @@ model Course {
 
 model Section {
   id                String     @id @default(cuid())
-  name              String     @db.VarChar
-  type              String     @db.VarChar // "quiz" | "article" | "sandbox"
+  name              String     @db.VarChar(255)
+  type              String     @db.VarChar(255) // "quiz" | "article" | "sandbox"
   quizzes           Quiz[]
   quizIds           String[]
-  article           Article[]
+  articles          Article[]
   articleIds        String[]
-  scenarioGitHubUrl String?    @db.VarChar // べた張り or 既存のカリキュラムから選択
-  userAgentId       String?    @db.VarChar
+  scenarioGitHubUrl String?    @db.VarChar(255) // べた張り or 既存のシナリオから選択
+  userAgentId       String?    @db.VarChar(255)
   userAgent         UserAgent? @relation(fields: [userAgentId], references: [id], onDelete: Cascade)
 
-  courseId  String   @db.VarChar
+  courseId  String   @db.VarChar(255)
   course    Course   @relation(fields: [courseId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt()
+
+  @@unique([name, courseId])
 }
 
 // 1日一回GitHubActionのバッチ処理で、SectionのgitHubUrlを全取得してcypas.jsonからメタ情報取得して、テーブルを更新する
 model Scenario {
   id           String   @id @default(cuid())
-  name         String   @db.VarChar
+  name         String   @db.VarChar(255)
   description  String
-  gitHubUrl    String   @db.VarChar
-  author       String   @db.VarChar
-  organization String   @db.VarChar
+  gitHubUrl    String   @db.VarChar(255)
+  author       String   @db.VarChar(255)
+  organization String   @db.VarChar(255)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now()) @updatedAt()
 
@@ -62,7 +64,7 @@ model Scenario {
 model Article {
   id        String   @id @default(cuid())
   body      String
-  sectionId String?  @db.VarChar
+  sectionId String?  @db.VarChar(255)
   section   Section? @relation(fields: [sectionId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt()
@@ -72,24 +74,26 @@ model Quiz {
   id          String   @id @default(cuid())
   question    String
   choices     String[]
-  answer      String   @db.VarChar
+  answer      String   @db.VarChar(255)
   explanation String
-  sectionId   String   @db.VarChar
+  sectionId   String   @db.VarChar(255)
   section     Section  @relation(fields: [sectionId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt()
+
+  @@unique([question, sectionId])
 }
 
 // 仮想デスクトップ、ターミナルの2択にする
 // 他の人に作成させない？
 model UserAgent {
   id           String    @id @default(cuid())
-  name         String    @db.VarChar
-  gitHubUrl    String    @db.VarChar
-  type         String    @db.VarChar // "vdi" | "terminal"
-  Section      Section[]
-  author       String    @db.VarChar
-  organization String    @db.VarChar
+  name         String    @db.VarChar(255)
+  gitHubUrl    String    @db.VarChar(255)
+  type         String    @db.VarChar(255) // "vdi" | "terminal"
+  Sections     Section[]
+  author       String    @db.VarChar(255)
+  organization String    @db.VarChar(255)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @default(now()) @updatedAt()
 

@@ -90,6 +90,29 @@ export const CourseForm: FC<Props> = ({
             placeholder='このコースは、セキュリティの基礎的な概念や攻撃の手法を学習します。また、実践的な演習を通じて、学習した知識を実際にアプリケーションに適用し、攻撃手法を理解することができます。'
             {...register('description')}
           />
+          <TextInput
+            label='制作者名'
+            error={errors.author?.message}
+            placeholder='サイパス太郎'
+            withAsterisk
+            {...register('author')}
+          />
+          <TextInput
+            label='所属'
+            error={errors.organization?.message}
+            placeholder='サイパス大学'
+            withAsterisk
+            {...register('organization')}
+          />
+
+          {/* ここは何とかする */}
+          {/* <FileInput {...register("imageUrl")} /> */}
+          <TextInput
+            label='コース画像'
+            error={errors.imageUrl?.message}
+            placeholder='FileInputだと...register()出来ないのでいい感じにする'
+            {...register('imageUrl')}
+          />
 
           <Flex justify='end'>
             <Button type='submit'>{submitButtonName}</Button>

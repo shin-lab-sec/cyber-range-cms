@@ -3,14 +3,14 @@ import { FC } from 'react'
 
 import { useModalForm } from '@/hooks/useModalForm'
 
-import { CurriculumForm, CurriculumFormRequest } from './CurriculumForm'
+import { SectionForm, SectionFormRequest } from './SectionForm'
 
 type Props = {
-  onSubmit: (params: CurriculumFormRequest) => void
-  initValue: CurriculumFormRequest
+  onSubmit: (params: SectionFormRequest) => void
+  initValue: SectionFormRequest
 }
 
-export const UpdateCurriculumButton: FC<Props> = ({
+export const UpdateSectionButton: FC<Props> = ({
   onSubmit: onSubmitProps,
   initValue,
 }) => {
@@ -22,11 +22,11 @@ export const UpdateCurriculumButton: FC<Props> = ({
       <Modal
         opened={isOpen.v}
         onClose={onClose}
-        title='カリキュラム編集'
+        title='セクション編集'
         centered
         classNames={{ title: 'text-xl' }}
       >
-        <CurriculumForm
+        <SectionForm
           key={String(isOpen.v)}
           onSubmit={onSubmit}
           onDirty={isDirtyForm.setTrue}

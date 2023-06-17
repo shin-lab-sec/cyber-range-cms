@@ -1,4 +1,4 @@
 export * from './apiValidation'
 export * from './course'
-export * from './curriculum'
+export * from './section'
 export * from './userAgent'

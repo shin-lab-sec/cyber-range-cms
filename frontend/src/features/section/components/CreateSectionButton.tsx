@@ -3,32 +3,30 @@ import { FC } from 'react'
 
 import { useModalForm } from '@/hooks/useModalForm'
 
-import { CurriculumForm, CurriculumFormRequest } from './CurriculumForm'
+import { SectionForm, SectionFormRequest } from './SectionForm'
 
 type Props = {
-  onSubmit: (params: CurriculumFormRequest) => void
+  onSubmit: (params: SectionFormRequest) => void
 }
 
-export const CreateCurriculumButton: FC<Props> = ({
-  onSubmit: onSubmitProps,
-}) => {
+export const CreateSectionButton: FC<Props> = ({ onSubmit: onSubmitProps }) => {
   const { isOpen, isDirtyForm, onClose, onSubmit } = useModalForm(onSubmitProps)
 
   return (
     <>
-      <Button onClick={isOpen.setTrue}>カリキュラム登録</Button>
+      <Button onClick={isOpen.setTrue}>セクション追加</Button>
       <Modal
         opened={isOpen.v}
         onClose={onClose}
-        title='カリキュラム登録'
+        title='セクション追加'
         centered
         classNames={{ title: 'text-xl' }}
       >
-        <CurriculumForm
+        <SectionForm
           key={String(isOpen.v)}
           onSubmit={onSubmit}
           onDirty={isDirtyForm.setTrue}
-          submitButtonName='登録する'
+          submitButtonName='追加する'
         />
       </Modal>
     </>

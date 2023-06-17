@@ -19,19 +19,14 @@ export default async function handler(
             id: id,
           },
           include: {
-            curriculums: {
-              include: { curriculum: { include: { userAgent: true } } },
+            sections: {
+              include: { userAgent: true },
               orderBy: { createdAt: 'asc' },
             },
           },
         })
 
-        // courseがnullならnullを返す
-        const courseWithCurriculums = course && {
-          ...course,
-          curriculums: course?.curriculums.map(ccr => ccr.curriculum),
-        }
-        res.status(200).json({ data: courseWithCurriculums })
+        res.status(200).json({ data: course })
       } catch (err) {
         res.status(400).json({ data: err })
       }
@@ -47,22 +42,20 @@ export default async function handler(
             name: body.name,
             description: body.description,
             level: body.level,
-            curriculumIds: body.curriculumIds,
+            imageUrl: body.imageUrl,
+            author: body.author,
+            organization: body.organization,
+            sectionIds: body.sectionIds,
           },
           include: {
-            curriculums: {
-              include: { curriculum: { include: { userAgent: true } } },
+            sections: {
+              include: { userAgent: true },
               orderBy: { createdAt: 'asc' },
             },
           },
         })
 
-        // courseがnullならnullを返す
-        const courseWithCurriculums = updatedCourse && {
-          ...updatedCourse,
-          curriculums: updatedCourse?.curriculums.map(ccr => ccr.curriculum),
-        }
-        res.status(200).json({ data: courseWithCurriculums })
+        res.status(200).json({ data: updatedCourse })
       })
       break
 

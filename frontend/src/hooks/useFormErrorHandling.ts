@@ -13,10 +13,6 @@ export const useFormErrorHandling = <T = any>(
       try {
         await func(params)
       } catch (error) {
-        if (typeof error === 'string') {
-          setErrorMessage(error)
-          return
-        }
         if (error instanceof Error) {
           setErrorMessage(error.message)
           return
