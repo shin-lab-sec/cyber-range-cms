@@ -15,7 +15,7 @@ export default async function handler(
     case 'GET':
       try {
         const sections = await prisma.section.findMany({
-          include: { userAgent: true },
+          include: { userAgent: true, articles: true, quizzes: true },
           orderBy: { createdAt: 'asc' },
         })
         res.status(200).json({ data: sections })
@@ -51,7 +51,7 @@ export default async function handler(
 
         const createdSection = await prisma.section.create({
           data: sectionRequest,
-          include: { userAgent: true },
+          include: { userAgent: true, articles: true, quizzes: true },
         })
         res.status(200).json({ data: createdSection })
       })

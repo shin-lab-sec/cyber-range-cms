@@ -18,7 +18,7 @@ export default async function handler(
           where: {
             id: id,
           },
-          include: { userAgent: true },
+          include: { userAgent: true, articles: true, quizzes: true },
         })
         res.status(200).json({ data: section })
       } catch (err) {
@@ -56,10 +56,7 @@ export default async function handler(
             id: id,
           },
           data: sectionRequest,
-          // data: { name: '変えたぜ' },
-          include: {
-            userAgent: true,
-          },
+          include: { userAgent: true, articles: true, quizzes: true },
         })
         res.status(200).json({ data: updatedSection })
       })
