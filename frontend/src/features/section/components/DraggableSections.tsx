@@ -1,4 +1,4 @@
-import { Button, Flex } from '@mantine/core'
+import { Button, Flex, ThemeIcon } from '@mantine/core'
 import {
   IconArticle,
   IconBox,
@@ -64,13 +64,34 @@ export const DraggableSections: FC<Props> = ({
                             <IconGripVertical size='1.5rem' />
                             <div className='rounded-md flex border-2 shadow-md mb-3 w-full py-4 px-4 gap-3 items-center'>
                               {section.type === 'quiz' && (
-                                <IconCurrencyQuetzal size='1.5rem' />
+                                <ThemeIcon
+                                  color='red'
+                                  size='lg'
+                                  variant='light'
+                                  radius='md'
+                                >
+                                  <IconCurrencyQuetzal size='1.5rem' />
+                                </ThemeIcon>
                               )}
                               {section.type === 'article' && (
-                                <IconArticle size='1.5rem' />
+                                <ThemeIcon
+                                  color='blue'
+                                  size='lg'
+                                  variant='light'
+                                  radius='md'
+                                >
+                                  <IconArticle size='1.5rem' />
+                                </ThemeIcon>
                               )}
                               {section.type === 'sandbox' && (
-                                <IconBox size='1.5rem' />
+                                <ThemeIcon
+                                  color='violet'
+                                  size='lg'
+                                  variant='light'
+                                  radius='md'
+                                >
+                                  <IconBox size='1.5rem' />
+                                </ThemeIcon>
                               )}
                               {section.name}
                             </div>

@@ -90,7 +90,7 @@ const Courses: NextPage = () => {
                 }
               />
             ) : (
-              <>
+              <Flex gap='sm' direction='column'>
                 {orderedSections.map((section, index) => (
                   <SectionItem
                     key={index}
@@ -101,7 +101,7 @@ const Courses: NextPage = () => {
                     onDelete={(sectionId: string) => deleteSection(sectionId)}
                   />
                 ))}
-              </>
+              </Flex>
             )}
           </div>
         ) : null}
