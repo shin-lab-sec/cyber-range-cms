@@ -1,5 +1,10 @@
 import { Flex } from '@mantine/core'
-import { IconX } from '@tabler/icons-react'
+import {
+  IconArticle,
+  IconBox,
+  IconX,
+  IconCurrencyQuetzal,
+} from '@tabler/icons-react'
 import { FC } from 'react'
 
 import { SectionFormRequest } from './SectionForm'
@@ -23,18 +28,20 @@ export const SectionItem: FC<Props> = ({ section, onUpdate, onDelete }) => {
   return (
     <Flex align='center' gap='sm'>
       <div className='rounded-md flex border-2 shadow-md mb-3 w-full py-4 px-4 items-center justify-between'>
-        {section.name} type: {section.type}
-        <div className='flex gap-3 items-center'>
+        <Flex align='center' gap='sm'>
+          {section.type === 'quiz' && <IconCurrencyQuetzal size='1.5rem' />}
+          {section.type === 'article' && <IconArticle size='1.5rem' />}
+          {section.type === 'sandbox' && <IconBox size='1.5rem' />}
+
+          {section.name}
+        </Flex>
+        <Flex align='center' gap='sm'>
           <UpdateSectionButton
             onSubmit={v => onUpdate(section.id, v)}
             initValue={sectionFormRequest}
           />
-          <IconX
-            size='1.5rem'
-            // className='cursor-pointer mt-0.5 p-2.5'
-            onClick={() => onDelete(section.id)}
-          />
-        </div>
+          <IconX size='1.5rem' onClick={() => onDelete(section.id)} />
+        </Flex>
       </div>
     </Flex>
   )
