@@ -64,7 +64,7 @@ const Courses: NextPage = () => {
 
   return (
     <Layout>
-      <h1>{course.name}</h1>
+      <h1>{course.name}のセクション一覧</h1>
       <div>
         {!draggableMode && (
           <Flex gap='sm' mt='sm' justify='end'>
