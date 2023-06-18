@@ -18,7 +18,11 @@ export default async function handler(
           where: {
             id: id,
           },
-          include: { userAgent: true, articles: true, quizzes: true },
+          include: {
+            userAgent: true,
+            articles: { orderBy: { createdAt: 'asc' } },
+            quizzes: { orderBy: { createdAt: 'asc' } },
+          },
         })
         res.status(200).json({ data: section })
       } catch (err) {
@@ -27,11 +31,7 @@ export default async function handler(
       break
 
     case 'PUT':
-      // res.status(200).json({ data: body })
-      // break
-
       // 全部オプショナルなら、違うtypeの値入ってもzod通しちゃう
-      // apiValidation(req, res, sectionUpdateSchema, async () => {
       apiValidation(req, res, sectionUpdateSchema, async () => {
         const sectionRequest: {
           name: string
@@ -60,7 +60,11 @@ export default async function handler(
             id: id,
           },
           data: sectionRequest,
-          include: { userAgent: true, articles: true, quizzes: true },
+          include: {
+            userAgent: true,
+            articles: { orderBy: { createdAt: 'asc' } },
+            quizzes: { orderBy: { createdAt: 'asc' } },
+          },
         })
         res.status(200).json({ data: updatedSection })
       })
