@@ -6,19 +6,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  // api/courses
+  // api/v1/sections
   try {
-    const courses = await prisma.course.findMany({
+    const sections = await prisma.section.findMany({
       include: {
-        sections: {
-          include: { userAgent: true, articles: true, quizzes: true },
-          orderBy: { createdAt: 'asc' },
-        },
+        userAgent: true,
+        articles: { orderBy: { createdAt: 'asc' } },
+        quizzes: { orderBy: { createdAt: 'asc' } },
       },
       orderBy: { createdAt: 'asc' },
     })
-
-    res.status(200).json({ data: courses })
+    res.status(200).json({ data: sections })
   } catch (err) {
     res.status(400).json({ data: err })
   }
