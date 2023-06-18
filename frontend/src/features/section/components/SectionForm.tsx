@@ -1,5 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Alert, Button, Flex, Select, Stack, TextInput } from '@mantine/core'
+import {
+  Alert,
+  Button,
+  Flex,
+  Select,
+  Stack,
+  TextInput,
+  ThemeIcon,
+} from '@mantine/core'
 import { UserAgent } from '@prisma/client'
 import {
   IconAlertCircle,
@@ -49,9 +57,6 @@ const SectionQuizForm: FC<Props> = ({
     criteriaMode: 'all',
     defaultValues: { ...initValue, type: 'quiz' },
   })
-
-  // const { onSubmit, errorMessage, clearErrorMessage } =
-  //   useFormErrorHandling<SectionFormRequest>(onSubmitProps)
 
   // useEffectを使わないと、レンダリング中にsetStateを呼ぶことになりWarningが出る
   useEffect(() => {
@@ -210,9 +215,6 @@ export const SectionForm: FC<Props> = ({
   initValue,
   onDirty,
 }) => {
-  // const [sectionType, setSectionType] = useState<SectionType | undefined>(
-  //   initValue?.type,
-  // )
   const {
     register,
     handleSubmit,
@@ -234,8 +236,6 @@ export const SectionForm: FC<Props> = ({
     if (isDirty) onDirty()
   }, [isDirty, onDirty])
 
-  // name, type, courseId, scenarioGitHubUrl, userAgentId
-
   const sectionType = watch('type')
   return (
     <>
@@ -255,24 +255,30 @@ export const SectionForm: FC<Props> = ({
       {!sectionType && (
         <div className='flex justify-around'>
           <div
-            className='rounded-md cursor-pointer flex flex-col border-2 shadow-md p-2 gap-1 duration-300 items-center hover:bg-blue-50'
+            className='border rounded-md cursor-pointer flex flex-col bg-[#FEF5F4] shadow-md p-2 gap-1 duration-300 items-center'
             onClick={() => setValue('type', 'quiz')}
           >
-            <IconCurrencyQuetzal size='2rem' />
+            <ThemeIcon color='red' size='lg' variant='light' radius='md'>
+              <IconCurrencyQuetzal size='2rem' />
+            </ThemeIcon>
             小テスト
           </div>
           <div
-            className='rounded-md cursor-pointer flex flex-col border-2 shadow-md p-2 gap-1 duration-300 items-center hover:bg-blue-50'
+            className='border rounded-md cursor-pointer flex flex-col bg-[#E7F4FE] shadow-md p-2 gap-1 duration-300 items-center'
             onClick={() => setValue('type', 'article')}
           >
-            <IconArticle size='2rem' />
+            <ThemeIcon color='blue' size='lg' variant='light' radius='md'>
+              <IconArticle size='2rem' />
+            </ThemeIcon>
             テキスト
           </div>
           <div
-            className='rounded-md cursor-pointer flex flex-col border-2 shadow-md p-2 gap-1 duration-300 items-center hover:bg-blue-50'
+            className='border rounded-md cursor-pointer flex flex-col bg-[#F2F0FE] shadow-md p-2 gap-1 duration-300 items-center'
             onClick={() => setValue('type', 'sandbox')}
           >
-            <IconBox size='2rem' />
+            <ThemeIcon color='violet' size='lg' variant='light' radius='md'>
+              <IconBox size='2rem' />
+            </ThemeIcon>
             演習体験
           </div>
         </div>

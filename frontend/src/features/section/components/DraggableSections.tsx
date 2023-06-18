@@ -1,4 +1,4 @@
-import { Button, Flex } from '@mantine/core'
+import { Button, Flex, ThemeIcon } from '@mantine/core'
 import {
   IconArticle,
   IconBox,
@@ -19,12 +19,14 @@ type Props = {
   sections: SectionWithUserAgent[]
   onUpdateOrder: (sections: SectionWithUserAgent[]) => void
   className?: string
+  onClose?: () => void
 }
 
 export const DraggableSections: FC<Props> = ({
   sections: sectionList,
   onUpdateOrder,
   className = '',
+  onClose,
 }) => {
   const [sections, setSections] = useState(sectionList)
 
@@ -42,11 +44,27 @@ export const DraggableSections: FC<Props> = ({
 
   return (
     <div className={className}>
+      <Flex gap='sm' justify='end' align='center'>
+        <button onClick={onClose}>キャンセル</button>
+        <Button
+          onClick={() => {
+            onUpdateOrder(sections)
+            onClose?.()
+          }}
+        >
+          保存
+        </Button>
+      </Flex>
+
       {windowReady && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId='droppable'>
             {provided => (
-              <ul {...provided.droppableProps} ref={provided.innerRef}>
+              <ul
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className='mt-3'
+              >
                 {sections.map((section, index) => {
                   return (
                     <Draggable
@@ -64,13 +82,34 @@ export const DraggableSections: FC<Props> = ({
                             <IconGripVertical size='1.5rem' />
                             <div className='rounded-md flex border-2 shadow-md mb-3 w-full py-4 px-4 gap-3 items-center'>
                               {section.type === 'quiz' && (
-                                <IconCurrencyQuetzal size='1.5rem' />
+                                <ThemeIcon
+                                  color='red'
+                                  size='lg'
+                                  variant='light'
+                                  radius='md'
+                                >
+                                  <IconCurrencyQuetzal size='1.5rem' />
+                                </ThemeIcon>
                               )}
                               {section.type === 'article' && (
-                                <IconArticle size='1.5rem' />
+                                <ThemeIcon
+                                  color='blue'
+                                  size='lg'
+                                  variant='light'
+                                  radius='md'
+                                >
+                                  <IconArticle size='1.5rem' />
+                                </ThemeIcon>
                               )}
                               {section.type === 'sandbox' && (
-                                <IconBox size='1.5rem' />
+                                <ThemeIcon
+                                  color='violet'
+                                  size='lg'
+                                  variant='light'
+                                  radius='md'
+                                >
+                                  <IconBox size='1.5rem' />
+                                </ThemeIcon>
                               )}
                               {section.name}
                             </div>
@@ -86,10 +125,6 @@ export const DraggableSections: FC<Props> = ({
           </Droppable>
         </DragDropContext>
       )}
-
-      <div className='flex justify-end'>
-        <Button onClick={() => onUpdateOrder(sections)}>保存</Button>
-      </div>
     </div>
   )
 }

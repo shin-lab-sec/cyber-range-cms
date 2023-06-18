@@ -1,4 +1,4 @@
-import { Flex } from '@mantine/core'
+import { Flex, ThemeIcon } from '@mantine/core'
 import {
   IconArticle,
   IconBox,
@@ -27,12 +27,23 @@ export const SectionItem: FC<Props> = ({ section, onUpdate, onDelete }) => {
 
   return (
     <Flex align='center' gap='sm'>
-      <div className='rounded-md flex border-2 shadow-md mb-3 w-full py-4 px-4 items-center justify-between'>
+      <div className='rounded-md flex border-2 shadow-md w-full py-4 px-4 items-center justify-between'>
         <Flex align='center' gap='sm'>
-          {section.type === 'quiz' && <IconCurrencyQuetzal size='1.5rem' />}
-          {section.type === 'article' && <IconArticle size='1.5rem' />}
-          {section.type === 'sandbox' && <IconBox size='1.5rem' />}
-
+          {section.type === 'quiz' && (
+            <ThemeIcon color='red' size='lg' variant='light' radius='md'>
+              <IconCurrencyQuetzal size='1.5rem' />
+            </ThemeIcon>
+          )}
+          {section.type === 'article' && (
+            <ThemeIcon color='blue' size='lg' variant='light' radius='md'>
+              <IconArticle size='1.5rem' />
+            </ThemeIcon>
+          )}
+          {section.type === 'sandbox' && (
+            <ThemeIcon color='violet' size='lg' variant='light' radius='md'>
+              <IconBox size='1.5rem' />
+            </ThemeIcon>
+          )}
           {section.name}
         </Flex>
         <Flex align='center' gap='sm'>
