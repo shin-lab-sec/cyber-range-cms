@@ -22,7 +22,7 @@ import { useGetApi } from '@/hooks/useApi'
 const Courses: NextPage = () => {
   const [draggableMode, setDraggableMode] = useState(false)
   const searchParams = useSearchParams()
-  const id = searchParams.get('id') || '' // 一回目のレンダリングで正常なidが取得できる
+  const id = searchParams.get('courseId') || '' // 一回目のレンダリングで正常なidが取得できる
   const { data: course } = useGetApi<CourseWithSections>(`/courses/${id}`)
 
   const sectionIds = useMemo(
@@ -97,6 +97,7 @@ const Courses: NextPage = () => {
                 {orderedSections.map((section, index) => (
                   <SectionItem
                     key={index}
+                    courseId={id}
                     section={section}
                     onUpdate={(id: string, v: SectionFormRequest) =>
                       updateSection(id, v)

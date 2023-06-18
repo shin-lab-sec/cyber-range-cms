@@ -5,19 +5,26 @@ import {
   IconX,
   IconCurrencyQuetzal,
 } from '@tabler/icons-react'
+import Link from 'next/link'
 import { FC } from 'react'
 
 import { SectionFormRequest } from './SectionForm'
 import { UpdateSectionButton } from './UpdateSectionButton'
-import { SectionWithUserAgent } from '../types'
+import { SectionWithRelation } from '../types'
 
 type Props = {
-  section: SectionWithUserAgent
+  courseId: string
+  section: SectionWithRelation
   onUpdate: (id: string, v: SectionFormRequest) => void
   onDelete: (id: string) => void
 }
 
-export const SectionItem: FC<Props> = ({ section, onUpdate, onDelete }) => {
+export const SectionItem: FC<Props> = ({
+  courseId,
+  section,
+  onUpdate,
+  onDelete,
+}) => {
   const sectionFormRequest: SectionFormRequest = {
     name: section.name,
     type: section.type as 'quiz' | 'article' | 'sandbox',
@@ -44,7 +51,9 @@ export const SectionItem: FC<Props> = ({ section, onUpdate, onDelete }) => {
               <IconBox size='1.5rem' />
             </ThemeIcon>
           )}
-          {section.name}
+          <Link href={`/courses/${courseId}/${section.id}`}>
+            {section.name}
+          </Link>
         </Flex>
         <Flex align='center' gap='sm'>
           <UpdateSectionButton
