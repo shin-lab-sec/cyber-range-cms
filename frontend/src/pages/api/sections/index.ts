@@ -15,7 +15,11 @@ export default async function handler(
     case 'GET':
       try {
         const sections = await prisma.section.findMany({
-          include: { userAgent: true, articles: true, quizzes: true },
+          include: {
+            userAgent: true,
+            articles: { orderBy: { createdAt: 'asc' } },
+            quizzes: { orderBy: { createdAt: 'asc' } },
+          },
           orderBy: { createdAt: 'asc' },
         })
         res.status(200).json({ data: sections })
@@ -40,10 +44,6 @@ export default async function handler(
           course: { connect: { id: body.courseId } },
         }
 
-        // userAgentIdはオプショナルだけどconnectするから個別で追加
-        if (body.scenarioGitHubUrl) {
-          sectionRequest.scenarioGitHubUrl = body.scenarioGitHubUrl
-        }
         // userAgentIdはオプショナルだけどconnectするから個別で追加
         if (body.userAgentId) {
           sectionRequest.userAgent = { connect: { id: body.userAgentId } }

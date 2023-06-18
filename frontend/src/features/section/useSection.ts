@@ -5,7 +5,7 @@ import { useGetApi } from '@/hooks/useApi'
 import { deleteApi, postApi, putApi } from '@/utils/api'
 
 import { SectionFormRequest } from './components/SectionForm'
-import { SectionWithUserAgent } from './types'
+import { SectionWithRelation } from './types'
 import { CourseWithSections } from '../course'
 
 // 作成
@@ -68,7 +68,7 @@ export const useUpdateSection = (courseId: string) => {
     async (sectionId: string, params: SectionFormRequest) => {
       console.log('リクエスト', sectionId, params)
       try {
-        const updatedSection = await putApi<SectionWithUserAgent>(
+        const updatedSection = await putApi<SectionWithRelation>(
           `/sections/${sectionId}`,
           {
             ...params,

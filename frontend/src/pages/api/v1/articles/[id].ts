@@ -8,21 +8,14 @@ export default async function handler(
 ) {
   const id = String(req.query.id)
 
-  // api/v1/courses/[id]
+  // api/v1/articles/[id]
   try {
-    const course = await prisma.course.findUnique({
+    const article = await prisma.article.findUnique({
       where: {
         id: id,
       },
-      include: {
-        sections: {
-          include: { userAgent: true, articles: true, quizzes: true },
-          orderBy: { createdAt: 'asc' },
-        },
-      },
     })
-
-    res.status(200).json({ data: course })
+    res.status(200).json({ data: article })
   } catch (err) {
     res.status(400).json({ data: err })
   }

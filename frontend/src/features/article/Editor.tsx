@@ -13,7 +13,7 @@ export const Editor: FC<Props> = ({ markdown, setMarkdown }) => {
 
   return (
     <div>
-      <div data-color-mode='light' className='h-[calc(100vh-140px)] '>
+      <div data-color-mode='light' className='h-[calc(100vh-290px)] '>
         <MDEditor
           value={markdown}
           onChange={value => {

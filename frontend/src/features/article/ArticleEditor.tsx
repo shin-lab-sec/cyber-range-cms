@@ -1,18 +1,23 @@
-import { Tabs } from '@mantine/core'
+import { Button, Flex, Tabs } from '@mantine/core'
 import { IconPhoto, IconMessageCircle, IconSettings } from '@tabler/icons-react'
-import { NextPage } from 'next'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 
-import { Layout } from '@/components/Layout'
-import { Editor, Preview } from '@/features/article'
+import { Editor, Preview } from '.'
 
 type Mode = 'edit' | 'preview' | 'live'
-const Minio: NextPage = () => {
-  const [markdown, setMarkdown] = useState('')
+
+type Props = {
+  body: string
+  onSave: (v: string) => void
+  onDelete: () => void
+}
+
+export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
+  const [markdown, setMarkdown] = useState(body)
   const [mode, setMode] = useState<Mode>('live')
 
   return (
-    <Layout>
+    <div>
       <Tabs
         variant='outline'
         defaultValue='live'
@@ -43,15 +48,20 @@ const Minio: NextPage = () => {
           <Editor markdown={markdown} setMarkdown={setMarkdown} />
         </div>
         <div
-          className={`max-h-[calc(100vh-140px)] overflow-y-auto ${
+          className={`h-[calc(100vh-290px)] overflow-y-auto ${
             mode === 'edit' && 'hidden'
           } ${mode === 'live' && 'hidden md:block'}`}
         >
           <Preview markdown={markdown} />
         </div>
       </div>
-    </Layout>
+
+      <Flex mt='sm' gap='sm' justify='end'>
+        <Button onClick={onDelete} color='red'>
+          このページを削除
+        </Button>
+        <Button onClick={() => onSave(markdown)}>保存</Button>
+      </Flex>
+    </div>
   )
 }
-
-export default Minio

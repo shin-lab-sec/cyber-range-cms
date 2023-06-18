@@ -26,7 +26,7 @@ export const Layout: FC<Props> = ({ title, children }) => {
         </nav>
       </header>
 
-      <main className='mx-4 mt-8'>{children}</main>
+      <main className='my-6 mx-4'>{children}</main>
     </>
   )
 }
