@@ -66,28 +66,31 @@ const Courses: NextPage = () => {
     <Layout>
       <h1>{course.name}</h1>
       <div>
-        <Flex gap='sm' mt='sm' justify='end'>
-          <Flex gap='sm' align='center'>
-            <Flex
-              align='center'
-              className='cursor-pointer'
-              onClick={() => setDraggableMode(s => !s)}
-            >
-              <IconMenuOrder size='1.5rem' />
-              {draggableMode ? 'キャンセル' : '順番変更'}
+        {!draggableMode && (
+          <Flex gap='sm' mt='sm' justify='end'>
+            <Flex gap='sm' align='center'>
+              <Flex
+                align='center'
+                className='cursor-pointer'
+                onClick={() => setDraggableMode(s => !s)}
+              >
+                <IconMenuOrder size='1.5rem' />
+                順番変更
+              </Flex>
+              <CreateSectionButton onSubmit={createSection} />
             </Flex>
-            <CreateSectionButton onSubmit={createSection} />
           </Flex>
-        </Flex>
+        )}
 
         {orderedSections?.length ? (
-          <div className='mt-6'>
+          <div className='mt-3'>
             {draggableMode ? (
               <DraggableSections
                 sections={orderedSections}
                 onUpdateOrder={(sections: Section[]) =>
                   updateCourseSectionOrder(sections)
                 }
+                onClose={() => setDraggableMode(false)}
               />
             ) : (
               <Flex gap='sm' direction='column'>
