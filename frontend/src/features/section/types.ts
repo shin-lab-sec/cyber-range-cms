@@ -1,3 +1,7 @@
-import { UserAgent, Section } from '@prisma/client'
+import { UserAgent, Section, Article, Quiz } from '@prisma/client'
 
-export type SectionWithUserAgent = Section & { userAgent: UserAgent | null }
+export type SectionWithRelation = Section & {
+  userAgent: UserAgent | null
+  articles: Article[]
+  quizzes: Quiz[]
+}

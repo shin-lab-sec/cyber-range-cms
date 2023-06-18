@@ -13,11 +13,11 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 
-import { SectionWithUserAgent } from '../types'
+import { SectionWithRelation } from '../types'
 
 type Props = {
-  sections: SectionWithUserAgent[]
-  onUpdateOrder: (sections: SectionWithUserAgent[]) => void
+  sections: SectionWithRelation[]
+  onUpdateOrder: (sections: SectionWithRelation[]) => void
   className?: string
   onClose?: () => void
 }

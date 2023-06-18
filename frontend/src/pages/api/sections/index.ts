@@ -41,10 +41,6 @@ export default async function handler(
         }
 
         // userAgentIdはオプショナルだけどconnectするから個別で追加
-        if (body.scenarioGitHubUrl) {
-          sectionRequest.scenarioGitHubUrl = body.scenarioGitHubUrl
-        }
-        // userAgentIdはオプショナルだけどconnectするから個別で追加
         if (body.userAgentId) {
           sectionRequest.userAgent = { connect: { id: body.userAgentId } }
         }
