@@ -17,10 +17,10 @@ type Props = {
 
 export const SectionArticles: FC<Props> = ({ section }) => {
   const { articles } = section
-  const [selectedArticleIndex, setSelectedArticleIndex] = useState(0)
+  const [selectedPage, setSelectedPage] = useState(1)
   const selectedArticle = useMemo(
-    () => articles[selectedArticleIndex],
-    [articles, selectedArticleIndex],
+    () => articles[selectedPage - 1],
+    [articles, selectedPage],
   )
 
   const { createArticle } = useCreateArticle(section.id)
@@ -41,10 +41,9 @@ export const SectionArticles: FC<Props> = ({ section }) => {
         <div>
           <Flex gap='sm' justify='end' align='center'>
             <Flex>
-              {/* 0を1にする */}
               <Pagination
-                value={selectedArticleIndex + 1}
-                onChange={v => setSelectedArticleIndex(v - 1)}
+                value={selectedPage}
+                onChange={setSelectedPage}
                 total={articles.length}
               />
             </Flex>
@@ -60,7 +59,10 @@ export const SectionArticles: FC<Props> = ({ section }) => {
             key={selectedArticle.id}
             body={selectedArticle.body}
             onSave={body => updateArticle(selectedArticle.id, body)}
-            onDelete={() => deleteArticle(selectedArticle.id)}
+            onDelete={() => {
+              deleteArticle(selectedArticle.id)
+              setSelectedPage(1)
+            }}
           />
         </div>
       )}
