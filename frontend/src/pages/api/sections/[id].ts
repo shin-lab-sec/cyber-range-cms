@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/libs/prisma'
-import { apiValidation, sectionSchema } from '@/libs/validates'
+import { apiValidation, sectionUpdateSchema } from '@/libs/validates'
 
 export default async function handler(
   req: NextApiRequest,
@@ -32,18 +32,22 @@ export default async function handler(
 
       // 全部オプショナルなら、違うtypeの値入ってもzod通しちゃう
       // apiValidation(req, res, sectionUpdateSchema, async () => {
-      apiValidation(req, res, sectionSchema, async () => {
+      apiValidation(req, res, sectionUpdateSchema, async () => {
         const sectionRequest: {
           name: string
           type: string
           scenarioGitHubUrl: string
           course: { connect: { id: string } }
           userAgent?: { connect: { id: string } }
+          quizIds: string[]
+          articleIds: string[]
         } = {
           name: body.name,
           type: body.type,
           scenarioGitHubUrl: body.scenarioGitHubUrl,
           course: { connect: { id: body.courseId } },
+          quizIds: body.quizIds,
+          articleIds: body.articleIds,
         }
 
         // userAgentIdはオプショナルだけどconnectするから個別で追加

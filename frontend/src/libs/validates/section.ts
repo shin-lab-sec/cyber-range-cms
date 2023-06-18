@@ -47,22 +47,50 @@ export const sectionFormRequestSchema = z.union([
   sectionSandboxSchema,
 ])
 
-// オプショナルにするとこのtypeが機能しなくなる。 quizIds: [] でも通るなら行けそう
-// sectionQれぞれのスキーマをextendsして、ユニオンでsectionUpdateSchemaにする
-const sectionQuizUpdateSchema = sectionQuizSchema
-  .extend({
-    quizIds: z.array(z.string().nonempty('空のquizIdがあります')),
-  })
-  .partial()
-const sectionArticleUpdateSchema = sectionArticleSchema
-  .extend({
-    articleIds: z.array(z.string().nonempty('空のarticleIdがあります')),
-  })
-  .partial()
-const sectionSandboxUpdateSchema = sectionArticleUpdateSchema
+// 全てオプショナルにするとこのtypeが機能しなくなる。
+// quizIds・articleIdsだけオプショナルにして、quizIdsだけ更新するつもりでもsection全てを渡すようにする
+const sectionQuizUpdateSchema = sectionQuizSchema.extend({
+  quizIds: z.array(z.string().nonempty('空のquizIdがあります')).optional(),
+})
+const sectionArticleUpdateSchema = sectionArticleSchema.extend({
+  articleIds: z
+    .array(z.string().nonempty('空のarticleIdがあります'))
+    .optional(),
+})
+const sectionSandboxUpdateSchema = sectionSandboxSchema.extend({
+  articleIds: z
+    .array(z.string().nonempty('空のarticleIdがあります'))
+    .optional(),
+})
 
 export const sectionUpdateSchema = z.union([
   sectionQuizUpdateSchema,
   sectionArticleUpdateSchema,
   sectionSandboxUpdateSchema,
 ])
+
+// quizIds以外のquiz, quizIds含めたquiz ,... 6パターンのみ許可するスキーマ
+
+// type Update = z.infer<typeof sectionUpdateSchema>
+
+// const article: Update = { type: 'article', name: 'f' }
+// const articleWithArticleIds: Update = {
+//   type: 'article',
+//   name: 'f',
+//   articleIds: ['f'],
+// }
+// const quiz: Update = { type: 'quiz', name: 'f' }
+// const quizWithQuizIds: Update = { type: 'quiz', name: 'f', quizIds: ['f'] }
+// const sandbox: Update = {
+//   type: 'sandbox',
+//   name: 'f',
+//   scenarioGitHubUrl: '',
+//   userAgentId: 'a',
+// }
+// const sandboxWithArticleIds: Update = {
+//   type: 'sandbox',
+//   name: 'f',
+//   userAgentId: 'f',
+//   scenarioGitHubUrl: '',
+//   articleIds: ['f'],
+// }
