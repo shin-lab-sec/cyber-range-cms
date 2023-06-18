@@ -4,7 +4,7 @@ import { NextPage } from 'next'
 import { useState } from 'react'
 
 import { Layout } from '@/components/Layout'
-import { Editor, Preview } from '@/features/editor'
+import { Editor, Preview } from '@/features/article'
 
 type Mode = 'edit' | 'preview' | 'live'
 const Minio: NextPage = () => {
