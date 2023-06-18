@@ -35,7 +35,11 @@ const Courses: NextPage = () => {
             <SectionArticles section={section} />
           </div>
         )}
-        {section.type === 'sandbox' && <div>sandbox</div>}
+        {section.type === 'sandbox' && (
+          <div>
+            <SectionArticles section={section} />
+          </div>
+        )}
       </div>
     </Layout>
   )

@@ -29,9 +29,9 @@ export const SectionArticles: FC<Props> = ({ section }) => {
 
   if (!articles.length) {
     return (
-      <div>
+      <Flex justify='center' className='mt-200px'>
         <Button onClick={createArticle}>記事を作成</Button>
-      </div>
+      </Flex>
     )
   }
 
