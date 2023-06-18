@@ -48,7 +48,7 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
           <Editor markdown={markdown} setMarkdown={setMarkdown} />
         </div>
         <div
-          className={`max-h-[calc(100vh-140px)] overflow-y-auto ${
+          className={`h-[calc(100vh-290px)] overflow-y-auto ${
             mode === 'edit' && 'hidden'
           } ${mode === 'live' && 'hidden md:block'}`}
         >

@@ -37,7 +37,6 @@ export const SectionArticles: FC<Props> = ({ section }) => {
 
   return (
     <div>
-      {JSON.stringify(section.articleIds, null, 2)}
       {selectedArticle && (
         <div>
           <Flex gap='sm' justify='end' align='center'>
