@@ -97,14 +97,14 @@ const Courses: NextPage = () => {
           }
 
           return (
-            <Flex align='center'>
+            <Flex align='center' gap='sm'>
               <UpdateCourseButton
                 onSubmit={v => updateCourse(course.id, v)}
                 initValue={courseFormRequest}
               />
               <IconX
-                size={44}
-                className='cursor-pointer mt-0.5 p-2.5'
+                size='1.5rem'
+                className='cursor-pointer'
                 onClick={() => deleteCourse(course.id)}
               />
             </Flex>

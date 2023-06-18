@@ -1,8 +1,9 @@
 import { Flex } from '@mantine/core'
 import { Section } from '@prisma/client'
+import { IconMenuOrder } from '@tabler/icons-react'
 import { NextPage } from 'next'
 import { useSearchParams } from 'next/navigation'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import { Layout } from '@/components/Layout'
 import { CourseWithSections } from '@/features/course'
@@ -14,10 +15,12 @@ import {
   useDeleteSection,
   useUpdateCourseSectionOrder,
   useUpdateSection,
+  SectionItem,
 } from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
 
 const Courses: NextPage = () => {
+  const [draggableMode, setDraggableMode] = useState(false)
   const searchParams = useSearchParams()
   const id = searchParams.get('id') || '' // 一回目のレンダリングで正常なidが取得できる
   const { data: course } = useGetApi<CourseWithSections>(`/courses/${id}`)
@@ -64,23 +67,43 @@ const Courses: NextPage = () => {
       <h1>{course.name}</h1>
       <div>
         <Flex gap='sm' mt='sm' justify='end'>
-          <CreateSectionButton onSubmit={createSection} />
+          <Flex gap='sm' align='center'>
+            <Flex
+              align='center'
+              className='cursor-pointer'
+              onClick={() => setDraggableMode(s => !s)}
+            >
+              <IconMenuOrder size='1.5rem' />
+              {draggableMode ? 'キャンセル' : '順番変更'}
+            </Flex>
+            <CreateSectionButton onSubmit={createSection} />
+          </Flex>
         </Flex>
 
         {orderedSections?.length ? (
-          <DraggableSections
-            // key={orderedSectionIds.join('')}
-            key={JSON.stringify(orderedSections)}
-            sections={orderedSections}
-            onUpdateOrder={(sections: Section[]) =>
-              updateCourseSectionOrder(sections)
-            }
-            onUpdate={(id: string, v: SectionFormRequest) =>
-              updateSection(id, v)
-            }
-            onRemove={(sectionId: string) => deleteSection(sectionId)}
-            className='mx-auto mt-6'
-          />
+          <div className='mt-6'>
+            {draggableMode ? (
+              <DraggableSections
+                sections={orderedSections}
+                onUpdateOrder={(sections: Section[]) =>
+                  updateCourseSectionOrder(sections)
+                }
+              />
+            ) : (
+              <>
+                {orderedSections.map((section, index) => (
+                  <SectionItem
+                    key={index}
+                    section={section}
+                    onUpdate={(id: string, v: SectionFormRequest) =>
+                      updateSection(id, v)
+                    }
+                    onDelete={(sectionId: string) => deleteSection(sectionId)}
+                  />
+                ))}
+              </>
+            )}
+          </div>
         ) : null}
       </div>
     </Layout>

@@ -76,14 +76,14 @@ const UserAgents: NextPage = () => {
             gitHubUrl: userAgent.gitHubUrl,
           }
           return (
-            <Flex align='center'>
+            <Flex align='center' gap='sm'>
               <UpdateUserAgentButton
                 onSubmit={v => updateUserAgent(userAgent.id, v)}
                 initValue={userAgentFormRequest}
               />
               <IconX
-                size={44}
-                className='cursor-pointer mt-0.5 p-2.5'
+                size='1.5rem'
+                className='cursor-pointer'
                 onClick={() => deleteUserAgent(userAgent.id)}
               />
             </Flex>

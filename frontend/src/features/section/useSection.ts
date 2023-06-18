@@ -70,7 +70,6 @@ export const useUpdateSection = (courseId: string) => {
       try {
         const updatedSection = await putApi<SectionWithUserAgent>(
           `/sections/${sectionId}`,
-          // params,
           {
             ...params,
             courseId,
