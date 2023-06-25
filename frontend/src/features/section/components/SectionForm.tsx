@@ -253,7 +253,7 @@ export const SectionForm: FC<Props> = ({
         </Alert>
       )}
       {!sectionType && (
-        <div className='flex justify-around'>
+        <div className='text-sm grid gap-3 grid-cols-3'>
           <div
             className='border rounded-md cursor-pointer flex flex-col bg-[#FEF5F4] shadow-md p-2 gap-1 duration-300 items-center'
             onClick={() => setValue('type', 'quiz')}
@@ -261,7 +261,7 @@ export const SectionForm: FC<Props> = ({
             <ThemeIcon color='red' size='lg' variant='light' radius='md'>
               <IconCurrencyQuetzal size='2rem' />
             </ThemeIcon>
-            小テスト
+            テスト
           </div>
           <div
             className='border rounded-md cursor-pointer flex flex-col bg-[#E7F4FE] shadow-md p-2 gap-1 duration-300 items-center'
@@ -270,7 +270,7 @@ export const SectionForm: FC<Props> = ({
             <ThemeIcon color='blue' size='lg' variant='light' radius='md'>
               <IconArticle size='2rem' />
             </ThemeIcon>
-            テキスト
+            解説記事
           </div>
           <div
             className='border rounded-md cursor-pointer flex flex-col bg-[#F2F0FE] shadow-md p-2 gap-1 duration-300 items-center'
@@ -279,7 +279,7 @@ export const SectionForm: FC<Props> = ({
             <ThemeIcon color='violet' size='lg' variant='light' radius='md'>
               <IconBox size='2rem' />
             </ThemeIcon>
-            演習体験
+            サンドボックス
           </div>
         </div>
       )}

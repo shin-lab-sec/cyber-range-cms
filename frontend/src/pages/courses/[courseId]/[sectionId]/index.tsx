@@ -2,7 +2,11 @@ import { NextPage } from 'next'
 import { useSearchParams } from 'next/navigation'
 
 import { Layout } from '@/components/Layout'
-import { SectionWithRelation, SectionArticles } from '@/features/section'
+import {
+  SectionWithRelation,
+  SectionArticles,
+  SectionQuizzes,
+} from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
 
 const Courses: NextPage = () => {
@@ -29,7 +33,11 @@ const Courses: NextPage = () => {
         {section.type === 'sandbox' && 'の記事一覧'}
       </h1>
       <div>
-        {section.type === 'quiz' && <div>quiz</div>}
+        {section.type === 'quiz' && (
+          <div>
+            <SectionQuizzes section={section} />
+          </div>
+        )}
         {section.type === 'article' && (
           <div>
             <SectionArticles section={section} />
