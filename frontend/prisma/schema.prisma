@@ -72,9 +72,10 @@ model Article {
 
 model Quiz {
   id          String   @id @default(cuid())
+  type        String   @db.VarChar(255) // "text" | "radio" | "checkbox"
   question    String
-  choices     String[]
-  answer      String   @db.VarChar(255)
+  choices     String[] // [] | ["選択肢1", "選択肢2", "選択肢3", "選択肢4"]
+  answers     String[] // ["模範解答"] | ["選択肢1"] | ["選択肢1", "選択肢2"]
   explanation String
   sectionId   String   @db.VarChar(255)
   section     Section  @relation(fields: [sectionId], references: [id])
