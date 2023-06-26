@@ -1,4 +1,7 @@
 export * from './apiValidation'
+export * from './article'
 export * from './course'
+export * from './fileUpload'
+export * from './quiz'
 export * from './section'
 export * from './userAgent'

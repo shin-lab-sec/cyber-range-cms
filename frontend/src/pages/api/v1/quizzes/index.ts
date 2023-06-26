@@ -7,14 +7,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  // api/v1/articles
+  // api/v1/quizzes
   await runMiddleware(req, res) // corsチェック
 
   try {
-    const articles = await prisma.article.findMany({
+    const quizzes = await prisma.quiz.findMany({
       orderBy: { createdAt: 'asc' },
     })
-    res.status(200).json({ data: articles })
+    res.status(200).json({ data: quizzes })
   } catch (err) {
     res.status(400).json({ data: err })
   }

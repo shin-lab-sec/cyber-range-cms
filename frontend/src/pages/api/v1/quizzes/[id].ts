@@ -7,18 +7,18 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  // api/v1/articles/[id]
+  // api/v1/quizzes/[id]
   const id = String(req.query.id)
 
   await runMiddleware(req, res) // corsチェック
 
   try {
-    const article = await prisma.article.findUnique({
+    const quiz = await prisma.quiz.findUnique({
       where: {
         id: id,
       },
     })
-    res.status(200).json({ data: article })
+    res.status(200).json({ data: quiz })
   } catch (err) {
     res.status(400).json({ data: err })
   }
