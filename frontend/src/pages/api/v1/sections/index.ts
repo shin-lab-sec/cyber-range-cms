@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+import { runMiddleware } from '@/libs/cors'
 import prisma from '@/libs/prisma'
 
 export default async function handler(
@@ -7,6 +8,8 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   // api/v1/sections
+  await runMiddleware(req, res) // corsチェック
+
   try {
     const sections = await prisma.section.findMany({
       include: {

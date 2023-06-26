@@ -7,18 +7,28 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  // api/v1/useragents/[id]
+  // api/v1/articles/[id]
   const id = String(req.query.id)
 
   await runMiddleware(req, res) // corsチェック
 
   try {
-    const userAgent = await prisma.userAgent.findUnique({
+    const course = await prisma.course.findUnique({
       where: {
         id: id,
       },
+      include: {
+        sections: {
+          include: {
+            userAgent: true,
+            articles: { orderBy: { createdAt: 'asc' } },
+            quizzes: { orderBy: { createdAt: 'asc' } },
+          },
+          orderBy: { createdAt: 'asc' },
+        },
+      },
     })
-    res.status(200).json({ data: userAgent })
+    res.status(200).json({ data: course })
   } catch (err) {
     res.status(400).json({ data: err })
   }

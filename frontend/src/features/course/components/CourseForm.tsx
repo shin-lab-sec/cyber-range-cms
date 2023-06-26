@@ -9,11 +9,12 @@ import {
   Textarea,
 } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
-import { FC, useEffect } from 'react'
+import { ChangeEvent, FC, useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
+import { useUploadFile } from '@/hooks/useUploadFile'
 import { courseSchema } from '@/libs/validates'
 
 export type CourseFormRequest = z.infer<typeof courseSchema>
@@ -39,7 +40,7 @@ export const CourseForm: FC<Props> = ({
   } = useForm<CourseFormRequest>({
     resolver: zodResolver(courseSchema),
     criteriaMode: 'all',
-    defaultValues: initValue,
+    defaultValues: initValue ?? { imageUrl: '' },
   })
 
   const { onSubmit, errorMessage, clearErrorMessage } =
@@ -49,6 +50,22 @@ export const CourseForm: FC<Props> = ({
   useEffect(() => {
     if (isDirty) onDirty()
   }, [isDirty, onDirty])
+
+  // 画像アップロード
+  const { uploadFile } = useUploadFile()
+
+  const onChangeFile = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      // file選択していない
+      if (!e.target.files || e.target.files.length === 0) return
+
+      const file = e.target.files[0] // ファイルを取得
+
+      const url = await uploadFile(file)
+      if (url) setValue('imageUrl', url)
+    },
+    [setValue, uploadFile],
+  )
 
   return (
     <>
@@ -105,14 +122,10 @@ export const CourseForm: FC<Props> = ({
             {...register('organization')}
           />
 
-          {/* ここは何とかする */}
-          {/* <FileInput {...register("imageUrl")} /> */}
-          <TextInput
-            label='コース画像'
-            error={errors.imageUrl?.message}
-            placeholder='FileInputだと...register()出来ないのでいい感じにする'
-            {...register('imageUrl')}
-          />
+          <label>
+            コース画像
+            <input type='file' onChange={onChangeFile} />
+          </label>
 
           <Flex justify='end'>
             <Button type='submit'>{submitButtonName}</Button>
