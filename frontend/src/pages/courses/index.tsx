@@ -47,7 +47,6 @@ const Courses: NextPage = () => {
         ),
       },
       {
-        accessorKey: 'id', // 適当
         header: 'セクション数',
         maxSize: 0,
         Cell: ({
@@ -59,6 +58,37 @@ const Courses: NextPage = () => {
       {
         accessorKey: 'level',
         header: '難易度',
+        maxSize: 0,
+        Cell: ({ cell }) => (
+          <div className='max-w-300px break-words'>
+            {String(cell.getValue())}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'imageUrl',
+        header: '画像',
+        maxSize: 0,
+        Cell: ({ cell }) => (
+          <div className='max-w-300px break-words'>
+            {String(cell.getValue())}
+            <img src={String(cell.getValue())} alt='' />
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'author',
+        header: '製作者',
+        maxSize: 0,
+        Cell: ({ cell }) => (
+          <div className='max-w-300px break-words'>
+            {String(cell.getValue())}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'organization',
+        header: '所属',
         maxSize: 0,
         Cell: ({ cell }) => (
           <div className='max-w-300px break-words'>
