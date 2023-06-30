@@ -236,6 +236,7 @@ export const QuizForm: FC<Props> = ({
                 error={errors.answers?.message}
                 placeholder='ウェブページに悪意のあるスクリプトを挿入する攻撃手法'
                 withAsterisk
+                defaultValue={initValue?.answers[0]}
                 onChange={e => {
                   if (!e.target.value.length) {
                     setError('answers', {
@@ -261,6 +262,7 @@ export const QuizForm: FC<Props> = ({
                 withAsterisk
                 disabled={!choices.length}
                 data={choices}
+                defaultValue={initValue?.answers[0]}
                 onChange={(value: string) => {
                   setValue('answers', [value], {
                     shouldDirty: true,
