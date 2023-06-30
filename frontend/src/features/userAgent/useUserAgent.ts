@@ -46,7 +46,7 @@ export const useUpdateUserAgent = () => {
         console.log('更新に成功', updatedUserAgent)
 
         if (!userAgents) return
-        // 対象のidだけ更新されたカリキュラムに置き換える
+        // 対象のidだけ更新されたユーザーエージェントに置き換える
         const updatedUserAgents = userAgents.map(v =>
           v.id === id ? updatedUserAgent : v,
         )
@@ -76,7 +76,7 @@ export const useDeleteUserAgent = () => {
         console.log('削除に成功')
 
         if (!userAgents) return
-        // カリキュラム一覧から対象のidのカリキュラムを除く
+        // ユーザーエージェント一覧から対象のidのユーザーエージェントを除く
         const filteredUserAgents = userAgents.filter(v => v.id !== id)
         // 再度データを取得しキャッシュを更新する
         mutateUserAgents(filteredUserAgents)

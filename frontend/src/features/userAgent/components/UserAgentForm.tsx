@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Alert, Button, Flex, Stack, TextInput } from '@mantine/core'
+import { Alert, Button, Flex, Select, Stack, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { FC, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -26,6 +26,8 @@ export const UserAgentForm: FC<Props> = ({
   const {
     register,
     handleSubmit,
+    setValue,
+    clearErrors,
     formState: { errors, isDirty },
   } = useForm<UserAgentFormRequest>({
     resolver: zodResolver(userAgentSchema),
@@ -73,6 +75,37 @@ export const UserAgentForm: FC<Props> = ({
             error={errors.gitHubUrl?.message}
             {...register('gitHubUrl')}
           />
+          <Select
+            label='仮想環境のタイプ'
+            placeholder='体験する時の環境を選択してください'
+            withAsterisk
+            onChange={(e: 'vdi' | 'terminal') => {
+              setValue('type', e)
+              clearErrors('type')
+            }}
+            data={[
+              { label: '仮想デスクトップ', value: 'vdi' },
+              { label: 'ターミナル', value: 'terminal' },
+            ]}
+            defaultValue={initValue?.type || 'vdi'}
+            error={errors.type?.message}
+          />
+
+          <TextInput
+            label='制作者名'
+            error={errors.author?.message}
+            placeholder='サイパス太郎'
+            withAsterisk
+            {...register('author')}
+          />
+          <TextInput
+            label='所属'
+            error={errors.organization?.message}
+            placeholder='サイパス大学'
+            withAsterisk
+            {...register('organization')}
+          />
+
           <Flex justify='end'>
             <Button type='submit'>{submitButtonName}</Button>
           </Flex>

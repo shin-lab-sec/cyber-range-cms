@@ -12,7 +12,7 @@ import {
   useCreateCourse,
   useUpdateCourse,
   useDeleteCourse,
-  CourseWithCurriculums,
+  CourseWithSections,
   CourseFormRequest,
   UpdateCourseButton,
 } from '@/features/course'
@@ -20,13 +20,13 @@ import { useGetApi } from '@/hooks/useApi'
 import { convertToJapanTime } from '@/utils/convertToJapanTime'
 
 const Courses: NextPage = () => {
-  const { data: courses } = useGetApi<CourseWithCurriculums[]>(`/courses`)
+  const { data: courses } = useGetApi<CourseWithSections[]>(`/courses`)
 
   const { createCourse } = useCreateCourse()
   const { updateCourse } = useUpdateCourse()
   const { deleteCourse } = useDeleteCourse()
 
-  const columns = useMemo<MRT_ColumnDef<CourseWithCurriculums>[]>(
+  const columns = useMemo<MRT_ColumnDef<CourseWithSections>[]>(
     () => [
       {
         accessorKey: 'name',
@@ -47,20 +47,48 @@ const Courses: NextPage = () => {
         ),
       },
       {
-        accessorKey: 'id', // 適当
-        header: 'カリキュラム数',
+        header: 'セクション数',
         maxSize: 0,
         Cell: ({
           row: {
-            original: { curriculums },
+            original: { sections },
           },
-        }) => (
-          <div className='max-w-300px break-words'>{curriculums.length}</div>
-        ),
+        }) => <div className='max-w-300px break-words'>{sections.length}</div>,
       },
       {
         accessorKey: 'level',
         header: '難易度',
+        maxSize: 0,
+        Cell: ({ cell }) => (
+          <div className='max-w-300px break-words'>
+            {String(cell.getValue())}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'imageUrl',
+        header: '画像',
+        maxSize: 0,
+        Cell: ({ cell }) => (
+          <div className='max-w-300px break-words'>
+            {String(cell.getValue())}
+            <img src={String(cell.getValue())} alt='' />
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'author',
+        header: '製作者',
+        maxSize: 0,
+        Cell: ({ cell }) => (
+          <div className='max-w-300px break-words'>
+            {String(cell.getValue())}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'organization',
+        header: '所属',
         maxSize: 0,
         Cell: ({ cell }) => (
           <div className='max-w-300px break-words'>
@@ -93,17 +121,20 @@ const Courses: NextPage = () => {
             name: course.name,
             level: course.level as 1 | 2 | 3,
             description: course.description ?? '',
+            imageUrl: course.imageUrl ?? '',
+            author: course.author,
+            organization: course.organization,
           }
 
           return (
-            <Flex align='center'>
+            <Flex align='center' gap='sm'>
               <UpdateCourseButton
                 onSubmit={v => updateCourse(course.id, v)}
                 initValue={courseFormRequest}
               />
               <IconX
-                size={44}
-                className='cursor-pointer mt-0.5 p-2.5'
+                size='1.5rem'
+                className='cursor-pointer'
                 onClick={() => deleteCourse(course.id)}
               />
             </Flex>

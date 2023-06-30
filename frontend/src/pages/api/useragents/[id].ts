@@ -34,6 +34,9 @@ export default async function handler(
           data: {
             name: body.name,
             gitHubUrl: body.gitHubUrl,
+            type: body.type,
+            author: body.author,
+            organization: body.organization,
           },
         })
         res.status(200).json({ data: updatedUserAgent })

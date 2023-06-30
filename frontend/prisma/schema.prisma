@@ -4,51 +4,99 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql" // "mysql"
   url      = env("DATABASE_URL")
 }
 
+// Course, Scenario, UserAgentに autor, organization
+// Section, Quiz, Article は親で順番を保持する
+
 model Course {
-  id            String                     @id @default(cuid())
-  name          String                     @unique
-  description   String?
-  level         Int                        @default(1)
-  curriculumIds String                     @default("") @db.VarChar(1000)
-  curriculums   CourseCurriculumRelation[]
-  createdAt     DateTime                   @default(now())
-  updatedAt     DateTime                   @default(now()) @updatedAt()
+  id           String    @id @default(cuid())
+  name         String    @db.VarChar(255)
+  description  String
+  level        Int       @default(1)
+  imageUrl     String?   @db.VarChar(255)
+  sections     Section[]
+  sectionIds   String[]
+  author       String    @db.VarChar(255)
+  organization String    @db.VarChar(255)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now()) @updatedAt()
+
+  @@unique([name, author, organization])
 }
 
-model Curriculum {
-  id          String                     @id @default(cuid())
-  name        String                     @unique
-  description String?
-  gitHubUrl   String?
-  imageUrl    String?
-  articleUrl  String?
-  courses     CourseCurriculumRelation[]
-  userAgent   UserAgent                  @relation(fields: [userAgentId], references: [id], onDelete: Cascade)
-  userAgentId String
-  createdAt   DateTime                   @default(now())
-  updatedAt   DateTime                   @default(now()) @updatedAt()
+model Section {
+  id                String     @id @default(cuid())
+  name              String     @db.VarChar(255)
+  type              String     @db.VarChar(255) // "quiz" | "article" | "sandbox"
+  quizzes           Quiz[]
+  quizIds           String[]
+  articles          Article[]
+  articleIds        String[]
+  scenarioGitHubUrl String?    @db.VarChar(255) // べた張り or 既存のシナリオから選択
+  userAgentId       String?    @db.VarChar(255)
+  userAgent         UserAgent? @relation(fields: [userAgentId], references: [id], onDelete: Cascade)
+
+  courseId  String   @db.VarChar(255)
+  course    Course   @relation(fields: [courseId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt()
+
+  @@unique([name, courseId])
 }
 
-model CourseCurriculumRelation {
-  course       Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  courseId     String
-  curriculum   Curriculum @relation(fields: [curriculumId], references: [id], onDelete: Cascade)
-  curriculumId String
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @default(now()) @updatedAt()
+// 1日一回GitHubActionのバッチ処理で、SectionのgitHubUrlを全取得してcypas.jsonからメタ情報取得して、テーブルを更新する
+model Scenario {
+  id           String   @id @default(cuid())
+  name         String   @db.VarChar(255)
+  description  String
+  gitHubUrl    String   @db.VarChar(255)
+  author       String   @db.VarChar(255)
+  organization String   @db.VarChar(255)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt()
 
-  @@id([courseId, curriculumId])
+  @@unique([name, author, organization])
 }
 
+model Article {
+  id        String   @id @default(cuid())
+  body      String
+  sectionId String?  @db.VarChar(255)
+  section   Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt()
+}
+
+model Quiz {
+  id          String   @id @default(cuid())
+  type        String   @db.VarChar(255) // "text" | "radio" | "checkbox"
+  question    String
+  choices     String[] // [] | ["選択肢1", "選択肢2", "選択肢3", "選択肢4"]
+  answers     String[] // ["模範解答"] | ["選択肢1"] | ["選択肢1", "選択肢2"]
+  explanation String
+  sectionId   String   @db.VarChar(255)
+  section     Section  @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt()
+
+  @@unique([question, sectionId])
+}
+
+// 仮想デスクトップ、ターミナルの2択にする
+// 他の人に作成させない？
 model UserAgent {
-  id         String       @id @default(cuid())
-  name       String       @unique
-  gitHubUrl  String
-  Curriculum Curriculum[]
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @default(now()) @updatedAt()
+  id           String    @id @default(cuid())
+  name         String    @db.VarChar(255)
+  gitHubUrl    String    @db.VarChar(255)
+  type         String    @db.VarChar(255) // "vdi" | "terminal"
+  Sections     Section[]
+  author       String    @db.VarChar(255)
+  organization String    @db.VarChar(255)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now()) @updatedAt()
+
+  @@unique([name, author, organization])
 }
