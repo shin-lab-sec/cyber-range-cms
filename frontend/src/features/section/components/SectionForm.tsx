@@ -14,6 +14,7 @@ import {
   IconCurrencyQuetzal,
   IconArticle,
   IconBox,
+  IconLoader2,
 } from '@tabler/icons-react'
 import Link from 'next/link'
 import { FC, useEffect } from 'react'
@@ -154,6 +155,13 @@ const SectionSandboxForm: FC<{
   >
 }> = ({ register, errors, initValue, setValue, clearErrors }) => {
   const { data: userAgents } = useGetApi<UserAgent[]>('/useragents')
+
+  if (!userAgents)
+    return (
+      <div className='text-center'>
+        <IconLoader2 size='1.5rem' className='animate-spin' />
+      </div>
+    )
 
   return (
     <Stack>
