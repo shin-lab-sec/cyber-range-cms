@@ -65,7 +65,7 @@ model Article {
   id        String   @id @default(cuid())
   body      String
   sectionId String?  @db.VarChar(255)
-  section   Section? @relation(fields: [sectionId], references: [id])
+  section   Section? @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt()
 }
@@ -78,7 +78,7 @@ model Quiz {
   answers     String[] // ["模範解答"] | ["選択肢1"] | ["選択肢1", "選択肢2"]
   explanation String
   sectionId   String   @db.VarChar(255)
-  section     Section  @relation(fields: [sectionId], references: [id])
+  section     Section  @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt()
 
