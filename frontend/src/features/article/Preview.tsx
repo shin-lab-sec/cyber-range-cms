@@ -13,8 +13,6 @@ export const Preview: FC<Props> = ({ markdown }) => {
 
   const [windowReady, setWindowReady] = useState(false)
 
-  console.log('preview')
-
   useEffect(() => {
     import('zenn-embed-elements')
     setWindowReady(true)

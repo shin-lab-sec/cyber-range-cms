@@ -1,5 +1,5 @@
 import { Button, Flex, Tabs } from '@mantine/core'
-import { useMediaQuery } from '@mantine/hooks'
+import { useMediaQuery, useDebouncedState } from '@mantine/hooks'
 import {
   IconPhoto,
   IconMessageCircle,
@@ -12,7 +12,6 @@ import { Editor, Preview } from '.'
 
 type Mode = 'edit' | 'preview' | 'live'
 type EditorState = 'clean' | 'dirty' | 'saving' | 'saved'
-
 type Props = {
   body: string
   onSave: (v: string) => void
@@ -20,11 +19,11 @@ type Props = {
 }
 
 export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
-  const [markdown, setMarkdown] = useState(body)
+  // setの間隔が500ms以上で、debouncedに反映される
+  const [markdown, setMarkdown] = useDebouncedState(body, 500)
   const [mode, setMode] = useState<Mode>('live')
-
-  // 保存できない dirty saving saved
   const [editorState, setEditorState] = useState<EditorState>('clean')
+  const isMdScreen = useMediaQuery('(min-width: 768px)')
 
   const onClickSave = useCallback(async () => {
     if (editorState !== 'dirty') return
@@ -36,9 +35,7 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
     setTimeout(() => {
       setEditorState('clean')
     }, 2000)
-  }, [editorState, markdown, onSave])
-
-  const isMdScreen = useMediaQuery('(min-width: 768px)')
+  }, [markdown, editorState, onSave])
 
   return (
     <div>
@@ -71,8 +68,8 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
       >
         <div className={`${mode === 'preview' && 'hidden'}`}>
           <Editor
-            markdown={markdown}
-            setMarkdown={setMarkdown}
+            body={body}
+            setMarkdown={(v: string) => setMarkdown(v)}
             onSave={onClickSave}
             onDirty={() => setEditorState('dirty')}
           />
