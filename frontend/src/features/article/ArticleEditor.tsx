@@ -47,13 +47,11 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
         <div className={`${mode === 'preview' && 'hidden'}`}>
           <Editor markdown={markdown} setMarkdown={setMarkdown} />
         </div>
-        <div
-          className={`h-[calc(100vh-290px)] overflow-y-auto ${
-            mode === 'edit' && 'hidden'
-          } ${mode === 'live' && 'hidden md:block'}`}
-        >
-          <Preview markdown={markdown} />
-        </div>
+        {/* preview、liveでmd以上の時表示する */}
+        {(mode === 'preview' || (mode === 'live' && isMdScreen)) && (
+          <div className='h-[calc(100vh-290px)] overflow-y-auto'>
+            <Preview markdown={markdown} />
+          </div>
       </div>
 
       <Flex mt='sm' gap='sm' justify='end'>
