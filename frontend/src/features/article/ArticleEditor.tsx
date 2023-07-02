@@ -1,10 +1,17 @@
 import { Button, Flex, Tabs } from '@mantine/core'
-import { IconPhoto, IconMessageCircle, IconSettings } from '@tabler/icons-react'
-import { FC, useState } from 'react'
+import { useMediaQuery } from '@mantine/hooks'
+import {
+  IconPhoto,
+  IconMessageCircle,
+  IconSettings,
+  IconLoader2,
+} from '@tabler/icons-react'
+import { FC, useCallback, useState } from 'react'
 
 import { Editor, Preview } from '.'
 
 type Mode = 'edit' | 'preview' | 'live'
+type EditorState = 'clean' | 'dirty' | 'saving' | 'saved'
 
 type Props = {
   body: string
@@ -15,6 +22,23 @@ type Props = {
 export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
   const [markdown, setMarkdown] = useState(body)
   const [mode, setMode] = useState<Mode>('live')
+
+  // 保存できない dirty saving saved
+  const [editorState, setEditorState] = useState<EditorState>('clean')
+
+  const onClickSave = useCallback(async () => {
+    if (editorState !== 'dirty') return
+
+    setEditorState('saving')
+    await onSave(markdown)
+    setEditorState('saved')
+
+    setTimeout(() => {
+      setEditorState('clean')
+    }, 2000)
+  }, [editorState, markdown, onSave])
+
+  const isMdScreen = useMediaQuery('(min-width: 768px)')
 
   return (
     <div>
@@ -39,26 +63,46 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
           </Tabs.Tab>
         </Tabs.List>
       </Tabs>
+
       <div
         className={`break-words ${
           mode === 'live' && 'md:(grid grid-cols-2 gap-3)'
         }`}
       >
         <div className={`${mode === 'preview' && 'hidden'}`}>
-          <Editor markdown={markdown} setMarkdown={setMarkdown} />
+          <Editor
+            markdown={markdown}
+            setMarkdown={setMarkdown}
+            onSave={onClickSave}
+            onDirty={() => setEditorState('dirty')}
+          />
         </div>
         {/* preview、liveでmd以上の時表示する */}
         {(mode === 'preview' || (mode === 'live' && isMdScreen)) && (
           <div className='h-[calc(100vh-290px)] overflow-y-auto'>
             <Preview markdown={markdown} />
           </div>
+        )}
       </div>
 
       <Flex mt='sm' gap='sm' justify='end'>
         <Button onClick={onDelete} color='red'>
           このページを削除
         </Button>
-        <Button onClick={() => onSave(markdown)}>保存</Button>
+        <Button
+          onClick={onClickSave}
+          color={editorState === 'saved' ? 'green' : 'blue'}
+          disabled={editorState === 'clean'}
+          leftIcon={
+            editorState === 'saving' && (
+              <IconLoader2 size='1.5rem' className='animate-spin' />
+            )
+          }
+        >
+          {(editorState === 'clean' || editorState === 'dirty') && '保存'}
+          {editorState === 'saving' && '保存中...'}
+          {editorState === 'saved' && '保存しました！'}
+        </Button>
       </Flex>
     </div>
   )

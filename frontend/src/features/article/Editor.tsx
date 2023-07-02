@@ -7,8 +7,15 @@ const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 type Props = {
   markdown: string
   setMarkdown: (v: SetStateAction<string>) => void
+  onSave?: () => void
+  onDirty?: () => void
 }
-export const Editor: FC<Props> = ({ markdown, setMarkdown }) => {
+export const Editor: FC<Props> = ({
+  markdown,
+  setMarkdown,
+  onSave,
+  onDirty,
+}) => {
   const { pasteImage } = usePasteImage()
 
   return (
@@ -18,6 +25,7 @@ export const Editor: FC<Props> = ({ markdown, setMarkdown }) => {
           value={markdown}
           onChange={value => {
             setMarkdown(value || '')
+            onDirty?.()
           }}
           height='100%'
           textareaProps={{
@@ -32,6 +40,13 @@ export const Editor: FC<Props> = ({ markdown, setMarkdown }) => {
           onDrop={async e => {
             e.preventDefault() // 画像を別タブで表示しない
             await pasteImage(e.dataTransfer, setMarkdown)
+          }}
+          onKeyDown={e => {
+            if (e.ctrlKey && e.code === 'KeyS') {
+              e.preventDefault()
+              onSave?.()
+              console.log('Controlボンバー')
+            }
           }}
         />
       </div>
