@@ -1,4 +1,4 @@
-import Head from 'next/head'
+import Script from 'next/script'
 import { FC, useEffect, useState } from 'react'
 import markdownHtml from 'zenn-markdown-html'
 import 'zenn-content-css'
@@ -22,12 +22,7 @@ export const Preview: FC<Props> = ({ markdown }) => {
     <div className='mx-auto break-words'>
       {windowReady && (
         <>
-          <Head>
-            <script
-              async
-              src='https://embed.zenn.studio/js/listen-embed-event.js'
-            ></script>
-          </Head>
+          <Script src='https://embed.zenn.studio/js/listen-embed-event.js' />
           <div
             // zennのCSS
             className='znc'
