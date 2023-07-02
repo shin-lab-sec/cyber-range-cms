@@ -1,15 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { z } from 'zod'
 
 import { runMiddleware } from '@/libs/cors'
 import prisma from '@/libs/prisma'
-import { apiValidation } from '@/libs/validates'
+import { apiValidation, quizAnswersSchema } from '@/libs/validates'
 import { checkEqualArray } from '@/utils/checkEqualArrays'
-
-const quizAnswerSchema = z.object({
-  answers: z.string().array(),
-})
-// const quizAnswerSchema = z.string().array()
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,14 +11,13 @@ export default async function handler(
 ) {
   // api/v1/quizzes/[id]
   const id = String(req.query.id)
+  const { method, body } = req
 
   await runMiddleware(req, res) // corsチェック
 
-  const { method, body } = req
-
   switch (method) {
     case 'POST':
-      apiValidation(req, res, quizAnswerSchema, async () => {
+      apiValidation(req, res, quizAnswersSchema, async () => {
         const quiz = await prisma.quiz.findUnique({
           where: {
             id: id,
