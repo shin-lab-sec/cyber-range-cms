@@ -2,7 +2,7 @@ import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 const cors = Cors({
-  methods: ['GET'],
+  methods: ['GET', 'POST'],
   origin: 'https://cypas.sec',
 })
 

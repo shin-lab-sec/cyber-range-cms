@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { ZodSchema } from 'zod'
+import { ZodError, ZodSchema } from 'zod'
 
 export const apiValidation = async (
   req: NextApiRequest,
@@ -11,10 +11,15 @@ export const apiValidation = async (
     schema.parse(req.body) // parseしてエラーが出たらcatchに行く
     await onSuccess() // prismaのエラーが出たらcatchに行く
   } catch (err) {
-    if (err instanceof Error) {
+    if (err instanceof ZodError) {
       res.status(400).json({ message: `ZodError: ${err.message}` })
       return
     }
+    if (err instanceof Error) {
+      res.status(400).json({ message: err.message })
+      return
+    }
+
     res.status(400).json({ message: `Invalid request: ${JSON.stringify(err)}` })
   }
   return

@@ -45,8 +45,11 @@ export const quizSchema = z.union([
   radioSchema.extend({ sectionId: sectionIdSchema }),
   checkboxSchema.extend({ sectionId: sectionIdSchema }),
 ])
+
 export const quizFormRequestSchema = z.union([
   textSchema,
   radioSchema,
   checkboxSchema,
 ])
+
+export const quizAnswersSchema = checkboxSchema.pick({ answers: true })
