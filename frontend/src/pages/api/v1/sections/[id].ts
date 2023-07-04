@@ -19,8 +19,6 @@ export default async function handler(
       },
       include: {
         userAgent: true,
-        articles: { orderBy: { createdAt: 'asc' } },
-        quizzes: { orderBy: { createdAt: 'asc' } },
       },
     })
     res.status(200).json({ data: section })

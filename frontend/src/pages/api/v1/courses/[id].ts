@@ -19,11 +19,6 @@ export default async function handler(
       },
       include: {
         sections: {
-          include: {
-            userAgent: true,
-            articles: { orderBy: { createdAt: 'asc' } },
-            quizzes: { orderBy: { createdAt: 'asc' } },
-          },
           orderBy: { createdAt: 'asc' },
         },
       },
