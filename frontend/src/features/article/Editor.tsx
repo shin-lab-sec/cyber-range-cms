@@ -36,12 +36,20 @@ export const Editor: FC<Props> = ({
           hideToolbar
           preview='edit'
           onPaste={async e => {
-            await pasteImage(e.clipboardData, setText)
+            await pasteImage(e.clipboardData, (v: string) => {
+              setText(v)
+              setMarkdown?.(v)
+            })
+            onDirty?.()
             // 範囲選択していたら、リンク追加処理もする
           }}
           onDrop={async e => {
             e.preventDefault() // 画像を別タブで表示しない
-            await pasteImage(e.dataTransfer, setText)
+            await pasteImage(e.dataTransfer, (v: string) => {
+              setText(v)
+              setMarkdown?.(v)
+            })
+            onDirty?.()
           }}
           onKeyDown={e => {
             if (e.ctrlKey && e.code === 'KeyS') {
