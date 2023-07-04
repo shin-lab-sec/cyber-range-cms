@@ -1,4 +1,4 @@
-import { useCallback, type SetStateAction } from 'react'
+import { useCallback } from 'react'
 
 import { useUploadFile } from '@/hooks/useUploadFile'
 
@@ -17,6 +17,7 @@ const insertToTextArea = (insertString: string) => {
 
   sentence = front + insertString + back
 
+  // 複数ペーストする際に必要
   textarea.value = sentence
   textarea.selectionEnd = end + insertString.length
 
@@ -31,10 +32,7 @@ export const usePasteImage = () => {
   const { uploadFile } = useUploadFile()
 
   const pasteImage = useCallback(
-    async (
-      dataTransfer: DataTransfer,
-      setMarkdown: (v: SetStateAction<string>) => void,
-    ) => {
+    async (dataTransfer: DataTransfer, setValue: (v: string) => void) => {
       // 複数の画像のペーストにも対応
       const files: File[] = []
       for (let index = 0; index < dataTransfer.items.length; index++) {
@@ -46,7 +44,7 @@ export const usePasteImage = () => {
       await Promise.all(
         files.map(async file => {
           const url = (await uploadFile(file)) || ''
-          setMarkdown(insertToTextArea(`![](${url})`))
+          setValue(insertToTextArea(`![](${url})`))
         }),
       )
     },
