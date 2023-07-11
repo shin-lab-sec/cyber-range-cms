@@ -8,12 +8,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     <MantineProvider
       withGlobalStyles
       withNormalizeCSS
-      theme={
-        {
-          /** Put your mantine theme override here */
-          // colorScheme: 'light',
-        }
-      }
+      theme={{
+        colorScheme: 'dark',
+        /** Put your mantine theme override here */
+        // colorScheme: 'light',
+      }}
     >
       <Component {...pageProps} />
     </MantineProvider>
