@@ -1,11 +1,6 @@
-import { Button, Flex, Tabs } from '@mantine/core'
+import { Button, Flex, Loader, Tabs } from '@mantine/core'
 import { useMediaQuery, useDebouncedState } from '@mantine/hooks'
-import {
-  IconPhoto,
-  IconMessageCircle,
-  IconSettings,
-  IconLoader2,
-} from '@tabler/icons-react'
+import { IconPhoto, IconMessageCircle, IconSettings } from '@tabler/icons-react'
 import { FC, useCallback, useState } from 'react'
 
 import { Editor, Preview } from '.'
@@ -91,9 +86,7 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
           color={editorState === 'saved' ? 'green' : 'blue'}
           disabled={editorState === 'clean'}
           leftIcon={
-            editorState === 'saving' && (
-              <IconLoader2 size='1.5rem' className='animate-spin' />
-            )
+            editorState === 'saving' && <Loader size='sm' color='gray' />
           }
         >
           {(editorState === 'clean' || editorState === 'dirty') && '保存'}
