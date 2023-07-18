@@ -2,12 +2,15 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { FC, ReactNode } from 'react'
 
+import { Breadcrumbs, Item as BreadcrumbsItem } from '@/components/Breadcrumbs'
+
 type Props = {
   children: ReactNode
   title?: string
+  breadcrumbsItem?: BreadcrumbsItem[]
 }
 
-export const Layout: FC<Props> = ({ title, children }) => {
+export const Layout: FC<Props> = ({ title, children, breadcrumbsItem }) => {
   return (
     <>
       <Head>
@@ -26,7 +29,10 @@ export const Layout: FC<Props> = ({ title, children }) => {
         </nav>
       </header>
 
-      <main className='my-6 mx-4'>{children}</main>
+      <main className='my-6 mx-4'>
+        {breadcrumbsItem ? <Breadcrumbs items={breadcrumbsItem} /> : null}
+        {children}
+      </main>
     </>
   )
 }

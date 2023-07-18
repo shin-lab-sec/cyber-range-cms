@@ -146,7 +146,12 @@ const Courses: NextPage = () => {
   )
 
   return (
-    <Layout>
+    <Layout
+      breadcrumbsItem={[
+        { title: 'トップ', href: '/' },
+        { title: 'コース一覧', href: '/courses' },
+      ]}
+    >
       <Flex gap='sm' justify='space-between' align='center'>
         <h1>コース一覧</h1>
         <CreateCourseButton onSubmit={createCourse} />
