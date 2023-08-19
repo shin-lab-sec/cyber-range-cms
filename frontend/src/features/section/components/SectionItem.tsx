@@ -8,6 +8,8 @@ import {
 import Link from 'next/link'
 import { FC } from 'react'
 
+import { ExportJsonButton } from '@/components/ExportJsonButton'
+
 import { SectionFormRequest } from './SectionForm'
 import { UpdateSectionButton } from './UpdateSectionButton'
 import { SectionWithRelation } from '../types'
@@ -55,7 +57,9 @@ export const SectionItem: FC<Props> = ({
             {section.name}
           </Link>
         </Flex>
+
         <Flex align='center' gap='sm'>
+          <ExportJsonButton data={section} fileName={section.name} />
           <UpdateSectionButton
             onSubmit={v => onUpdate(section.id, v)}
             initValue={sectionFormRequest}

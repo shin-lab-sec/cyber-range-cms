@@ -6,6 +6,7 @@ import { NextPage } from 'next'
 import Link from 'next/link'
 import { useMemo } from 'react'
 
+import { ExportJsonButton } from '@/components/ExportJsonButton'
 import { Layout } from '@/components/Layout'
 import {
   CreateCourseButton,
@@ -127,7 +128,8 @@ const Courses: NextPage = () => {
           }
 
           return (
-            <Flex align='center' gap='sm'>
+            <Flex align='center' gap='sm' className='min-w-250px'>
+              <ExportJsonButton data={course} fileName={course.name} />
               <UpdateCourseButton
                 onSubmit={v => updateCourse(course.id, v)}
                 initValue={courseFormRequest}

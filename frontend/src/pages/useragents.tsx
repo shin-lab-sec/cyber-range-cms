@@ -1,11 +1,12 @@
 import { Flex, ThemeIcon } from '@mantine/core'
 import { UserAgent } from '@prisma/client'
-import { IconDeviceDesktop, IconTerminal2, IconX } from '@tabler/icons-react'
+import { IconTerminal2, IconX, IconDeviceDesktop } from '@tabler/icons-react'
 import { MantineReactTable } from 'mantine-react-table'
 import type { MRT_ColumnDef } from 'mantine-react-table'
 import { NextPage } from 'next'
 import { useMemo } from 'react'
 
+import { ExportJsonButton } from '@/components/ExportJsonButton'
 import { Layout } from '@/components/Layout'
 import {
   CreateUserAgentButton,
@@ -110,7 +111,7 @@ const UserAgents: NextPage = () => {
         enableColumnActions: false,
         enableColumnDragging: false,
         enableSorting: false,
-        maxSize: 0,
+        // maxSize: 0,
         Cell: ({ row: { original: userAgent } }) => {
           const userAgentFormRequest: UserAgentFormRequest = {
             name: userAgent.name,
@@ -119,8 +120,10 @@ const UserAgents: NextPage = () => {
             organization: userAgent.organization,
             gitHubUrl: userAgent.gitHubUrl,
           }
+
           return (
-            <Flex align='center' gap='sm'>
+            <Flex align='center' gap='sm' className='min-w-250px'>
+              <ExportJsonButton data={userAgent} fileName={userAgent.name} />
               <UpdateUserAgentButton
                 onSubmit={v => updateUserAgent(userAgent.id, v)}
                 initValue={userAgentFormRequest}
