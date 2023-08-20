@@ -11,18 +11,17 @@ import {
 import { IconAlertCircle } from '@tabler/icons-react'
 import { ChangeEvent, FC, useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
 import { useUploadFile } from '@/hooks/useUploadFile'
-import { courseSchema } from '@/libs/validates'
+import { courseRequestSchema } from '@/libs/validates'
 
-export type CourseFormRequest = z.infer<typeof courseSchema>
+import { CourseRequest } from '../types'
 
 type Props = {
-  onSubmit: (params: CourseFormRequest) => void
+  onSubmit: (params: CourseRequest) => void
   submitButtonName?: string
-  initValue?: CourseFormRequest
+  initValue?: CourseRequest
   onDirty: () => void
 }
 
@@ -37,14 +36,14 @@ export const CourseForm: FC<Props> = ({
     handleSubmit,
     setValue,
     formState: { errors, isDirty },
-  } = useForm<CourseFormRequest>({
-    resolver: zodResolver(courseSchema),
+  } = useForm<CourseRequest>({
+    resolver: zodResolver(courseRequestSchema),
     criteriaMode: 'all',
     defaultValues: initValue ?? { imageUrl: '' },
   })
 
   const { onSubmit, errorMessage, clearErrorMessage } =
-    useFormErrorHandling<CourseFormRequest>(onSubmitProps)
+    useFormErrorHandling<CourseRequest>(onSubmitProps)
 
   // useEffectを使わないと、レンダリング中にsetStateを呼ぶことになりWarningが出る
   useEffect(() => {

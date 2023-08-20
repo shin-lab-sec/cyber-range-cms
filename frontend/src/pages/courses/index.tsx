@@ -13,8 +13,8 @@ import {
   useUpdateCourse,
   useDeleteCourse,
   CourseWithSections,
-  CourseFormRequest,
   UpdateCourseButton,
+  CourseRequest,
 } from '@/features/course'
 import { useGetApi } from '@/hooks/useApi'
 import { convertToJapanTime } from '@/utils/convertToJapanTime'
@@ -117,7 +117,7 @@ const Courses: NextPage = () => {
         enableSorting: false,
         maxSize: 0,
         Cell: ({ row: { original: course } }) => {
-          const courseFormRequest: CourseFormRequest = {
+          const courseFormRequest: CourseRequest = {
             name: course.name,
             level: course.level as 1 | 2 | 3,
             description: course.description ?? '',

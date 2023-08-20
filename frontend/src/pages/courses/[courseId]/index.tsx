@@ -10,7 +10,6 @@ import { CourseWithSections } from '@/features/course'
 import {
   CreateSectionButton,
   DraggableSections,
-  SectionFormRequest,
   useCreateSection,
   useDeleteSection,
   useUpdateCourseSectionOrder,
@@ -18,6 +17,7 @@ import {
   SectionItem,
 } from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
+import { SectionFormRequest } from '@/libs/validates'
 
 const Courses: NextPage = () => {
   const [draggableMode, setDraggableMode] = useState(false)
