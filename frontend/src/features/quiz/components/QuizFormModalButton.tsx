@@ -3,9 +3,8 @@ import { FC } from 'react'
 
 import { useModalForm } from '@/hooks/useModalForm'
 
-import { QuizFormRequest } from './types'
-
-import { QuizForm } from './'
+import { QuizForm } from '..'
+import { QuizFormRequest } from '../types'
 
 type Props = {
   onSubmit: (params: QuizFormRequest) => void

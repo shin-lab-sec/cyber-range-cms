@@ -12,7 +12,7 @@ import { FC, useMemo } from 'react'
 import { convertToJapanTime } from '@/utils/convertToJapanTime'
 
 import { QuizFormModalButton } from './QuizFormModalButton'
-import { QuizFormRequest } from './types'
+import { QuizFormRequest } from '../types'
 
 type Props = {
   quizzes: Quiz[]
