@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
 import { quizFormRequestSchema } from '@/libs/validates'
 
-import { QuizFormRequest } from './types'
+import { QuizFormRequest } from '../types'
 
 type Props = {
   onSubmit: (params: QuizFormRequest) => void

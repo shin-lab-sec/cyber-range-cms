@@ -5,7 +5,7 @@ import { FC, useState } from 'react'
 import { QuizCheckboxForm } from './QuizCheckboxForm'
 import { QuizRadioForm } from './QuizRadioForm'
 import { QuizTextForm } from './QuizTextForm'
-import { QuizFormRequest } from './types'
+import { QuizFormRequest } from '../types'
 
 type Props = {
   onSubmit: (params: QuizFormRequest) => void
