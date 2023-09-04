@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
 import { sectionFormRequestSchema } from '@/libs/validates'
 
-import { SectionFormRequest } from '../types'
+import { SectionFormRequest } from '../../types'
 
 type Props = {
   onSubmit: (params: SectionFormRequest) => void

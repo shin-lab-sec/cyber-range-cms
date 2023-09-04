@@ -5,7 +5,7 @@ import { FC, useState } from 'react'
 import { SectionArticleForm } from './SectionArticleForm'
 import { SectionQuizForm } from './SectionQuizForm'
 import { SectionSandboxForm } from './SectionSandboxForm'
-import { SectionFormRequest } from '../types'
+import { SectionFormRequest } from '../../types'
 
 type Props = {
   onSubmit: (params: SectionFormRequest) => void

@@ -10,7 +10,7 @@ import { useGetApi } from '@/hooks/useApi'
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
 import { sectionFormRequestSchema } from '@/libs/validates'
 
-import { SectionFormRequest } from '../types'
+import { SectionFormRequest } from '../../types'
 
 type Props = {
   onSubmit: (params: SectionFormRequest) => void

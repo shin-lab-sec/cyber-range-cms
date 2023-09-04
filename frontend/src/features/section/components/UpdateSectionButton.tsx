@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 import { useModalForm } from '@/hooks/useModalForm'
 
-import { SectionForm } from './SectionForm'
+import { SectionForm } from './sectionForm'
 import { SectionFormRequest } from '../types'
 
 type Props = {
