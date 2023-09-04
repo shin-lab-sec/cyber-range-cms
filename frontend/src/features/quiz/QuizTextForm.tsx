@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Alert, Button, Flex, Stack, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
-import { FC, useEffect } from 'react'
+import { ChangeEvent, FC, useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
@@ -38,6 +38,28 @@ export const QuizTextForm: FC<Props> = ({
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<QuizFormRequest>(onSubmitProps)
 
+  // answerはstring[]なので、エラーを自力で出し分けする
+  const onChangeAnswerText = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.value.length) {
+        setError('answers', {
+          type: 'custom',
+          message: '答えは必須です',
+        })
+        // エラーメッセージを出すため
+        setValue('answers', [])
+        return
+      }
+
+      if (errors.answers) clearErrors('answers')
+
+      setValue('answers', [e.target.value], {
+        shouldDirty: true,
+      })
+    },
+    [clearErrors, errors, setError, setValue],
+  )
+
   // useEffectを使わないと、レンダリング中にsetStateを呼ぶことになりWarningが出る
   useEffect(() => {
     if (isDirty) onDirty()
@@ -58,7 +80,7 @@ export const QuizTextForm: FC<Props> = ({
           {errorMessage}
         </Alert>
       )}
-      text
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <p className='text-center'>記述式</p>
         <Stack>
@@ -75,21 +97,7 @@ export const QuizTextForm: FC<Props> = ({
             placeholder='ウェブページに悪意のあるスクリプトを挿入する攻撃手法'
             withAsterisk
             defaultValue={initValue?.answers[0]}
-            onChange={e => {
-              if (!e.target.value.length) {
-                setError('answers', {
-                  type: 'custom',
-                  message: '答えは必須です',
-                })
-                // エラーメッセージを出すため
-                setValue('answers', [])
-                return
-              }
-              setValue('answers', [e.target.value], {
-                shouldDirty: true,
-              })
-              clearErrors('answers')
-            }}
+            onChange={onChangeAnswerText}
           />
           <TextInput
             label='解説'
@@ -97,6 +105,7 @@ export const QuizTextForm: FC<Props> = ({
             placeholder='攻撃者がウェブページに悪意のあるスクリプトを挿入する攻撃手法です。これにより、ユーザーのブラウザ上でスクリプトが実行され、悪意のある動作や情報の漏洩が発生する可能性があります'
             {...register('explanation')}
           />
+
           <Flex justify='end'>
             <Button type='submit'>{submitButtonName}</Button>
           </Flex>

@@ -9,7 +9,7 @@ import {
   TextInput,
 } from '@mantine/core'
 import { IconAlertCircle, IconPlus, IconTrash } from '@tabler/icons-react'
-import { FC, useEffect, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
@@ -49,13 +49,30 @@ export const QuizRadioForm: FC<Props> = ({
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<QuizFormRequest>(onSubmitProps)
 
+  const choices = watch('choices')
+  const answers = watch('answers')
+
+  const onClickAddChoiceButton = useCallback(() => {
+    if (choices.some(v => v === choiceText)) {
+      setError('choices', {
+        message: '同じ選択肢は入れられません',
+      })
+      return
+    }
+
+    if (errors.choices) clearErrors('choices')
+
+    // choicesに追加
+    setValue('choices', [...choices, choiceText], {
+      shouldDirty: true,
+    })
+    setChoiceText('')
+  }, [choiceText, choices, clearErrors, errors, setError, setValue])
+
   // useEffectを使わないと、レンダリング中にsetStateを呼ぶことになりWarningが出る
   useEffect(() => {
     if (isDirty) onDirty()
   }, [isDirty, onDirty])
-
-  const choices = watch('choices')
-  const answers = watch('answers')
 
   return (
     <>
@@ -72,7 +89,7 @@ export const QuizRadioForm: FC<Props> = ({
           {errorMessage}
         </Alert>
       )}
-      radio
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <p className='text-center'>単一選択</p>
         <Stack>
@@ -83,8 +100,9 @@ export const QuizRadioForm: FC<Props> = ({
             withAsterisk
             {...register('question')}
           />
+
+          {/* choiceをTODOリストみたいにする */}
           <Flex gap='sm'>
-            {/* TODOリストみたいにする */}
             <TextInput
               label='選択肢'
               error={errors.choices?.message}
@@ -99,21 +117,7 @@ export const QuizRadioForm: FC<Props> = ({
             <Button
               mt='xl'
               disabled={!choiceText}
-              onClick={() => {
-                if (choices.some(i => i.includes(choiceText))) {
-                  setError('choices', {
-                    message: '同じ選択肢は入れられません',
-                  })
-                  return
-                }
-                if (errors.choices) clearErrors('choices')
-
-                // choicesに追加
-                setValue('choices', [...choices, choiceText], {
-                  shouldDirty: true,
-                })
-                setChoiceText('')
-              }}
+              onClick={onClickAddChoiceButton}
               leftIcon={<IconPlus size='1rem' />}
             >
               追加
@@ -172,6 +176,7 @@ export const QuizRadioForm: FC<Props> = ({
               </Flex>
             ))}
           </List>
+
           <Select
             label='回答'
             error={errors.answers?.message}
@@ -187,12 +192,14 @@ export const QuizRadioForm: FC<Props> = ({
               })
             }}
           />
+
           <TextInput
             label='解説'
             error={errors.explanation?.message}
             placeholder='攻撃者がウェブページに悪意のあるスクリプトを挿入する攻撃手法です。これにより、ユーザーのブラウザ上でスクリプトが実行され、悪意のある動作や情報の漏洩が発生する可能性があります'
             {...register('explanation')}
           />
+
           <Flex justify='end'>
             <Button type='submit'>{submitButtonName}</Button>
           </Flex>
