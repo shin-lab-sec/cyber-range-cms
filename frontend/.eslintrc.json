@@ -17,7 +17,7 @@
     {
       // componentsはパスカルケース
       "files": ["**/components/**"],
-      "rules": { "filenames/match-regex": ["error", "^([A-Z][a-z]*)+$"] }
+      "rules": { "filenames/match-regex": ["error", "^([A-Z][a-z]*)+|index$"] }
     },
     {
       // hooksはuse + パスカルケース
