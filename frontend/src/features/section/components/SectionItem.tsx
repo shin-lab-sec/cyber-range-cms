@@ -8,9 +8,8 @@ import {
 import Link from 'next/link'
 import { FC } from 'react'
 
-import { SectionFormRequest } from './SectionForm'
 import { UpdateSectionButton } from './UpdateSectionButton'
-import { SectionWithRelation } from '../types'
+import { SectionFormRequest, SectionWithRelation } from '../types'
 
 type Props = {
   courseId: string

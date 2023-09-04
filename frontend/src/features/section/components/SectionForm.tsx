@@ -25,15 +25,12 @@ import type {
   UseFormSetValue,
   UseFormClearErrors,
 } from 'react-hook-form'
-import { z } from 'zod'
 
 import { useGetApi } from '@/hooks/useApi'
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
 import { sectionFormRequestSchema } from '@/libs/validates'
 
-export type SectionFormRequest = z.infer<typeof sectionFormRequestSchema>
-
-type SectionType = 'quiz' | 'article' | 'sandbox'
+import { SectionFormRequest } from '../types'
 
 type Props = {
   onSubmit: (params: SectionFormRequest) => void

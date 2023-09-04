@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/libs/prisma'
-import { apiValidation, sectionUpdateSchema } from '@/libs/validates'
+import { apiValidation, sectionUpdateRequestSchema } from '@/libs/validates'
 
 export default async function handler(
   req: NextApiRequest,
@@ -32,7 +32,7 @@ export default async function handler(
 
     case 'PUT':
       // 全部オプショナルなら、違うtypeの値入ってもzod通しちゃう
-      apiValidation(req, res, sectionUpdateSchema, async () => {
+      apiValidation(req, res, sectionUpdateRequestSchema, async () => {
         const sectionRequest: {
           name: string
           type: string

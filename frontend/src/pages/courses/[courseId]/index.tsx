@@ -15,9 +15,9 @@ import {
   useUpdateCourseSectionOrder,
   useUpdateSection,
   SectionItem,
+  SectionFormRequest,
 } from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
-import { SectionFormRequest } from '@/libs/validates'
 
 const Courses: NextPage = () => {
   const [draggableMode, setDraggableMode] = useState(false)

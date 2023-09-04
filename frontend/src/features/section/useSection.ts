@@ -4,8 +4,7 @@ import { useCallback } from 'react'
 import { useGetApi } from '@/hooks/useApi'
 import { deleteApi, postApi, putApi } from '@/utils/api'
 
-import { SectionFormRequest } from './components/SectionForm'
-import { SectionWithRelation } from './types'
+import { SectionFormRequest, SectionWithRelation } from './types'
 import { CourseWithSections } from '../course'
 
 // 作成
