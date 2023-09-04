@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/libs/prisma'
-import { apiValidation, quizSchema } from '@/libs/validates'
+import { apiValidation, quizRequestSchema } from '@/libs/validates'
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,7 +23,7 @@ export default async function handler(
       break
 
     case 'POST':
-      apiValidation(req, res, quizSchema, async () => {
+      apiValidation(req, res, quizRequestSchema, async () => {
         const createdArticle = await prisma.quiz.create({
           data: {
             question: body.question,

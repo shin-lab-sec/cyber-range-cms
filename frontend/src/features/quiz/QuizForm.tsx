@@ -19,12 +19,11 @@ import {
 } from '@tabler/icons-react'
 import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
 import { quizFormRequestSchema } from '@/libs/validates'
 
-export type QuizFormRequest = z.infer<typeof quizFormRequestSchema>
+import { QuizFormRequest } from './types'
 
 type Props = {
   onSubmit: (params: QuizFormRequest) => void
