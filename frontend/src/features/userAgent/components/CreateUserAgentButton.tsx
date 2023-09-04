@@ -3,7 +3,8 @@ import { FC } from 'react'
 
 import { useModalForm } from '@/hooks/useModalForm'
 
-import { UserAgentFormRequest, UserAgentForm } from './UserAgentForm'
+import { UserAgentForm } from './UserAgentForm'
+import { UserAgentFormRequest } from '../types'
 
 type Props = {
   onSubmit: (params: UserAgentFormRequest) => void
