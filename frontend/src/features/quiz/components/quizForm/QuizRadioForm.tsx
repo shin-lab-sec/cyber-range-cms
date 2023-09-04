@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form'
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
 import { quizFormRequestSchema } from '@/libs/validates'
 
-import { QuizFormRequest } from '../types'
+import { QuizFormRequest } from '../../types'
 
 type Props = {
   onSubmit: (params: QuizFormRequest) => void
@@ -24,7 +24,7 @@ type Props = {
   onDirty: () => void
 }
 
-export const QuizCheckboxForm: FC<Props> = ({
+export const QuizRadioForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
@@ -41,7 +41,7 @@ export const QuizCheckboxForm: FC<Props> = ({
   } = useForm<QuizFormRequest>({
     resolver: zodResolver(quizFormRequestSchema),
     criteriaMode: 'all',
-    defaultValues: initValue ?? { type: 'checkbox', choices: [], answers: [] },
+    defaultValues: initValue ?? { type: 'radio', choices: [], answers: [] },
   })
 
   const [choiceText, setChoiceText] = useState('')
@@ -53,7 +53,6 @@ export const QuizCheckboxForm: FC<Props> = ({
   const answers = watch('answers')
 
   const onClickAddChoiceButton = useCallback(() => {
-    console.log('nin')
     if (choices.some(v => v === choiceText)) {
       setError('choices', {
         message: '同じ選択肢は入れられません',
@@ -92,7 +91,7 @@ export const QuizCheckboxForm: FC<Props> = ({
       )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <p className='text-center'>複数選択</p>
+        <p className='text-center'>単一選択</p>
         <Stack>
           <TextInput
             label='問題名'
@@ -178,60 +177,21 @@ export const QuizCheckboxForm: FC<Props> = ({
             ))}
           </List>
 
-          {/* answerをTODOリストみたいにする */}
           <Select
             label='回答'
             error={errors.answers?.message}
             placeholder='ウェブページに悪意のあるスクリプトを挿入する攻撃手法'
             withAsterisk
-            disabled={!choices.filter(v => !answers.includes(v)).length}
-            data={choices.filter(v => !answers.includes(v))}
+            disabled={!choices.length}
+            data={choices}
+            defaultValue={initValue?.answers[0]}
             onChange={(value: string) => {
-              setValue('answers', [...answers, value], {
+              setValue('answers', [value], {
                 shouldDirty: true,
                 shouldValidate: true,
               })
             }}
           />
-          <List size='sm' className='break-all'>
-            {answers.map((answer, i) => (
-              <Flex
-                key={i}
-                justify='space-between'
-                gap='sm'
-                align='center'
-                className='mt-3 first:mt-0'
-              >
-                <Flex gap='sm'>
-                  {i + 1}.<span>{answer}</span>
-                </Flex>
-
-                <button
-                  type='button'
-                  className='h-1.2rem'
-                  onClick={() => {
-                    // answersが1つなら全て消えるのでエラーを出す
-                    if (answers.length === 1) {
-                      setError('answers', {
-                        message: '選択肢は必須です',
-                      })
-                    }
-
-                    setValue(
-                      'answers',
-                      answers.filter((_, index) => index !== i),
-                    )
-                  }}
-                >
-                  <IconTrash
-                    size='1.2rem'
-                    className='min-w-1.2rem'
-                    color='red'
-                  />
-                </button>
-              </Flex>
-            ))}
-          </List>
 
           <TextInput
             label='解説'

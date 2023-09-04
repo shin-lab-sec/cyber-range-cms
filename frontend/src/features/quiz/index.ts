@@ -1,4 +1,4 @@
-export * from './quizForm'
-export * from './QuizFormModalButton'
-export * from './QuizTable'
+export * from './components/quizForm'
+export * from './components/QuizFormModalButton'
+export * from './components/QuizTable'
 export * from './useQuiz'
