@@ -40,12 +40,14 @@ const sectionIdSchema = z
   .string({ required_error: 'セクションは必須です' })
   .nonempty('セクションは必須です')
 
-export const quizSchema = z.union([
+// APiへのリクエストはquizRequestSchema
+export const quizRequestSchema = z.union([
   textSchema.extend({ sectionId: sectionIdSchema }),
   radioSchema.extend({ sectionId: sectionIdSchema }),
   checkboxSchema.extend({ sectionId: sectionIdSchema }),
 ])
 
+// フォームのリクエストはquizFormRequestSchema
 export const quizFormRequestSchema = z.union([
   textSchema,
   radioSchema,

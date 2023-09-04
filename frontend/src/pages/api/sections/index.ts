@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/libs/prisma'
-import { apiValidation, sectionSchema } from '@/libs/validates'
+import { apiValidation, sectionRequestSchema } from '@/libs/validates'
 
 export default async function handler(
   req: NextApiRequest,
@@ -30,7 +30,7 @@ export default async function handler(
 
     // typeで3つに分ける？
     case 'POST':
-      apiValidation(req, res, sectionSchema, async () => {
+      apiValidation(req, res, sectionRequestSchema, async () => {
         const sectionRequest: {
           name: string
           type: string

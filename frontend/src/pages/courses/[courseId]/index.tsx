@@ -10,12 +10,12 @@ import { CourseWithSections } from '@/features/course'
 import {
   CreateSectionButton,
   DraggableSections,
-  SectionFormRequest,
   useCreateSection,
   useDeleteSection,
   useUpdateCourseSectionOrder,
   useUpdateSection,
   SectionItem,
+  SectionFormRequest,
 } from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
 

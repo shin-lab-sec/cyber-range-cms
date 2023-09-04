@@ -9,7 +9,7 @@ type Mode = 'edit' | 'preview' | 'live'
 type EditorState = 'clean' | 'dirty' | 'saving' | 'saved'
 type Props = {
   body: string
-  onSave: (v: string) => void
+  onSave: (markdown: string) => void
   onDelete: () => void
 }
 

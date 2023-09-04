@@ -4,9 +4,8 @@ import { useCallback } from 'react'
 import { useGetApi } from '@/hooks/useApi'
 import { postApi, putApi, deleteApi } from '@/utils/api'
 
+import { QuizFormRequest } from './types'
 import { SectionWithRelation } from '../section'
-
-import { QuizFormRequest } from './'
 
 // sectionのmutate
 export const useCreateQuiz = (sectionId: string) => {

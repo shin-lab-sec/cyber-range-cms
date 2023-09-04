@@ -4,14 +4,14 @@ import { useCallback } from 'react'
 import { useGetApi } from '@/hooks/useApi'
 import { postApi, putApi, deleteApi } from '@/utils/api'
 
-import { CourseFormRequest } from '../'
+import { CourseRequest } from '../types'
 
 export const useCreateCourse = () => {
   const { data: courses, mutate: mutateCourses } =
     useGetApi<Course[]>('/courses')
 
   const createCourse = useCallback(
-    async (params: CourseFormRequest) => {
+    async (params: CourseRequest) => {
       try {
         const newCourse = await postApi<Course>('/courses', params)
         console.log('追加に成功', newCourse)
@@ -38,7 +38,7 @@ export const useUpdateCourse = () => {
     useGetApi<Course[]>('/courses')
 
   const updateCourse = useCallback(
-    async (id: string, params: CourseFormRequest) => {
+    async (id: string, params: CourseRequest) => {
       try {
         const updatedCourse = await putApi<Course>(`/courses/${id}`, params)
         console.log('更新に成功', updatedCourse)

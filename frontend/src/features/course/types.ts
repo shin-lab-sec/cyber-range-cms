@@ -1,5 +1,9 @@
 import { Article, Course, Quiz, Section, UserAgent } from '@prisma/client'
+import { z } from 'zod'
 
+import { courseRequestSchema } from '@/libs/validates'
+
+// TODO: 直下のtypesに移動
 export type CourseWithSections = Course & {
   sections: (Section & {
     userAgent: UserAgent | null
@@ -7,3 +11,5 @@ export type CourseWithSections = Course & {
     quizzes: Quiz[]
   })[]
 }
+
+export type CourseRequest = z.infer<typeof courseRequestSchema>

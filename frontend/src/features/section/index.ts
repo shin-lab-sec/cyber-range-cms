@@ -1,4 +1,3 @@
-export type { SectionFormRequest } from './components/SectionForm'
 export * from './components/CreateSectionButton'
 export * from './components/UpdateSectionButton'
 export * from './components/DraggableSections'
