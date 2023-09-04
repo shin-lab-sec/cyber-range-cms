@@ -1,8 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/libs/prisma'
-import { apiValidation } from '@/libs/validates'
-import { articleSchema } from '@/libs/validates/article'
+import { apiValidation, articleRequestSchema } from '@/libs/validates'
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,7 +23,7 @@ export default async function handler(
       break
 
     case 'POST':
-      apiValidation(req, res, articleSchema, async () => {
+      apiValidation(req, res, articleRequestSchema, async () => {
         const createdArticle = await prisma.article.create({
           data: {
             body: body.body,

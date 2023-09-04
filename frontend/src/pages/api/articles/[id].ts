@@ -1,8 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/libs/prisma'
-import { apiValidation } from '@/libs/validates'
-import { articleUpdateSchema } from '@/libs/validates/article'
+import { apiValidation, articleUpdateRequestSchema } from '@/libs/validates'
 
 export default async function handler(
   req: NextApiRequest,
@@ -27,7 +26,7 @@ export default async function handler(
       break
 
     case 'PUT':
-      apiValidation(req, res, articleUpdateSchema, async () => {
+      apiValidation(req, res, articleUpdateRequestSchema, async () => {
         const updatedArticle = await prisma.article.update({
           where: {
             id: id,

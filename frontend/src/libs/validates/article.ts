@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const articleSchema = z.object({
+export const articleRequestSchema = z.object({
   body: z
     .string({ required_error: '本文は必須です' })
     .nonempty('本文は必須です'),
@@ -9,4 +9,6 @@ export const articleSchema = z.object({
     .nonempty('セクションが選択されていません'),
 })
 
-export const articleUpdateSchema = articleSchema.pick({ body: true })
+export const articleUpdateRequestSchema = articleRequestSchema.pick({
+  body: true,
+})

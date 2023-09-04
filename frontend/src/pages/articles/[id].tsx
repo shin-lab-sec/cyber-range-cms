@@ -12,8 +12,6 @@ const ArticlePage: NextPage = () => {
 
   const { data: article } = useGetApi<Article>(`/articles/${id}`)
 
-  console.log('article: ', article)
-
   if (!article || !id) {
     return (
       <div className='h-screen grid place-items-center'>

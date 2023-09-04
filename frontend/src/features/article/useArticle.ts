@@ -16,7 +16,7 @@ export const useCreateArticle = (sectionId: string) => {
   const createArticle = useCallback(async () => {
     try {
       const newArticle = await postApi<Article>('/articles', {
-        body: 'ここに記事をマークダウン形式で書きます',
+        body: '// ここに記事をマークダウン形式で書きます',
         sectionId,
       })
       console.log('追加に成功', newArticle)
