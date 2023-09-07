@@ -10,9 +10,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "cd .. && husky install frontend/.husky",
-    "create-precommit": "cd .. && husky add frontend/.husky/pre-commit \"cd frontend && yarn lint-staged\"",
-    "create-prepush": "cd .. && husky add frontend/.husky/pre-push \"cd frontend && yarn lint-staged\"",
     "lint-staged": "lint-staged"
   },
   "dependencies": {
@@ -40,6 +37,8 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
     "@prisma/client": "^4.12.0",
     "@tabler/icons-react": "^2.19.0",
     "@types/cors": "^2.8.13",
