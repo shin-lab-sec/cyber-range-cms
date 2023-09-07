@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
