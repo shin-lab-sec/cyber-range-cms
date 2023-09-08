@@ -5,7 +5,7 @@ import {
   IconCurrencyQuetzal,
   IconGripVertical,
 } from '@tabler/icons-react'
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import {
   DragDropContext,
   Draggable,
@@ -13,7 +13,6 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 
-import { useBoolean } from '@/hooks/useBoolean'
 import { SectionWithRelation } from '@/types'
 
 type Props = {
@@ -38,12 +37,6 @@ export const DraggableSections: FC<Props> = ({
     setSections(items)
   }
 
-  const windowReady = useBoolean(false)
-
-  useEffect(() => {
-    windowReady.setTrue()
-  }, [windowReady])
-
   return (
     <div className={className}>
       <Flex gap='sm' justify='end' align='center'>
@@ -58,75 +51,73 @@ export const DraggableSections: FC<Props> = ({
         </Button>
       </Flex>
 
-      {windowReady.v && (
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId='droppable'>
-            {provided => (
-              <ul
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className='mt-3'
-              >
-                {sections.map((section, index) => {
-                  return (
-                    <Draggable
-                      key={section.id}
-                      draggableId={section.id}
-                      index={index}
-                    >
-                      {provided => (
-                        <li
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          ref={provided.innerRef}
-                        >
-                          <Flex align='center' gap='sm'>
-                            <IconGripVertical size='1.5rem' />
-                            <div className='rounded-md flex border-2 shadow-md mb-3 w-full py-4 px-4 gap-3 items-center'>
-                              {section.type === 'quiz' && (
-                                <ThemeIcon
-                                  color='red'
-                                  size='lg'
-                                  variant='light'
-                                  radius='md'
-                                >
-                                  <IconCurrencyQuetzal size='1.5rem' />
-                                </ThemeIcon>
-                              )}
-                              {section.type === 'article' && (
-                                <ThemeIcon
-                                  color='blue'
-                                  size='lg'
-                                  variant='light'
-                                  radius='md'
-                                >
-                                  <IconArticle size='1.5rem' />
-                                </ThemeIcon>
-                              )}
-                              {section.type === 'sandbox' && (
-                                <ThemeIcon
-                                  color='violet'
-                                  size='lg'
-                                  variant='light'
-                                  radius='md'
-                                >
-                                  <IconBox size='1.5rem' />
-                                </ThemeIcon>
-                              )}
-                              {section.name}
-                            </div>
-                          </Flex>
-                        </li>
-                      )}
-                    </Draggable>
-                  )
-                })}
-                <div>{provided.placeholder}</div>
-              </ul>
-            )}
-          </Droppable>
-        </DragDropContext>
-      )}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId='droppable'>
+          {provided => (
+            <ul
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className='mt-3'
+            >
+              {sections.map((section, index) => {
+                return (
+                  <Draggable
+                    key={section.id}
+                    draggableId={section.id}
+                    index={index}
+                  >
+                    {provided => (
+                      <li
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                      >
+                        <Flex align='center' gap='sm'>
+                          <IconGripVertical size='1.5rem' />
+                          <div className='rounded-md flex border-2 shadow-md mb-3 w-full py-4 px-4 gap-3 items-center'>
+                            {section.type === 'quiz' && (
+                              <ThemeIcon
+                                color='red'
+                                size='lg'
+                                variant='light'
+                                radius='md'
+                              >
+                                <IconCurrencyQuetzal size='1.5rem' />
+                              </ThemeIcon>
+                            )}
+                            {section.type === 'article' && (
+                              <ThemeIcon
+                                color='blue'
+                                size='lg'
+                                variant='light'
+                                radius='md'
+                              >
+                                <IconArticle size='1.5rem' />
+                              </ThemeIcon>
+                            )}
+                            {section.type === 'sandbox' && (
+                              <ThemeIcon
+                                color='violet'
+                                size='lg'
+                                variant='light'
+                                radius='md'
+                              >
+                                <IconBox size='1.5rem' />
+                              </ThemeIcon>
+                            )}
+                            {section.name}
+                          </div>
+                        </Flex>
+                      </li>
+                    )}
+                  </Draggable>
+                )
+              })}
+              <div>{provided.placeholder}</div>
+            </ul>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   )
 }

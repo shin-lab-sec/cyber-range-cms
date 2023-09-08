@@ -2,9 +2,6 @@ import Script from 'next/script'
 import { FC, useEffect } from 'react'
 import markdownHtml from 'zenn-markdown-html'
 
-import 'zenn-content-css'
-import { useBoolean } from '@/hooks/useBoolean'
-
 type Props = {
   markdown: string
 }
@@ -13,27 +10,20 @@ export const Preview: FC<Props> = ({ markdown }) => {
     embedOrigin: 'https://embed.zenn.studio',
   })
 
-  const windowReady = useBoolean(false)
-
   useEffect(() => {
     import('zenn-embed-elements')
-    windowReady.setTrue()
-  }, [windowReady])
+  }, [])
 
   return (
     <div className='mx-auto break-words'>
-      {windowReady.v && (
-        <>
-          <Script src='https://embed.zenn.studio/js/listen-embed-event.js' />
-          <div
-            // zennのCSS
-            className='znc'
-            dangerouslySetInnerHTML={{
-              __html: html,
-            }}
-          />
-        </>
-      )}
+      <Script src='https://embed.zenn.studio/js/listen-embed-event.js' />
+      <div
+        // zennのCSS
+        className='znc'
+        dangerouslySetInnerHTML={{
+          __html: html,
+        }}
+      />
     </div>
   )
 }
