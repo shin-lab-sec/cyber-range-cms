@@ -13,6 +13,7 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 
+import { useBoolean } from '@/hooks/useBoolean'
 import { SectionWithRelation } from '@/types'
 
 type Props = {
@@ -37,10 +38,11 @@ export const DraggableSections: FC<Props> = ({
     setSections(items)
   }
 
-  const [windowReady, setWindowReady] = useState(false)
+  const windowReady = useBoolean(false)
+
   useEffect(() => {
-    setWindowReady(true)
-  }, [])
+    windowReady.setTrue()
+  }, [windowReady])
 
   return (
     <div className={className}>
@@ -56,7 +58,7 @@ export const DraggableSections: FC<Props> = ({
         </Button>
       </Flex>
 
-      {windowReady && (
+      {windowReady.v && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId='droppable'>
             {provided => (

@@ -2,7 +2,7 @@ import { Flex } from '@mantine/core'
 import { IconMenuOrder } from '@tabler/icons-react'
 import { NextPage } from 'next'
 import { useSearchParams } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 import { Layout } from '@/components/Layout'
 import {
@@ -15,10 +15,12 @@ import {
   SectionItem,
 } from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
+import { useBoolean } from '@/hooks/useBoolean'
 import { CourseWithSections } from '@/types'
 
 const Courses: NextPage = () => {
-  const [draggableMode, setDraggableMode] = useState(false)
+  const draggableMode = useBoolean(false)
+
   const searchParams = useSearchParams()
   const id = searchParams.get('courseId') || '' // 一回目のレンダリングで正常なidが取得できる
   const { data: course } = useGetApi<CourseWithSections>(`/courses/${id}`)
@@ -64,13 +66,13 @@ const Courses: NextPage = () => {
     <Layout>
       <h1>{course.name}のセクション一覧</h1>
       <div>
-        {!draggableMode && (
+        {!draggableMode.v && (
           <Flex gap='sm' mt='sm' justify='end' align='center'>
             {orderedSections?.length !== 0 && (
               <Flex
                 align='center'
                 className='cursor-pointer'
-                onClick={() => setDraggableMode(true)}
+                onClick={draggableMode.setTrue}
               >
                 <IconMenuOrder size='1.5rem' />
                 順番変更
@@ -82,11 +84,11 @@ const Courses: NextPage = () => {
 
         {orderedSections?.length ? (
           <div className='mt-3'>
-            {draggableMode ? (
+            {draggableMode.v ? (
               <DraggableSections
                 sections={orderedSections}
                 onUpdateOrder={updateCourseSectionOrder}
-                onClose={() => setDraggableMode(false)}
+                onClose={draggableMode.setFalse}
               />
             ) : (
               <Flex gap='sm' direction='column'>
