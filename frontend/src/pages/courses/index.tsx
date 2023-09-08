@@ -7,10 +7,10 @@ import {
   useCreateCourse,
   useUpdateCourse,
   useDeleteCourse,
-  CourseWithSections,
   CourseTable,
 } from '@/features/course'
 import { useGetApi } from '@/hooks/useApi'
+import { CourseWithSections } from '@/types'
 
 const Courses: NextPage = () => {
   const { data: courses } = useGetApi<CourseWithSections[]>(`/courses`)
