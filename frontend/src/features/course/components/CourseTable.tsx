@@ -4,10 +4,11 @@ import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import Link from 'next/link'
 import { FC, useMemo } from 'react'
 
+import { CourseWithSections } from '@/types'
 import { convertToJapanTime } from '@/utils/convertToJapanTime'
 
 import { UpdateCourseButton } from './UpdateCourseButton'
-import { CourseRequest, CourseWithSections } from '../types'
+import { CourseRequest } from '../types'
 
 type Props = {
   courses: CourseWithSections[]

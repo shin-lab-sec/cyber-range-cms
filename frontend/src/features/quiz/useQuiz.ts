@@ -2,10 +2,10 @@ import { Quiz } from '@prisma/client'
 import { useCallback } from 'react'
 
 import { useGetApi } from '@/hooks/useApi'
+import { SectionWithRelation } from '@/types'
 import { postApi, putApi, deleteApi } from '@/utils/api'
 
 import { QuizFormRequest } from './types'
-import { SectionWithRelation } from '../section'
 
 // sectionのmutate
 export const useCreateQuiz = (sectionId: string) => {

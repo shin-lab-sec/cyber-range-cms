@@ -6,7 +6,6 @@ import { useSearchParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
 
 import { Layout } from '@/components/Layout'
-import { CourseWithSections } from '@/features/course'
 import {
   CreateSectionButton,
   DraggableSections,
@@ -15,9 +14,9 @@ import {
   useUpdateCourseSectionOrder,
   useUpdateSection,
   SectionItem,
-  SectionFormRequest,
 } from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
+import { CourseWithSections } from '@/types'
 
 const Courses: NextPage = () => {
   const [draggableMode, setDraggableMode] = useState(false)
@@ -99,9 +98,7 @@ const Courses: NextPage = () => {
                     key={index}
                     courseId={id}
                     section={section}
-                    onUpdate={(id: string, v: SectionFormRequest) =>
-                      updateSection(id, v)
-                    }
+                    onUpdate={(id, v) => updateSection(id, v)}
                     onDelete={(sectionId: string) => deleteSection(sectionId)}
                   />
                 ))}
