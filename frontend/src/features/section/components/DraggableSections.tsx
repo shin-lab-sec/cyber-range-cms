@@ -13,7 +13,7 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 
-import { SectionWithRelation } from '../types'
+import { SectionWithRelation } from '@/types'
 
 type Props = {
   sections: SectionWithRelation[]

@@ -8,8 +8,7 @@ import {
   useUpdateArticle,
 } from '@/features/article'
 import { ArticleEditor } from '@/features/article/ArticleEditor'
-
-import { SectionWithRelation } from '../types'
+import { SectionWithRelation } from '@/types'
 
 type Props = {
   section: SectionWithRelation

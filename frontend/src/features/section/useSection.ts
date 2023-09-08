@@ -2,10 +2,10 @@ import { Section } from '@prisma/client'
 import { useCallback } from 'react'
 
 import { useGetApi } from '@/hooks/useApi'
-import { CourseWithSections } from '@/types'
+import { CourseWithSections, SectionWithRelation } from '@/types'
 import { deleteApi, postApi, putApi } from '@/utils/api'
 
-import { SectionFormRequest, SectionWithRelation } from './types'
+import { SectionFormRequest } from './types'
 
 // 作成
 // Section作成、CourseにsectionId追加（更新）

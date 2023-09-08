@@ -2,12 +2,9 @@ import { NextPage } from 'next'
 import { useSearchParams } from 'next/navigation'
 
 import { Layout } from '@/components/Layout'
-import {
-  SectionWithRelation,
-  SectionArticles,
-  SectionQuizzes,
-} from '@/features/section'
+import { SectionArticles, SectionQuizzes } from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
+import { SectionWithRelation } from '@/types'
 
 const Courses: NextPage = () => {
   const searchParams = useSearchParams()

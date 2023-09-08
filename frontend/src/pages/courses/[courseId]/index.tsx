@@ -14,7 +14,6 @@ import {
   useUpdateCourseSectionOrder,
   useUpdateSection,
   SectionItem,
-  SectionFormRequest,
 } from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
 import { CourseWithSections } from '@/types'
@@ -99,9 +98,7 @@ const Courses: NextPage = () => {
                     key={index}
                     courseId={id}
                     section={section}
-                    onUpdate={(id: string, v: SectionFormRequest) =>
-                      updateSection(id, v)
-                    }
+                    onUpdate={(id, v) => updateSection(id, v)}
                     onDelete={(sectionId: string) => deleteSection(sectionId)}
                   />
                 ))}

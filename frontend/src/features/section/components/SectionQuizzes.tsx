@@ -8,8 +8,7 @@ import {
   QuizFormModalButton,
   QuizTable,
 } from '@/features/quiz'
-
-import { SectionWithRelation } from '../types'
+import { SectionWithRelation } from '@/types'
 
 type Props = {
   section: SectionWithRelation
