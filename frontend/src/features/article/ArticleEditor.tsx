@@ -64,7 +64,7 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
         <div className={`${mode === 'preview' && 'hidden'}`}>
           <Editor
             body={body}
-            setMarkdown={(v: string) => setMarkdown(v)}
+            setMarkdown={setMarkdown}
             onSave={onClickSave}
             onDirty={() => setEditorState('dirty')}
           />

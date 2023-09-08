@@ -1,5 +1,4 @@
 import { Flex } from '@mantine/core'
-import { Section } from '@prisma/client'
 import { IconMenuOrder } from '@tabler/icons-react'
 import { NextPage } from 'next'
 import { useSearchParams } from 'next/navigation'
@@ -66,18 +65,18 @@ const Courses: NextPage = () => {
       <h1>{course.name}のセクション一覧</h1>
       <div>
         {!draggableMode && (
-          <Flex gap='sm' mt='sm' justify='end'>
-            <Flex gap='sm' align='center'>
+          <Flex gap='sm' mt='sm' justify='end' align='center'>
+            {orderedSections?.length !== 0 && (
               <Flex
                 align='center'
                 className='cursor-pointer'
-                onClick={() => setDraggableMode(s => !s)}
+                onClick={() => setDraggableMode(true)}
               >
                 <IconMenuOrder size='1.5rem' />
                 順番変更
               </Flex>
-              <CreateSectionButton onSubmit={createSection} />
-            </Flex>
+            )}
+            <CreateSectionButton onSubmit={createSection} />
           </Flex>
         )}
 
@@ -86,9 +85,7 @@ const Courses: NextPage = () => {
             {draggableMode ? (
               <DraggableSections
                 sections={orderedSections}
-                onUpdateOrder={(sections: Section[]) =>
-                  updateCourseSectionOrder(sections)
-                }
+                onUpdateOrder={updateCourseSectionOrder}
                 onClose={() => setDraggableMode(false)}
               />
             ) : (
@@ -98,8 +95,8 @@ const Courses: NextPage = () => {
                     key={index}
                     courseId={id}
                     section={section}
-                    onUpdate={(id, v) => updateSection(id, v)}
-                    onDelete={(sectionId: string) => deleteSection(sectionId)}
+                    onUpdate={updateSection}
+                    onDelete={deleteSection}
                   />
                 ))}
               </Flex>
