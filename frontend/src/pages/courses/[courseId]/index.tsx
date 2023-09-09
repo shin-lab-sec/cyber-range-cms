@@ -63,7 +63,12 @@ const Courses: NextPage = () => {
   }
 
   return (
-    <Layout>
+    <Layout
+      breadcrumbItems={[
+        { title: 'コース一覧', href: '/courses' },
+        { title: `${course.name}のセクション一覧`, href: '' },
+      ]}
+    >
       <h1>{course.name}のセクション一覧</h1>
       <div>
         {!draggableMode.v && (
