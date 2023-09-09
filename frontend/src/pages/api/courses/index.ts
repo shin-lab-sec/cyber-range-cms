@@ -14,16 +14,6 @@ export default async function handler(
     case 'GET':
       try {
         const courses = await prisma.course.findMany({
-          include: {
-            sections: {
-              include: {
-                userAgent: true,
-                articles: { orderBy: { createdAt: 'asc' } },
-                quizzes: { orderBy: { createdAt: 'asc' } },
-              },
-              orderBy: { createdAt: 'asc' },
-            },
-          },
           orderBy: { createdAt: 'asc' },
         })
 
@@ -43,11 +33,6 @@ export default async function handler(
             imageUrl: body.imageUrl,
             author: body.author,
             organization: body.organization,
-          },
-          include: {
-            sections: {
-              include: { userAgent: true, articles: true, quizzes: true },
-            },
           },
         })
         res.status(200).json({ data: createdCourse })

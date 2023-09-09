@@ -1,4 +1,5 @@
 import { Flex } from '@mantine/core'
+import { Course } from '@prisma/client'
 import { NextPage } from 'next'
 
 import { Layout } from '@/components/Layout'
@@ -10,10 +11,9 @@ import {
   CourseTable,
 } from '@/features/course'
 import { useGetApi } from '@/hooks/useApi'
-import { CourseWithSections } from '@/types'
 
 const Courses: NextPage = () => {
-  const { data: courses } = useGetApi<CourseWithSections[]>(`/courses`)
+  const { data: courses } = useGetApi<Course[]>(`/courses`)
 
   const { createCourse } = useCreateCourse()
   const { updateCourse } = useUpdateCourse()

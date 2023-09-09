@@ -18,15 +18,9 @@ export default async function handler(
           where: {
             id: id,
           },
+          // コース詳細ページでセクション一覧を表示するので必要
           include: {
-            sections: {
-              include: {
-                userAgent: true,
-                articles: { orderBy: { createdAt: 'asc' } },
-                quizzes: { orderBy: { createdAt: 'asc' } },
-              },
-              orderBy: { createdAt: 'asc' },
-            },
+            sections: true,
           },
         })
 
@@ -51,16 +45,7 @@ export default async function handler(
             organization: body.organization,
             sectionIds: body.sectionIds,
           },
-          include: {
-            sections: {
-              include: {
-                userAgent: true,
-                articles: { orderBy: { createdAt: 'asc' } },
-                quizzes: { orderBy: { createdAt: 'asc' } },
-              },
-              orderBy: { createdAt: 'asc' },
-            },
-          },
+          // 今はPUTで、courses/[id]をmutateしないので、includeしない
         })
 
         res.status(200).json({ data: updatedCourse })
