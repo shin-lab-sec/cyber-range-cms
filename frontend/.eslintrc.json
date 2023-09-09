@@ -85,14 +85,6 @@
             "from": ["src/features/*/!(index.ts)", "src/features/*/*/**"],
             "target": "src/pages/**"
           },
-          // componentsはpages|componentsのみ
-          {
-            "from": "**/components/**",
-            "target": [
-              "src/!(pages|features)/**",
-              "src/features/*/!(components)/**"
-            ]
-          },
           // 直下componentsが、featuresはダメ
           {
             "from": "src/features/*/components/**",

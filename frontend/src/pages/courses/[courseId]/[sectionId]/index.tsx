@@ -1,3 +1,4 @@
+import { Course } from '@prisma/client'
 import { NextPage } from 'next'
 import { useSearchParams } from 'next/navigation'
 
@@ -9,9 +10,13 @@ import { SectionWithRelation } from '@/types'
 const Courses: NextPage = () => {
   const searchParams = useSearchParams()
   const sectionId = searchParams.get('sectionId') || ''
+  const courseId = searchParams.get('courseId') || ''
+
   const { data: section } = useGetApi<SectionWithRelation>(
     `/sections/${sectionId}`,
   )
+
+  const { data: course } = useGetApi<Course>(`/courses/${courseId}`)
 
   if (!section || !sectionId) {
     return (
@@ -21,14 +26,22 @@ const Courses: NextPage = () => {
     )
   }
 
+  const courseTitleName = course
+    ? `${course.name}のセクション一覧`
+    : 'セクション一覧'
+
+  const typeName = section.type === 'quiz' ? '問題一覧' : '記事一覧'
+  const titleName = `${section.name}の${typeName}`
+
   return (
-    <Layout>
-      <h1>
-        {section.name}
-        {section.type === 'quiz' && 'の問題一覧'}
-        {section.type === 'article' && 'の記事一覧'}
-        {section.type === 'sandbox' && 'の記事一覧'}
-      </h1>
+    <Layout
+      breadcrumbItems={[
+        { title: 'コース一覧', href: '/courses' },
+        { title: courseTitleName, href: `/courses/${courseId}` },
+        { title: titleName, href: '' },
+      ]}
+    >
+      <h1>{titleName}</h1>
       <div>
         {section.type === 'quiz' && (
           <div>
