@@ -1,17 +1,17 @@
 import { Flex } from '@mantine/core'
+import { Course } from '@prisma/client'
 import { IconX } from '@tabler/icons-react'
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import Link from 'next/link'
 import { FC, useMemo } from 'react'
 
-import { CourseWithSections } from '@/types'
 import { convertToJapanTime } from '@/utils/convertToJapanTime'
 
 import { UpdateCourseButton } from './UpdateCourseButton'
 import { CourseRequest } from '../types'
 
 type Props = {
-  courses: CourseWithSections[]
+  courses: Course[]
   updateCourse: (id: string, params: CourseRequest) => void
   deleteCourse: (id: string) => void
 }
@@ -21,7 +21,7 @@ export const CourseTable: FC<Props> = ({
   updateCourse,
   deleteCourse,
 }) => {
-  const columns = useMemo<MRT_ColumnDef<CourseWithSections>[]>(
+  const columns = useMemo<MRT_ColumnDef<Course>[]>(
     () => [
       {
         accessorKey: 'name',
@@ -46,9 +46,11 @@ export const CourseTable: FC<Props> = ({
         maxSize: 0,
         Cell: ({
           row: {
-            original: { sections },
+            original: { sectionIds },
           },
-        }) => <div className='max-w-300px break-words'>{sections.length}</div>,
+        }) => (
+          <div className='max-w-300px break-words'>{sectionIds.length}</div>
+        ),
       },
       {
         accessorKey: 'level',
