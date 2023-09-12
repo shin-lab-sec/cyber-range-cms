@@ -14,6 +14,15 @@ export default async function handler(
     case 'GET':
       try {
         const courses = await prisma.course.findMany({
+          include: {
+            sections: {
+              include: {
+                userAgent: true,
+                articles: { orderBy: { createdAt: 'asc' } },
+                quizzes: { orderBy: { createdAt: 'asc' } },
+              },
+            },
+          },
           orderBy: { createdAt: 'asc' },
         })
 

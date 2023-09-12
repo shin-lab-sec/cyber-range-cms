@@ -1,11 +1,10 @@
-import { Course } from '@prisma/client'
 import { NextPage } from 'next'
 import { useSearchParams } from 'next/navigation'
 
 import { Layout } from '@/components/Layout'
 import { SectionArticles, SectionQuizzes } from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
-import { SectionWithRelation } from '@/types'
+import { CourseWithSections, SectionWithRelation } from '@/types'
 
 const Courses: NextPage = () => {
   const searchParams = useSearchParams()
@@ -16,7 +15,7 @@ const Courses: NextPage = () => {
     `/sections/${sectionId}`,
   )
 
-  const { data: course } = useGetApi<Course>(`/courses/${courseId}`)
+  const { data: course } = useGetApi<CourseWithSections>(`/courses/${courseId}`)
 
   if (!section || !sectionId) {
     return (
