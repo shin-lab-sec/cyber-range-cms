@@ -11,7 +11,6 @@ import {
 } from '@/features/course'
 import { useGetApi } from '@/hooks/useApi'
 import { CourseWithSections } from '@/types'
-import { putApi } from '@/utils/api'
 
 const Courses: NextPage = () => {
   const { data: courses } = useGetApi<CourseWithSections[]>(`/courses`)
@@ -20,16 +19,11 @@ const Courses: NextPage = () => {
   const { updateCourse } = useUpdateCourse()
   const { deleteCourse } = useDeleteCourse()
 
-  const createCourseWithRelation = async () => {
-    await putApi('/courses')
-  }
-
   return (
     <Layout>
       <Flex gap='sm' justify='space-between' align='center'>
         <h1>コース一覧</h1>
         <CreateCourseButton onSubmit={createCourse} />
-        <button onClick={createCourseWithRelation}>沢山作るコース</button>
       </Flex>
 
       {courses?.length ? (

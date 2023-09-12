@@ -33,6 +33,7 @@ export const useCreateCourse = () => {
   return { createCourse }
 }
 
+// TODO: courses/[id]のmutateやる？
 export const useUpdateCourse = () => {
   const { data: courses, mutate: mutateCourses } =
     useGetApi<CourseWithSections[]>('/courses')

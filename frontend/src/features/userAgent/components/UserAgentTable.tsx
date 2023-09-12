@@ -4,6 +4,7 @@ import { IconDeviceDesktop, IconTerminal2, IconX } from '@tabler/icons-react'
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import { FC, useMemo } from 'react'
 
+import { ExportJsonButton } from '@/components/ExportJsonButton'
 import { convertToJapanTime } from '@/utils/convertToJapanTime'
 
 import { UpdateUserAgentButton } from './UpdateUserAgentButton'
@@ -115,7 +116,8 @@ export const UserAgentTable: FC<Props> = ({
             gitHubUrl: userAgent.gitHubUrl,
           }
           return (
-            <Flex align='center' gap='sm'>
+            <Flex align='center' gap='sm' className='min-w-250px'>
+              <ExportJsonButton data={userAgent} fileName={userAgent.name} />
               <UpdateUserAgentButton
                 onSubmit={v => updateUserAgent(userAgent.id, v)}
                 initValue={userAgentFormRequest}
