@@ -20,7 +20,13 @@ export default async function handler(
           },
           // コース詳細ページでセクション一覧を表示するので必要
           include: {
-            sections: true,
+            sections: {
+              include: {
+                userAgent: true,
+                articles: { orderBy: { createdAt: 'asc' } },
+                quizzes: { orderBy: { createdAt: 'asc' } },
+              },
+            },
           },
         })
 
@@ -46,6 +52,15 @@ export default async function handler(
             sectionIds: body.sectionIds,
           },
           // 今はPUTで、courses/[id]をmutateしないので、includeしない
+          include: {
+            sections: {
+              include: {
+                userAgent: true,
+                articles: { orderBy: { createdAt: 'asc' } },
+                quizzes: { orderBy: { createdAt: 'asc' } },
+              },
+            },
+          },
         })
 
         res.status(200).json({ data: updatedCourse })

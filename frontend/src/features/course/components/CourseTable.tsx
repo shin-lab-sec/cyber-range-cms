@@ -1,18 +1,18 @@
 import { Flex } from '@mantine/core'
-import { Course } from '@prisma/client'
 import { IconX } from '@tabler/icons-react'
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import Link from 'next/link'
 import { FC, useMemo } from 'react'
 
 import { ExportJsonButton } from '@/components/ExportJsonButton'
+import { CourseWithSections } from '@/types'
 import { convertToJapanTime } from '@/utils/convertToJapanTime'
 
 import { UpdateCourseButton } from './UpdateCourseButton'
 import { CourseRequest } from '../types'
 
 type Props = {
-  courses: Course[]
+  courses: CourseWithSections[]
   updateCourse: (id: string, params: CourseRequest) => void
   deleteCourse: (id: string) => void
 }
@@ -22,7 +22,7 @@ export const CourseTable: FC<Props> = ({
   updateCourse,
   deleteCourse,
 }) => {
-  const columns = useMemo<MRT_ColumnDef<Course>[]>(
+  const columns = useMemo<MRT_ColumnDef<CourseWithSections>[]>(
     () => [
       {
         accessorKey: 'name',

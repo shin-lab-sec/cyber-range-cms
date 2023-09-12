@@ -1,19 +1,19 @@
-import { Course } from '@prisma/client'
 import { useCallback } from 'react'
 
 import { useGetApi } from '@/hooks/useApi'
+import { CourseWithSections } from '@/types'
 import { postApi, putApi, deleteApi } from '@/utils/api'
 
 import { CourseRequest } from '../types'
 
 export const useCreateCourse = () => {
   const { data: courses, mutate: mutateCourses } =
-    useGetApi<Course[]>('/courses')
+    useGetApi<CourseWithSections[]>('/courses')
 
   const createCourse = useCallback(
     async (params: CourseRequest) => {
       try {
-        const newCourse = await postApi<Course>('/courses', params)
+        const newCourse = await postApi<CourseWithSections>('/courses', params)
         console.log('追加に成功', newCourse)
 
         if (!courses) return
@@ -36,12 +36,15 @@ export const useCreateCourse = () => {
 // TODO: courses/[id]のmutateやる？
 export const useUpdateCourse = () => {
   const { data: courses, mutate: mutateCourses } =
-    useGetApi<Course[]>('/courses')
+    useGetApi<CourseWithSections[]>('/courses')
 
   const updateCourse = useCallback(
     async (id: string, params: CourseRequest) => {
       try {
-        const updatedCourse = await putApi<Course>(`/courses/${id}`, params)
+        const updatedCourse = await putApi<CourseWithSections>(
+          `/courses/${id}`,
+          params,
+        )
         console.log('更新に成功', updatedCourse)
 
         if (!courses) return
@@ -66,7 +69,7 @@ export const useUpdateCourse = () => {
 
 export const useDeleteCourse = () => {
   const { data: courses, mutate: mutateCourses } =
-    useGetApi<Course[]>('/courses')
+    useGetApi<CourseWithSections[]>('/courses')
 
   const deleteCourse = useCallback(
     async (id: string) => {
