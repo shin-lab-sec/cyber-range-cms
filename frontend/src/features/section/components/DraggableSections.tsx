@@ -1,5 +1,4 @@
 import { Button, Flex, ThemeIcon } from '@mantine/core'
-import { Section } from '@prisma/client'
 import {
   IconArticle,
   IconBox,
@@ -15,10 +14,11 @@ import {
 } from 'react-beautiful-dnd'
 
 import { useBoolean } from '@/hooks/useBoolean'
+import { SectionWithRelation } from '@/types'
 
 type Props = {
-  sections: Section[]
-  onUpdateOrder: (sections: Section[]) => void
+  sections: SectionWithRelation[]
+  onUpdateOrder: (sections: SectionWithRelation[]) => void
   className?: string
   onClose?: () => void
 }
