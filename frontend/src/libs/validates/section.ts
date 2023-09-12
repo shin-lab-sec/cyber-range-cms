@@ -36,7 +36,10 @@ const sectionSandboxSchema = z.object({
 
 const courseIdSchema = z.string().nonempty('コースが選択されていません')
 
-export const sectionSchema = z.union([
+// APiへのリクエストはsectionRequestSchema
+// フォームのリクエストはsectionFormRequestSchema
+// カスタムフックでsectionFormRequestSchemaに、courseIdを追加してAPIへリクエストする
+export const sectionRequestSchema = z.union([
   sectionQuizSchema.extend({ courseId: courseIdSchema }),
   sectionArticleSchema.extend({ courseId: courseIdSchema }),
   sectionSandboxSchema.extend({ courseId: courseIdSchema }),
@@ -63,34 +66,8 @@ const sectionSandboxUpdateSchema = sectionSandboxSchema.extend({
     .optional(),
 })
 
-export const sectionUpdateSchema = z.union([
+export const sectionUpdateRequestSchema = z.union([
   sectionQuizUpdateSchema,
   sectionArticleUpdateSchema,
   sectionSandboxUpdateSchema,
 ])
-
-// quizIds以外のquiz, quizIds含めたquiz ,... 6パターンのみ許可するスキーマ
-
-// type Update = z.infer<typeof sectionUpdateSchema>
-
-// const article: Update = { type: 'article', name: 'f' }
-// const articleWithArticleIds: Update = {
-//   type: 'article',
-//   name: 'f',
-//   articleIds: ['f'],
-// }
-// const quiz: Update = { type: 'quiz', name: 'f' }
-// const quizWithQuizIds: Update = { type: 'quiz', name: 'f', quizIds: ['f'] }
-// const sandbox: Update = {
-//   type: 'sandbox',
-//   name: 'f',
-//   scenarioGitHubUrl: '',
-//   userAgentId: 'a',
-// }
-// const sandboxWithArticleIds: Update = {
-//   type: 'sandbox',
-//   name: 'f',
-//   userAgentId: 'f',
-//   scenarioGitHubUrl: '',
-//   articleIds: ['f'],
-// }

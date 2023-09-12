@@ -1,4 +1,5 @@
 import { Button, Flex, ThemeIcon } from '@mantine/core'
+import { Section } from '@prisma/client'
 import {
   IconArticle,
   IconBox,
@@ -13,11 +14,11 @@ import {
   DropResult,
 } from 'react-beautiful-dnd'
 
-import { SectionWithRelation } from '../types'
+import { useBoolean } from '@/hooks/useBoolean'
 
 type Props = {
-  sections: SectionWithRelation[]
-  onUpdateOrder: (sections: SectionWithRelation[]) => void
+  sections: Section[]
+  onUpdateOrder: (sections: Section[]) => void
   className?: string
   onClose?: () => void
 }
@@ -37,10 +38,11 @@ export const DraggableSections: FC<Props> = ({
     setSections(items)
   }
 
-  const [windowReady, setWindowReady] = useState(false)
+  const windowReady = useBoolean(false)
+
   useEffect(() => {
-    setWindowReady(true)
-  }, [])
+    windowReady.setTrue()
+  }, [windowReady])
 
   return (
     <div className={className}>
@@ -56,7 +58,7 @@ export const DraggableSections: FC<Props> = ({
         </Button>
       </Flex>
 
-      {windowReady && (
+      {windowReady.v && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId='droppable'>
             {provided => (

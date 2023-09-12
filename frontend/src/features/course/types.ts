@@ -1,9 +1,5 @@
-import { Article, Course, Quiz, Section, UserAgent } from '@prisma/client'
+import { z } from 'zod'
 
-export type CourseWithSections = Course & {
-  sections: (Section & {
-    userAgent: UserAgent | null
-    articles: Article[]
-    quizzes: Quiz[]
-  })[]
-}
+import { courseRequestSchema } from '@/libs/validates'
+
+export type CourseRequest = z.infer<typeof courseRequestSchema>

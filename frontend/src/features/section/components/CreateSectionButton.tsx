@@ -3,7 +3,8 @@ import { FC } from 'react'
 
 import { useModalForm } from '@/hooks/useModalForm'
 
-import { SectionForm, SectionFormRequest } from './SectionForm'
+import { SectionForm } from './sectionForm'
+import { SectionFormRequest } from '../types'
 
 type Props = {
   onSubmit: (params: SectionFormRequest) => void

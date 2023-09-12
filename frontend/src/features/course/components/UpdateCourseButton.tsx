@@ -3,11 +3,12 @@ import { FC } from 'react'
 
 import { useModalForm } from '@/hooks/useModalForm'
 
-import { CourseForm, CourseFormRequest } from './CourseForm'
+import { CourseForm } from './CourseForm'
+import { CourseRequest } from '../types'
 
 type Props = {
-  onSubmit: (params: CourseFormRequest) => void
-  initValue: CourseFormRequest
+  onSubmit: (params: CourseRequest) => void
+  initValue: CourseRequest
 }
 
 export const UpdateCourseButton: FC<Props> = ({

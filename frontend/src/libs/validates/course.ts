@@ -3,7 +3,7 @@ import { z } from 'zod'
 // "" | cms-storageのimagesバケット内のオブジェクトURL
 const imageUrlRegex = new RegExp('^(https://cms-storage.cypas.sec/images/.+|)$')
 
-export const courseSchema = z.object({
+export const courseRequestSchema = z.object({
   name: z
     .string()
     .nonempty('コース名は必須です')
@@ -24,7 +24,7 @@ export const courseSchema = z.object({
 })
 
 // sectionIdsを追加して全プロパティをオプショナルに
-export const courseUpdateSchema = courseSchema
+export const courseUpdateRequestSchema = courseRequestSchema
   .extend({
     sectionIds: z.array(z.string().nonempty('空のsectionIdがあります')),
   })

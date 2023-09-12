@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/libs/prisma'
-import { apiValidation, courseSchema } from '@/libs/validates'
+import { apiValidation, courseRequestSchema } from '@/libs/validates'
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,16 +14,6 @@ export default async function handler(
     case 'GET':
       try {
         const courses = await prisma.course.findMany({
-          include: {
-            sections: {
-              include: {
-                userAgent: true,
-                articles: { orderBy: { createdAt: 'asc' } },
-                quizzes: { orderBy: { createdAt: 'asc' } },
-              },
-              orderBy: { createdAt: 'asc' },
-            },
-          },
           orderBy: { createdAt: 'asc' },
         })
 
@@ -34,7 +24,7 @@ export default async function handler(
       break
 
     case 'POST':
-      apiValidation(req, res, courseSchema, async () => {
+      apiValidation(req, res, courseRequestSchema, async () => {
         const createdCourse = await prisma.course.create({
           data: {
             name: body.name,
@@ -43,11 +33,6 @@ export default async function handler(
             imageUrl: body.imageUrl,
             author: body.author,
             organization: body.organization,
-          },
-          include: {
-            sections: {
-              include: { userAgent: true, articles: true, quizzes: true },
-            },
           },
         })
         res.status(200).json({ data: createdCourse })

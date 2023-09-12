@@ -1,7 +1,5 @@
-import { UserAgent, Section, Article, Quiz } from '@prisma/client'
+import { z } from 'zod'
 
-export type SectionWithRelation = Section & {
-  userAgent: UserAgent | null
-  articles: Article[]
-  quizzes: Quiz[]
-}
+import { sectionFormRequestSchema } from '@/libs/validates'
+
+export type SectionFormRequest = z.infer<typeof sectionFormRequestSchema>

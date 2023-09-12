@@ -4,7 +4,7 @@ import { useCallback } from 'react'
 import { useGetApi } from '@/hooks/useApi'
 import { postApi, putApi, deleteApi } from '@/utils/api'
 
-import { UserAgentFormRequest } from '.'
+import { UserAgentFormRequest } from './types'
 
 export const useCreateUserAgent = () => {
   const { data: userAgents, mutate: mutateUserAgents } =

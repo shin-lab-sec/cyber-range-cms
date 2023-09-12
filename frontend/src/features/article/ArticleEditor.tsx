@@ -9,7 +9,7 @@ type Mode = 'edit' | 'preview' | 'live'
 type EditorState = 'clean' | 'dirty' | 'saving' | 'saved'
 type Props = {
   body: string
-  onSave: (v: string) => void
+  onSave: (markdown: string) => void
   onDelete: () => void
 }
 
@@ -64,7 +64,7 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
         <div className={`${mode === 'preview' && 'hidden'}`}>
           <Editor
             body={body}
-            setMarkdown={(v: string) => setMarkdown(v)}
+            setMarkdown={setMarkdown}
             onSave={onClickSave}
             onDirty={() => setEditorState('dirty')}
           />

@@ -1,4 +1,5 @@
 import { Flex, ThemeIcon } from '@mantine/core'
+import { Section } from '@prisma/client'
 import {
   IconArticle,
   IconBox,
@@ -10,13 +11,12 @@ import { FC } from 'react'
 
 import { ExportJsonButton } from '@/components/ExportJsonButton'
 
-import { SectionFormRequest } from './SectionForm'
 import { UpdateSectionButton } from './UpdateSectionButton'
-import { SectionWithRelation } from '../types'
+import { SectionFormRequest } from '../types'
 
 type Props = {
   courseId: string
-  section: SectionWithRelation
+  section: Section
   onUpdate: (id: string, v: SectionFormRequest) => void
   onDelete: (id: string) => void
 }

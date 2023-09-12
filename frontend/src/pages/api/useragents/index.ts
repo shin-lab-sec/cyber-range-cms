@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/libs/prisma'
-import { apiValidation, userAgentSchema } from '@/libs/validates'
+import { apiValidation, userAgentRequestSchema } from '@/libs/validates'
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,7 +23,7 @@ export default async function handler(
       break
 
     case 'POST':
-      apiValidation(req, res, userAgentSchema, async () => {
+      apiValidation(req, res, userAgentRequestSchema, async () => {
         const createdUserAgent = await prisma.userAgent.create({
           data: {
             name: body.name,

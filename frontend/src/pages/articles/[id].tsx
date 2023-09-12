@@ -2,6 +2,7 @@ import { Loader } from '@mantine/core'
 import { Article } from '@prisma/client'
 import { NextPage } from 'next'
 import { useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 
 import { Preview } from '@/features/article'
 import { useGetApi } from '@/hooks/useApi'
@@ -12,22 +13,21 @@ const ArticlePage: NextPage = () => {
 
   const { data: article } = useGetApi<Article>(`/articles/${id}`)
 
-  console.log('article: ', article)
+  useEffect(() => {
+    window.onload = () => {
+      const height = document.body.scrollHeight
+      window.parent.postMessage({ iframeHeight: height }, '*')
+    }
+  }, [])
 
   if (!article || !id) {
     return (
-      <div className='h-screen grid place-items-center'>
+      <div className='h-screen bg-[#141517] grid place-items-center'>
         <Loader size='lg' />
-        <style jsx global>
-          {`
-            body {
-              background-color: #141517;
-            }
-          `}
-        </style>
       </div>
     )
   }
+
   return (
     <>
       <div className='max-w-800px'>

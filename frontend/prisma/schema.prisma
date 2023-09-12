@@ -37,10 +37,10 @@ model Section {
   articleIds        String[]
   scenarioGitHubUrl String?    @db.VarChar(255) // べた張り or 既存のシナリオから選択
   userAgentId       String?    @db.VarChar(255)
-  userAgent         UserAgent? @relation(fields: [userAgentId], references: [id], onDelete: Cascade)
+  userAgent         UserAgent? @relation(fields: [userAgentId], references: [id], onDelete: Cascade) // 関係を持つUserAgentが消えたら、このSectionは消える
 
   courseId  String   @db.VarChar(255)
-  course    Course   @relation(fields: [courseId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt()
 

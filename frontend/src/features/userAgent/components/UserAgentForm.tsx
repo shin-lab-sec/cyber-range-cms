@@ -3,12 +3,11 @@ import { Alert, Button, Flex, Select, Stack, TextInput } from '@mantine/core'
 import { IconAlertCircle } from '@tabler/icons-react'
 import { FC, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { useFormErrorHandling } from '@/hooks/useFormErrorHandling'
-import { userAgentSchema } from '@/libs/validates'
+import { userAgentRequestSchema } from '@/libs/validates'
 
-export type UserAgentFormRequest = z.infer<typeof userAgentSchema>
+import { UserAgentFormRequest } from '../types'
 
 type Props = {
   onSubmit: (params: UserAgentFormRequest) => void
@@ -30,7 +29,7 @@ export const UserAgentForm: FC<Props> = ({
     clearErrors,
     formState: { errors, isDirty },
   } = useForm<UserAgentFormRequest>({
-    resolver: zodResolver(userAgentSchema),
+    resolver: zodResolver(userAgentRequestSchema),
     criteriaMode: 'all',
     defaultValues: initValue,
   })

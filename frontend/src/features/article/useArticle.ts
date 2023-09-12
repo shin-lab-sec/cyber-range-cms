@@ -2,9 +2,8 @@ import { Article } from '@prisma/client'
 import { useCallback } from 'react'
 
 import { useGetApi } from '@/hooks/useApi'
+import { SectionWithRelation } from '@/types'
 import { postApi, putApi, deleteApi } from '@/utils/api'
-
-import { SectionWithRelation } from '../section'
 
 // sectionのmutate
 export const useCreateArticle = (sectionId: string) => {
@@ -16,7 +15,7 @@ export const useCreateArticle = (sectionId: string) => {
   const createArticle = useCallback(async () => {
     try {
       const newArticle = await postApi<Article>('/articles', {
-        body: 'ここに記事をマークダウン形式で書きます',
+        body: '// ここに記事をマークダウン形式で書きます',
         sectionId,
       })
       console.log('追加に成功', newArticle)

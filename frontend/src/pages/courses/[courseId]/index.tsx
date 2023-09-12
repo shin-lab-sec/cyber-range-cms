@@ -1,16 +1,13 @@
 import { Flex } from '@mantine/core'
-import { Section } from '@prisma/client'
 import { IconMenuOrder } from '@tabler/icons-react'
 import { NextPage } from 'next'
 import { useSearchParams } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 import { Layout } from '@/components/Layout'
-import { CourseWithSections } from '@/features/course'
 import {
   CreateSectionButton,
   DraggableSections,
-  SectionFormRequest,
   useCreateSection,
   useDeleteSection,
   useUpdateCourseSectionOrder,
@@ -18,9 +15,12 @@ import {
   SectionItem,
 } from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
+import { useBoolean } from '@/hooks/useBoolean'
+import { CourseWithSections } from '@/types'
 
 const Courses: NextPage = () => {
-  const [draggableMode, setDraggableMode] = useState(false)
+  const draggableMode = useBoolean(false)
+
   const searchParams = useSearchParams()
   const id = searchParams.get('courseId') || '' // 一回目のレンダリングで正常なidが取得できる
   const { data: course } = useGetApi<CourseWithSections>(`/courses/${id}`)
@@ -63,34 +63,37 @@ const Courses: NextPage = () => {
   }
 
   return (
-    <Layout>
+    <Layout
+      breadcrumbItems={[
+        { title: 'コース一覧', href: '/courses' },
+        { title: `${course.name}のセクション一覧`, href: '' },
+      ]}
+    >
       <h1>{course.name}のセクション一覧</h1>
       <div>
-        {!draggableMode && (
-          <Flex gap='sm' mt='sm' justify='end'>
-            <Flex gap='sm' align='center'>
+        {!draggableMode.v && (
+          <Flex gap='sm' mt='sm' justify='end' align='center'>
+            {orderedSections?.length !== 0 && (
               <Flex
                 align='center'
                 className='cursor-pointer'
-                onClick={() => setDraggableMode(s => !s)}
+                onClick={draggableMode.setTrue}
               >
                 <IconMenuOrder size='1.5rem' />
                 順番変更
               </Flex>
-              <CreateSectionButton onSubmit={createSection} />
-            </Flex>
+            )}
+            <CreateSectionButton onSubmit={createSection} />
           </Flex>
         )}
 
         {orderedSections?.length ? (
           <div className='mt-3'>
-            {draggableMode ? (
+            {draggableMode.v ? (
               <DraggableSections
                 sections={orderedSections}
-                onUpdateOrder={(sections: Section[]) =>
-                  updateCourseSectionOrder(sections)
-                }
-                onClose={() => setDraggableMode(false)}
+                onUpdateOrder={updateCourseSectionOrder}
+                onClose={draggableMode.setFalse}
               />
             ) : (
               <Flex gap='sm' direction='column'>
@@ -99,10 +102,8 @@ const Courses: NextPage = () => {
                     key={index}
                     courseId={id}
                     section={section}
-                    onUpdate={(id: string, v: SectionFormRequest) =>
-                      updateSection(id, v)
-                    }
-                    onDelete={(sectionId: string) => deleteSection(sectionId)}
+                    onUpdate={updateSection}
+                    onDelete={deleteSection}
                   />
                 ))}
               </Flex>
