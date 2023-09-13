@@ -2,10 +2,8 @@ import { z } from 'zod'
 
 import { articleRequestSchema } from './article'
 import { quizFormRequestSchema } from './quiz'
+import { gitHubUrlRegex } from './shares'
 import { userAgentRequestSchema } from './userAgent'
-
-// "" | GitHubURL
-export const gitHubUrlRegex = new RegExp('^(https://github.com/.+|)$')
 
 // courseIdはcreateに必要だけど、formには要らない
 // formのdefaultでcourseIdだけ設定すればOK

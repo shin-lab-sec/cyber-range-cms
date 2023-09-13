@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { gitHubUrlRegex } from './section'
+import { gitHubUrlRegex } from './shares'
 
 export const userAgentRequestSchema = z.object({
   name: z.string().nonempty('ユーザーエージェント名は必須です'),
