@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { sectionWithRelationSchema } from '.'
+import { sectionWithRelationSchema } from './section'
 
 // "" | cms-storageのimagesバケット内のオブジェクトURL
 const imageUrlRegex = new RegExp('^(https://cms-storage.cypas.sec/images/.+|)$')

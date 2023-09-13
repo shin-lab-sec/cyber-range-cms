@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
+import { articleRequestSchema } from './article'
 import { quizFormRequestSchema } from './quiz'
-
-import { articleRequestSchema, userAgentRequestSchema } from '.'
+import { userAgentRequestSchema } from './userAgent'
 
 // "" | GitHubURL
 export const gitHubUrlRegex = new RegExp('^(https://github.com/.+|)$')
