@@ -1,5 +1,9 @@
 import { z } from 'zod'
 
+import { quizFormRequestSchema } from './quiz'
+
+import { articleRequestSchema, userAgentRequestSchema } from '.'
+
 // "" | GitHubURL
 export const gitHubUrlRegex = new RegExp('^(https://github.com/.+|)$')
 
@@ -70,4 +74,14 @@ export const sectionUpdateRequestSchema = z.union([
   sectionQuizUpdateSchema,
   sectionArticleUpdateSchema,
   sectionSandboxUpdateSchema,
+])
+
+// リレーションもまとめて作成する
+export const sectionWithRelationSchema = z.union([
+  sectionQuizSchema.extend({ quizzes: z.array(quizFormRequestSchema) }),
+  sectionArticleSchema.extend({ articles: z.array(articleRequestSchema) }),
+  sectionSandboxSchema.extend({
+    articles: z.array(articleRequestSchema),
+    userAgent: userAgentRequestSchema,
+  }),
 ])

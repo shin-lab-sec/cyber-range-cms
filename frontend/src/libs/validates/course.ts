@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { sectionWithRelationSchema } from '.'
+
 // "" | cms-storageのimagesバケット内のオブジェクトURL
 const imageUrlRegex = new RegExp('^(https://cms-storage.cypas.sec/images/.+|)$')
 
@@ -29,3 +31,8 @@ export const courseUpdateRequestSchema = courseRequestSchema
     sectionIds: z.array(z.string().nonempty('空のsectionIdがあります')),
   })
   .partial()
+
+// リレーションもまとめて作成する
+export const courseWithRelationSchema = courseRequestSchema.extend({
+  sections: z.array(sectionWithRelationSchema),
+})
