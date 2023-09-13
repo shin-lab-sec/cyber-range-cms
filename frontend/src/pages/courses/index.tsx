@@ -1,5 +1,6 @@
-import { Flex } from '@mantine/core'
+import { Button, Flex } from '@mantine/core'
 import { NextPage } from 'next'
+import { ChangeEvent, useCallback, useState } from 'react'
 
 import { Layout } from '@/components/Layout'
 import {
@@ -11,6 +12,7 @@ import {
 } from '@/features/course'
 import { useGetApi } from '@/hooks/useApi'
 import { CourseWithSections } from '@/types'
+import { postApi } from '@/utils/api'
 
 const Courses: NextPage = () => {
   const { data: courses } = useGetApi<CourseWithSections[]>(`/courses`)
@@ -20,6 +22,18 @@ const Courses: NextPage = () => {
   const { deleteCourse } = useDeleteCourse()
 
   const [fileContent, setFileContent] = useState(null)
+
+  const createCourseWithRelation = useCallback(async () => {
+    try {
+      const res = await postApi('/courses/bulk', fileContent)
+      console.log('res: ', res)
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(err.message)
+        return
+      }
+    }
+  }, [fileContent])
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -48,12 +62,17 @@ const Courses: NextPage = () => {
       <Flex gap='sm' justify='space-between' align='center'>
         <h1>コース一覧</h1>
         <CreateCourseButton onSubmit={createCourse} />
+        <Button onClick={createCourseWithRelation}>インポートコース</Button>
       </Flex>
 
       <input type='file' accept='.json' onChange={handleFileChange} />
       {fileContent && (
         <div>
           <h2>JSONデータ</h2>
+          <p>
+            filename:
+            {fileContent.name}
+          </p>
           <pre>{JSON.stringify(fileContent, null, 2)}</pre>
         </div>
       )}
