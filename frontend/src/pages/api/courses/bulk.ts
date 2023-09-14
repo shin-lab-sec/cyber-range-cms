@@ -1,6 +1,9 @@
+import { Article, Course, Quiz, Section } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+import prisma from '@/libs/prisma'
 import { apiValidation, courseWithRelationSchema } from '@/libs/validates'
+import { SectionWithRelation } from '@/types'
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,8 +26,65 @@ export default async function handler(
 
       // OK sections: []のJSONで試す
       // sectionのQuiz入れて試す
+
       apiValidation(req, res, courseWithRelationSchema, async () => {
-        res.status(200).json({ data: body })
+        const courseWithRelationRequest: Partial<Course> & {
+          sections?: { create: Partial<Section>[] }
+        } = {
+          name: body.name,
+          description: body.description,
+          level: body.level,
+          imageUrl: body.imageUrl,
+          author: body.author,
+          organization: body.organization,
+          sectionIds: body.sectionIds,
+        }
+
+        // sectionsがある
+        if (body.sections.length > 0) {
+          const sections = body.sections as SectionWithRelation[] // zodでparseしているのでSection[]でなければthrowする
+
+          const sectionRequests: (Partial<Section> & {
+            quizzes: { create: Partial<Quiz>[] }
+            articles: { create: Partial<Article>[] }
+          })[] = sections.map(section => ({
+            name: section.name,
+            type: section.type,
+            scenarioGitHubUrl: section.scenarioGitHubUrl,
+            // TODO: userAgent: それぞれfindしてあれば、connect、無ければcreate?
+            // upsertはどうでしょうか？？
+            quizzes: {
+              create: section.quizzes.map(quiz => ({
+                question: quiz.question,
+                type: quiz.type,
+                choices: quiz.choices,
+                answers: quiz.answers,
+                explanation: quiz.explanation,
+              })),
+            },
+            articles: {
+              create: section.articles.map(article => ({
+                body: article.body,
+              })),
+            },
+          }))
+
+          courseWithRelationRequest.sections = { create: sectionRequests }
+        }
+
+        const createdCourse = await prisma.course.create({
+          data: courseWithRelationRequest,
+          include: {
+            sections: {
+              include: {
+                userAgent: true,
+                articles: { orderBy: { createdAt: 'asc' } },
+                quizzes: { orderBy: { createdAt: 'asc' } },
+              },
+            },
+          },
+        })
+        res.status(200).json({ data: createdCourse })
       })
       break
 
