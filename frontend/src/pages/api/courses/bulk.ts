@@ -1,4 +1,4 @@
-import { Article, Course, Quiz, Section } from '@prisma/client'
+import { Article, Course, Quiz, Section, UserAgent } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import prisma from '@/libs/prisma'
@@ -47,27 +47,66 @@ export default async function handler(
           const sectionRequests: (Partial<Section> & {
             quizzes: { create: Partial<Quiz>[] }
             articles: { create: Partial<Article>[] }
-          })[] = sections.map(section => ({
-            name: section.name,
-            type: section.type,
-            scenarioGitHubUrl: section.scenarioGitHubUrl,
-            // TODO: userAgent: それぞれfindしてあれば、connect、無ければcreate?
-            // upsertはどうでしょうか？？
-            quizzes: {
-              create: section.quizzes.map(quiz => ({
-                question: quiz.question,
-                type: quiz.type,
-                choices: quiz.choices,
-                answers: quiz.answers,
-                explanation: quiz.explanation,
-              })),
-            },
-            articles: {
-              create: section.articles.map(article => ({
-                body: article.body,
-              })),
-            },
-          }))
+            userAgent?: {
+              connectOrCreate: {
+                where: {
+                  name_author_organization: Pick<
+                    UserAgent,
+                    'name' | 'author' | 'organization'
+                  >
+                }
+                create: Partial<UserAgent>
+              }
+            }
+          })[] = sections.map(section => {
+            let userAgent = {}
+
+            // userAgentがある時 存在すればconnect、無ければcreateする
+            if (section.userAgent) {
+              userAgent = {
+                userAgent: {
+                  connectOrCreate: {
+                    where: {
+                      name_author_organization: {
+                        name: section.userAgent.name,
+                        author: section.userAgent.author,
+                        organization: section.userAgent.organization,
+                      },
+                    },
+                    create: {
+                      name: section.userAgent.name,
+                      gitHubUrl: section.userAgent.gitHubUrl,
+                      type: section.userAgent.type,
+                      author: section.userAgent.author,
+                      organization: section.userAgent.organization,
+                    },
+                  },
+                },
+              }
+            }
+
+            return {
+              name: section.name,
+              type: section.type,
+              scenarioGitHubUrl: section.scenarioGitHubUrl,
+              quizzes: {
+                create: section.quizzes.map(quiz => ({
+                  question: quiz.question,
+                  type: quiz.type,
+                  choices: quiz.choices,
+                  answers: quiz.answers,
+                  explanation: quiz.explanation,
+                })),
+              },
+              articles: {
+                create: section.articles.map(article => ({
+                  body: article.body,
+                })),
+              },
+              // sandboxでない時は、userAgentを含めない
+              ...userAgent,
+            }
+          })
 
           courseWithRelationRequest.sections = { create: sectionRequests }
         }
