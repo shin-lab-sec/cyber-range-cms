@@ -1,4 +1,4 @@
-import { IconDownload } from '@tabler/icons-react'
+import { IconUpload } from '@tabler/icons-react'
 import { FC } from 'react'
 
 type Props = {
@@ -14,9 +14,9 @@ export const ExportJsonButton: FC<Props> = ({ data, fileName }) => {
   const jsonURL = URL.createObjectURL(blobData)
 
   return (
-    <a href={jsonURL} download={fileNameWithJson} className='flex'>
-      エクスポート
-      <IconDownload size='1.5rem' className='cursor-pointer' />
+    <a href={jsonURL} download={fileNameWithJson} className='flex gap-2'>
+      <IconUpload size='1.5rem' />
+      <span>エクスポート</span>
     </a>
   )
 }
