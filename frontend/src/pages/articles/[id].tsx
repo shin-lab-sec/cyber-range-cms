@@ -2,7 +2,7 @@ import { Loader } from '@mantine/core'
 import { Article } from '@prisma/client'
 import { NextPage } from 'next'
 import { useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 
 import { Preview } from '@/features/article'
 import { useGetApi } from '@/hooks/useApi'
@@ -10,15 +10,28 @@ import { useGetApi } from '@/hooks/useApi'
 const ArticlePage: NextPage = () => {
   const searchParams = useSearchParams()
   const id = searchParams.get('id') || '' // 一回目のレンダリングで正常なidが取得できる
+  const ref = useRef<HTMLIFrameElement>(null)
 
   const { data: article } = useGetApi<Article>(`/articles/${id}`)
 
-  useEffect(() => {
-    window.onload = () => {
-      const height = document.body.scrollHeight
-      window.parent.postMessage({ iframeHeight: height }, '*')
+  // iframeで呼び出す側に高さを渡す
+  useLayoutEffect(() => {
+    if (!ref.current) return
+
+    const height = ref.current.clientHeight
+    const sendEmbedSizeInfo = () => {
+      window.parent.postMessage(
+        {
+          height,
+        },
+        '*',
+      )
     }
-  }, [])
+
+    sendEmbedSizeInfo()
+    window.addEventListener('resize', sendEmbedSizeInfo)
+    return () => window.removeEventListener('resize', sendEmbedSizeInfo)
+  }, [article]) // articleが取得した時に発火させる
 
   if (!article || !id) {
     return (
@@ -30,7 +43,7 @@ const ArticlePage: NextPage = () => {
 
   return (
     <>
-      <div className='max-w-800px'>
+      <div className='max-w-800px' ref={ref}>
         <Preview markdown={article.body} />
       </div>
 
