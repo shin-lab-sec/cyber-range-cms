@@ -1,7 +1,7 @@
 import { FileInput, Flex } from '@mantine/core'
 import { IconDownload } from '@tabler/icons-react'
 import { NextPage } from 'next'
-import { ChangeEvent, useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
 import { Layout } from '@/components/Layout'
 import {
@@ -22,54 +22,45 @@ const Courses: NextPage = () => {
   const { updateCourse } = useUpdateCourse()
   const { deleteCourse } = useDeleteCourse()
 
-  const [fileContent, setFileContent] = useState<HTMLInputElement | null>(null)
-
-  const createCourseWithRelation = useCallback(async () => {
+  const createCourseWithRelation = useCallback(async (fileContent: any) => {
     try {
       const res = await postApi('/courses/bulk', fileContent)
       console.log('res: ', res)
     } catch (err) {
       if (err instanceof Error) {
-        console.error(err.message)
+        alert(
+          `コースの作成に失敗しました。\n以下が原因である可能性があるので、内容を確認し再度お試しください。\n
+- コースの名前(name)・制作者(author)・所属(organization)の組み合わせが既に存在する。
+- 必須項目が抜けている。
+- 項目の値に誤りがある。
+\n 以下はエラー内容です${err.message}`,
+        )
         return
       }
     }
-  }, [fileContent])
-
-  const handleFileChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) {
-      console.error('JSONファイルを選択して下さい')
-      return
-    }
-
-    const file = e.target.files[0]
-    if (!file) return
-
-    const reader = new FileReader()
-    reader.onload = event => {
-      const content = event?.target?.result
-      try {
-        const jsonData = JSON.parse(content as string)
-        setFileContent(jsonData)
-      } catch (error) {
-        console.error('JSONファイルを解析できませんでした。', error)
-      }
-    }
-    reader.readAsText(file)
   }, [])
-  const handleFileChange2 = useCallback((file: File) => {
-    const reader = new FileReader()
-    reader.onload = event => {
-      const content = event?.target?.result
-      try {
-        const jsonData = JSON.parse(content as string)
-        setFileContent(jsonData)
-      } catch (error) {
-        console.error('JSONファイルを解析できませんでした。', error)
+
+  const handleFileChange = useCallback(
+    async (file: File) => {
+      const reader = new FileReader()
+
+      // ファイルの中身を解析
+      reader.onload = event => {
+        const content = event?.target?.result
+        try {
+          const jsonData = JSON.parse(content as string) // 中身をJSONパースする
+          createCourseWithRelation(jsonData) // 中身を元にコースを作成
+        } catch (error) {
+          alert(
+            `JSONファイルを解析できませんでした。\n内容を確認して再度お試しください。\n${error}`,
+          )
+          return
+        }
       }
-    }
-    reader.readAsText(file)
-  }, [])
+      reader.readAsText(file)
+    },
+    [createCourseWithRelation],
+  )
 
   return (
     <Layout>
@@ -80,59 +71,16 @@ const Courses: NextPage = () => {
             placeholder='コースをインポート'
             accept='.json'
             icon={<IconDownload />}
-            variant='unstyled'
             classNames={{
+              root: 'border border-black rounded-md',
               placeholder: 'text-black',
               icon: 'text-black',
             }}
-            onChange={handleFileChange2}
+            onChange={handleFileChange}
           />
           <CreateCourseButton onSubmit={createCourse} />
-          {/* <Button onClick={createCourseWithRelation}>インポートコース</Button> */}
-
-          {/* <FileInput
-            placeholder='コースをインポート'
-            accept='.json'
-            icon={<IconDownload />}
-            classNames={{
-              root: 'border border-black rounded-md w-fit',
-              placeholder: 'text-black',
-              icon: 'text-black',
-            }}
-            onChange={handleFileChange2}
-          /> */}
         </Flex>
       </Flex>
-
-      {/* <input type='file' accept='.json' onChange={handleFileChange} /> */}
-
-      {/* <label htmlFor='file'>
-        <button className='flex items-center'>
-          コースをインポート
-          <IconDownload />
-        </button>
-      </label>
-
-      <label tabIndex={0}>
-        <span>コースをインポート</span>
-        <IconDownload />
-        <input
-          type='file'
-          id='file'
-          accept='.json'
-          onChange={handleFileChange}
-          // className='hidden'
-          className='opacity-0'
-        />
-      </label> */}
-
-      {fileContent && (
-        <div>
-          <h2>JSONデータ</h2>
-          <p>filename:</p>
-          <pre>{JSON.stringify(fileContent, null, 2)}</pre>
-        </div>
-      )}
 
       {courses?.length ? (
         <div className='mt-8'>
