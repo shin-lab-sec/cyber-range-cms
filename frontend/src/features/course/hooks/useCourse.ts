@@ -91,3 +91,37 @@ export const useDeleteCourse = () => {
 
   return { deleteCourse }
 }
+
+export const useCreateCourseWithRelation = () => {
+  const { data: courses, mutate: mutateCourses } =
+    useGetApi<CourseWithSections[]>('/courses')
+
+  const createWithRelationCourse = useCallback(
+    async (params: CourseWithSections) => {
+      try {
+        const newCourse = await postApi<CourseWithSections>(
+          '/courses/bulk',
+          params,
+        )
+        console.log('追加に成功', newCourse)
+
+        if (!courses) return
+        // 再度データを取得しキャッシュを更新する
+        mutateCourses([...courses, newCourse])
+      } catch (e) {
+        console.error(e)
+        if (e instanceof Error) {
+          throw `コースの作成に失敗しました。\n以下が原因である可能性があるので、内容を確認し再度お試しください。\n
+- コースの名前(name)・制作者(author)・所属(organization)の組み合わせが既に存在する。
+- 必須項目が抜けている。
+- 項目の値に誤りがある。
+\n 以下はエラー内容です${e.message}`
+        }
+        throw JSON.stringify(e)
+      }
+    },
+    [courses, mutateCourses],
+  )
+
+  return { createWithRelationCourse }
+}

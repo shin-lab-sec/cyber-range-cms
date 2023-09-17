@@ -1,4 +1,5 @@
 export * from './components/CreateCourseButton'
 export * from './components/UpdateCourseButton'
 export * from './components/CourseTable'
+export * from './components/CourseFileInput'
 export * from './hooks/useCourse'

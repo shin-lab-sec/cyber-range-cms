@@ -8,6 +8,8 @@ import {
   useUpdateCourse,
   useDeleteCourse,
   CourseTable,
+  CourseFileInput,
+  useCreateCourseWithRelation,
 } from '@/features/course'
 import { useGetApi } from '@/hooks/useApi'
 import { CourseWithSections } from '@/types'
@@ -18,12 +20,18 @@ const Courses: NextPage = () => {
   const { createCourse } = useCreateCourse()
   const { updateCourse } = useUpdateCourse()
   const { deleteCourse } = useDeleteCourse()
+  const { createWithRelationCourse } = useCreateCourseWithRelation()
 
   return (
     <Layout>
       <Flex gap='sm' justify='space-between' align='center'>
         <h1>コース一覧</h1>
-        <CreateCourseButton onSubmit={createCourse} />
+        <Flex gap='sm' align='center'>
+          <CourseFileInput
+            createWithRelationCourse={createWithRelationCourse}
+          />
+          <CreateCourseButton onSubmit={createCourse} />
+        </Flex>
       </Flex>
 
       {courses?.length ? (

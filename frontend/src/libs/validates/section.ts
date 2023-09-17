@@ -1,7 +1,9 @@
 import { z } from 'zod'
 
-// "" | GitHubURL
-export const gitHubUrlRegex = new RegExp('^(https://github.com/.+|)$')
+import { articleRequestSchema } from './article'
+import { quizFormRequestSchema } from './quiz'
+import { gitHubUrlRegex } from './shares'
+import { userAgentRequestSchema } from './userAgent'
 
 // courseIdはcreateに必要だけど、formには要らない
 // formのdefaultでcourseIdだけ設定すればOK
@@ -70,4 +72,14 @@ export const sectionUpdateRequestSchema = z.union([
   sectionQuizUpdateSchema,
   sectionArticleUpdateSchema,
   sectionSandboxUpdateSchema,
+])
+
+// リレーションもまとめて作成する
+export const sectionWithRelationSchema = z.union([
+  sectionQuizSchema.extend({ quizzes: z.array(quizFormRequestSchema) }),
+  sectionArticleSchema.extend({ articles: z.array(articleRequestSchema) }),
+  sectionSandboxSchema.extend({
+    articles: z.array(articleRequestSchema),
+    userAgent: userAgentRequestSchema,
+  }),
 ])
