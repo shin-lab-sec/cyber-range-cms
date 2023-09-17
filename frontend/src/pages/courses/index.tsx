@@ -23,7 +23,8 @@ import { postApi } from '@/utils/api'
 type FileInputState = 'clean' | 'saving' | 'saved' | 'error'
 
 const Courses: NextPage = () => {
-  const { data: courses } = useGetApi<CourseWithSections[]>(`/courses`)
+  const { data: courses, mutate: mutateCourses } =
+    useGetApi<CourseWithSections[]>(`/courses`)
   const [fileInputStatus, setFileInputStatus] =
     useState<FileInputState>('clean')
 
@@ -31,41 +32,53 @@ const Courses: NextPage = () => {
   const { updateCourse } = useUpdateCourse()
   const { deleteCourse } = useDeleteCourse()
 
-  const createCourseWithRelation = useCallback(async (fileContent: any) => {
-    try {
-      setFileInputStatus('saving')
-      const res = await postApi('/courses/bulk', fileContent)
-      console.log('res: ', res)
-      setFileInputStatus('saved')
+  const createCourseWithRelation = useCallback(
+    async (fileContent: any) => {
+      try {
+        setFileInputStatus('saving')
+        const res = await postApi<CourseWithSections>(
+          '/courses/bulk',
+          fileContent,
+        )
 
-      setTimeout(() => {
-        setFileInputStatus('clean')
-      }, 2000)
-    } catch (err) {
-      if (err instanceof Error) {
-        alert(
-          `コースの作成に失敗しました。\n以下が原因である可能性があるので、内容を確認し再度お試しください。\n
+        if (!courses) return
+        // 再度データを取得しキャッシュを更新する
+        mutateCourses([...courses, res])
+
+        setFileInputStatus('saved')
+
+        setTimeout(() => {
+          setFileInputStatus('clean')
+        }, 2000)
+
+        console.log('res: ', res)
+      } catch (err) {
+        if (err instanceof Error) {
+          alert(
+            `コースの作成に失敗しました。\n以下が原因である可能性があるので、内容を確認し再度お試しください。\n
 - コースの名前(name)・制作者(author)・所属(organization)の組み合わせが既に存在する。
 - 必須項目が抜けている。
 - 項目の値に誤りがある。
 \n 以下はエラー内容です${err.message}`,
-        )
+          )
 
-        console.error(
-          'コースの作成に失敗しました。\n',
-          '以下が原因である可能性があるので、内容を確認し再度お試しください。\n',
-          '- コースの名前(name)・制作者(author)・所属(organization)の組み合わせが既に存在する。\n',
-          '- 必須項目が抜けている。\n',
-          '- 項目の値に誤りがある。\n\n',
-          '以下はエラー内容です\n',
-          err.message,
-        ),
-          setFileInputStatus('error')
+          console.error(
+            'コースの作成に失敗しました。\n',
+            '以下が原因である可能性があるので、内容を確認し再度お試しください。\n',
+            '- コースの名前(name)・制作者(author)・所属(organization)の組み合わせが既に存在する。\n',
+            '- 必須項目が抜けている。\n',
+            '- 項目の値に誤りがある。\n\n',
+            '以下はエラー内容です\n',
+            err.message,
+          ),
+            setFileInputStatus('error')
 
-        return
+          return
+        }
       }
-    }
-  }, [])
+    },
+    [courses, mutateCourses],
+  )
 
   const handleFileChange = useCallback(
     async (file: File | null) => {
