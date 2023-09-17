@@ -1,6 +1,7 @@
 import { Flex } from '@mantine/core'
 import { NextPage } from 'next'
 
+import { ImportFileInput } from '@/components/ImportFileInput'
 import { Layout } from '@/components/Layout'
 import {
   CreateCourseButton,
@@ -8,10 +9,10 @@ import {
   useUpdateCourse,
   useDeleteCourse,
   CourseTable,
-  CourseFileInput,
   useCreateCourseWithRelation,
 } from '@/features/course'
 import { useGetApi } from '@/hooks/useApi'
+import { courseWithRelationSchema } from '@/libs/validates'
 import { CourseWithSections } from '@/types'
 
 const Courses: NextPage = () => {
@@ -27,8 +28,9 @@ const Courses: NextPage = () => {
       <Flex gap='sm' justify='space-between' align='center'>
         <h1>コース一覧</h1>
         <Flex gap='sm' align='center'>
-          <CourseFileInput
-            createWithRelationCourse={createWithRelationCourse}
+          <ImportFileInput
+            createData={createWithRelationCourse}
+            validateSchema={courseWithRelationSchema}
           />
           <CreateCourseButton onSubmit={createCourse} />
         </Flex>
