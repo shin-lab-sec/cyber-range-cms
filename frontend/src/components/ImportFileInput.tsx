@@ -77,7 +77,7 @@ export const ImportFileInput: FC<Props> = ({ createData, validateSchema }) => {
 
   return (
     <FileInput
-      placeholder='コースをインポート'
+      placeholder='JSON形式でインポート'
       accept='.json'
       icon={fileInputIcon}
       classNames={{
