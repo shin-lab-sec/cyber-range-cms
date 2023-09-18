@@ -4,7 +4,7 @@ import { useGetApi } from '@/hooks/useApi'
 import { CourseWithSections } from '@/types'
 import { postApi, putApi, deleteApi } from '@/utils/api'
 
-import { CourseRequest } from '../types'
+import { CourseRequest } from './types'
 
 export const useCreateCourse = () => {
   const { data: courses, mutate: mutateCourses } =
