@@ -164,3 +164,48 @@ export const useUpdateCourseSectionOrder = (courseId: string) => {
 
   return { updateCourseSectionOrder }
 }
+
+export const useCreateSectionWithRelation = (courseId: string) => {
+  const { data: course, mutate: mutateCourse } = useGetApi<CourseWithSections>(
+    `/courses/${courseId}`,
+  )
+
+  const createSectionWithRelation = useCallback(
+    async (params: object) => {
+      try {
+        const createdSection = await postApi<SectionWithRelation>(
+          '/sections/bulk',
+          { ...params, courseId },
+        )
+        console.log('sectionの作成に成功: ', createdSection)
+
+        if (!course) return
+        // 引数のsectionIdを追加したsectionIdsを生成
+        const newSectionIds = [...course.sectionIds, createdSection.id]
+
+        // sectionIds更新
+        const updatedCourse = await putApi<CourseWithSections>(
+          `/courses/${courseId}`,
+          {
+            sectionIds: newSectionIds,
+          },
+        )
+        console.log('sectionIdsの更新に成功', updatedCourse)
+
+        // 再度データを取得しキャッシュを更新する
+        mutateCourse(updatedCourse)
+      } catch (e) {
+        console.error(e)
+        if (e instanceof Error) {
+          throw `セクションの作成に失敗しました。\n以下のような原因が考えられます。内容を確認し再度お試しください。\n
+- 既に同じ名前(name)のセクションが存在する。
+\n 以下はエラー内容です${e.message}`
+        }
+        throw JSON.stringify(e)
+      }
+    },
+    [course, courseId, mutateCourse],
+  )
+
+  return { createSectionWithRelation }
+}

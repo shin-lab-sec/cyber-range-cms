@@ -83,3 +83,21 @@ export const sectionWithRelationSchema = z.union([
     userAgent: userAgentRequestSchema,
   }),
 ])
+
+// section1つをリレーションもまとめて作成する
+// sections/bulkでのみ使う
+export const sectionWithCourseIdAndRelationSchema = z.union([
+  sectionQuizSchema.extend({
+    courseId: courseIdSchema,
+    quizzes: z.array(quizFormRequestSchema),
+  }),
+  sectionArticleSchema.extend({
+    courseId: courseIdSchema,
+    articles: z.array(articleRequestSchema),
+  }),
+  sectionSandboxSchema.extend({
+    courseId: courseIdSchema,
+    articles: z.array(articleRequestSchema),
+    userAgent: userAgentRequestSchema,
+  }),
+])
