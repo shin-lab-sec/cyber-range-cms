@@ -2,6 +2,7 @@ import { Flex } from '@mantine/core'
 import { UserAgent } from '@prisma/client'
 import { NextPage } from 'next'
 
+import { ImportFileInput } from '@/components/ImportFileInput'
 import { Layout } from '@/components/Layout'
 import {
   CreateUserAgentButton,
@@ -11,6 +12,7 @@ import {
   useUpdateUserAgent,
 } from '@/features/userAgent'
 import { useGetApi } from '@/hooks/useApi'
+import { userAgentRequestSchema } from '@/libs/validates'
 
 const UserAgents: NextPage = () => {
   const { data: userAgents } = useGetApi<UserAgent[]>(`/useragents`)
@@ -23,7 +25,13 @@ const UserAgents: NextPage = () => {
     <Layout>
       <Flex gap='sm' justify='space-between' align='center'>
         <h1>ユーザーエージェント一覧</h1>
-        <CreateUserAgentButton onSubmit={createUserAgent} />
+        <Flex gap='sm' align='center'>
+          <ImportFileInput
+            createData={createUserAgent}
+            validateSchema={userAgentRequestSchema}
+          />
+          <CreateUserAgentButton onSubmit={createUserAgent} />
+        </Flex>
       </Flex>
 
       {userAgents?.length ? (

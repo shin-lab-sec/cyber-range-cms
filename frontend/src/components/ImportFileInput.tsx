@@ -9,7 +9,7 @@ import { ZodSchema } from 'zod'
 
 type FileInputState = 'default' | 'loading' | 'saved' | 'error'
 type Props = {
-  createData: (params: object) => void
+  createData: (params: any) => void
   validateSchema: ZodSchema<any>
 }
 
@@ -37,7 +37,7 @@ export const ImportFileInput: FC<Props> = ({ createData, validateSchema }) => {
         const content = event?.target?.result
 
         try {
-          const jsonData: object = parseJson(content)
+          const jsonData = parseJson(content)
           const zodParseResponse = validateSchema.safeParse(jsonData)
 
           if (!zodParseResponse.success) {
