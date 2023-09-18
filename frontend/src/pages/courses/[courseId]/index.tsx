@@ -4,6 +4,7 @@ import { NextPage } from 'next'
 import { useSearchParams } from 'next/navigation'
 import { useMemo } from 'react'
 
+import { ImportFileInput } from '@/components/ImportFileInput'
 import { Layout } from '@/components/Layout'
 import {
   CreateSectionButton,
@@ -13,9 +14,11 @@ import {
   useUpdateCourseSectionOrder,
   useUpdateSection,
   SectionItem,
+  useCreateSectionWithRelation,
 } from '@/features/section'
 import { useGetApi } from '@/hooks/useApi'
 import { useBoolean } from '@/hooks/useBoolean'
+import { sectionWithRelationSchema } from '@/libs/validates'
 import { CourseWithSections } from '@/types'
 
 const Courses: NextPage = () => {
@@ -51,8 +54,8 @@ const Courses: NextPage = () => {
   const { createSection } = useCreateSection(id)
   const { updateSection } = useUpdateSection(id)
   const { deleteSection } = useDeleteSection(id, orderedSectionIds)
-
   const { updateCourseSectionOrder } = useUpdateCourseSectionOrder(id)
+  const { createSectionWithRelation } = useCreateSectionWithRelation(id)
 
   if (!course || !id) {
     return (
@@ -83,6 +86,10 @@ const Courses: NextPage = () => {
                 順番変更
               </Flex>
             )}
+            <ImportFileInput
+              createData={createSectionWithRelation}
+              validateSchema={sectionWithRelationSchema}
+            />
             <CreateSectionButton onSubmit={createSection} />
           </Flex>
         )}
