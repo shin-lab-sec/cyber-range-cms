@@ -1,3 +1,4 @@
+import { Button } from '@mantine/core'
 import { IconUpload } from '@tabler/icons-react'
 import { FC } from 'react'
 
@@ -14,9 +15,14 @@ export const ExportJsonButton: FC<Props> = ({ data, fileName }) => {
   const jsonURL = URL.createObjectURL(blobData)
 
   return (
-    <a href={jsonURL} download={fileNameWithJson} className='flex gap-2'>
-      <IconUpload size='1.5rem' />
-      <span>エクスポート</span>
-    </a>
+    <Button
+      component='a'
+      href={jsonURL}
+      download={fileNameWithJson}
+      leftIcon={<IconUpload size='1.5rem' />}
+      variant='default'
+    >
+      エクスポート
+    </Button>
   )
 }
