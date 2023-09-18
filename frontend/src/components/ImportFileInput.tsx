@@ -5,12 +5,12 @@ import {
   IconExclamationMark,
 } from '@tabler/icons-react'
 import { FC, useCallback, useMemo, useState } from 'react'
-import { z } from 'zod'
+import { ZodSchema } from 'zod'
 
 type FileInputState = 'default' | 'loading' | 'saved' | 'error'
 type Props = {
   createData: (params: object) => void
-  validateSchema: z.ZodObject<any>
+  validateSchema: ZodSchema<any>
 }
 
 export const ImportFileInput: FC<Props> = ({ createData, validateSchema }) => {
