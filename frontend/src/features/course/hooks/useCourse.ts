@@ -97,7 +97,7 @@ export const useCreateCourseWithRelation = () => {
     useGetApi<CourseWithSections[]>('/courses')
 
   const createWithRelationCourse = useCallback(
-    async (params: object) => {
+    async (params: CourseWithSections) => {
       try {
         const newCourse = await postApi<CourseWithSections>(
           '/courses/bulk',

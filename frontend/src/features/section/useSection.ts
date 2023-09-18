@@ -171,7 +171,7 @@ export const useCreateSectionWithRelation = (courseId: string) => {
   )
 
   const createSectionWithRelation = useCallback(
-    async (params: object) => {
+    async (params: SectionWithRelation) => {
       try {
         const createdSection = await postApi<SectionWithRelation>(
           '/sections/bulk',
