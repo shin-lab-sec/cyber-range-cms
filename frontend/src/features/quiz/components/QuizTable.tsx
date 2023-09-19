@@ -139,12 +139,6 @@ export const QuizTable: FC<Props> = ({ quizzes, updateQuiz, deleteQuiz }) => {
                 modalTitle='テスト編集'
                 submitButtonName='更新する'
               />
-              <IconX
-                size='1.5rem'
-                onClick={() => deleteQuiz(quiz.id)}
-                className='cursor-pointer'
-              />
-
               <ConfirmButton
                 confirmMessage={`問題: "${quiz.question}" を削除しますか？`}
                 onConfirm={() => deleteQuiz(quiz.id)}
