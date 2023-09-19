@@ -4,6 +4,7 @@ import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import Link from 'next/link'
 import { FC, useMemo } from 'react'
 
+import { ConfirmButton } from '@/components/ConfirmButton'
 import { ExportJsonButton } from '@/components/ExportJsonButton'
 import { CourseWithSections } from '@/types'
 import { convertToJapanTime } from '@/utils/convertToJapanTime'
@@ -131,11 +132,12 @@ export const CourseTable: FC<Props> = ({
                 onSubmit={v => updateCourse(course.id, v)}
                 initValue={courseFormRequest}
               />
-              <IconX
-                size='1.5rem'
-                className='cursor-pointer'
-                onClick={() => deleteCourse(course.id)}
-              />
+              <ConfirmButton
+                confirmMessage={`コース: "${course.name}" を削除しますか？`}
+                onConfirm={() => deleteCourse(course.id)}
+              >
+                <IconX size='1.5rem' />
+              </ConfirmButton>
             </Flex>
           )
         },

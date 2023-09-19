@@ -9,6 +9,7 @@ import {
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import { FC, useMemo } from 'react'
 
+import { ConfirmButton } from '@/components/ConfirmButton'
 import { convertToJapanTime } from '@/utils/convertToJapanTime'
 
 import { QuizFormModalButton } from './QuizFormModalButton'
@@ -143,6 +144,13 @@ export const QuizTable: FC<Props> = ({ quizzes, updateQuiz, deleteQuiz }) => {
                 onClick={() => deleteQuiz(quiz.id)}
                 className='cursor-pointer'
               />
+
+              <ConfirmButton
+                confirmMessage={`問題: "${quiz.question}" を削除しますか？`}
+                onConfirm={() => deleteQuiz(quiz.id)}
+              >
+                <IconX size='1.5rem' />
+              </ConfirmButton>
             </Flex>
           )
         },

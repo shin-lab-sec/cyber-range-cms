@@ -8,6 +8,7 @@ import {
 import Link from 'next/link'
 import { FC } from 'react'
 
+import { ConfirmButton } from '@/components/ConfirmButton'
 import { ExportJsonButton } from '@/components/ExportJsonButton'
 import { SectionWithRelation } from '@/types'
 
@@ -64,7 +65,13 @@ export const SectionItem: FC<Props> = ({
             onSubmit={v => onUpdate(section.id, v)}
             initValue={sectionFormRequest}
           />
-          <IconX size='1.5rem' onClick={() => onDelete(section.id)} />
+
+          <ConfirmButton
+            confirmMessage={`セクション: "${section.name}" を削除しますか？`}
+            onConfirm={() => onDelete(section.id)}
+          >
+            <IconX size='1.5rem' />
+          </ConfirmButton>
         </Flex>
       </div>
     </Flex>

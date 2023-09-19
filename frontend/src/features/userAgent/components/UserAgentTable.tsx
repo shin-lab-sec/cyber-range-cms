@@ -4,6 +4,7 @@ import { IconDeviceDesktop, IconTerminal2, IconX } from '@tabler/icons-react'
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import { FC, useMemo } from 'react'
 
+import { ConfirmButton } from '@/components/ConfirmButton'
 import { ExportJsonButton } from '@/components/ExportJsonButton'
 import { convertToJapanTime } from '@/utils/convertToJapanTime'
 
@@ -122,11 +123,12 @@ export const UserAgentTable: FC<Props> = ({
                 onSubmit={v => updateUserAgent(userAgent.id, v)}
                 initValue={userAgentFormRequest}
               />
-              <IconX
-                size='1.5rem'
-                className='cursor-pointer'
-                onClick={() => deleteUserAgent(userAgent.id)}
-              />
+              <ConfirmButton
+                confirmMessage={`${userAgent.name}を削除しますか？\n※このユーザーエージェントを使用しているセクションも削除されます。`}
+                onConfirm={() => deleteUserAgent(userAgent.id)}
+              >
+                <IconX size='1.5rem' />
+              </ConfirmButton>
             </Flex>
           )
         },
