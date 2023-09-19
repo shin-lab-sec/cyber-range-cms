@@ -1,14 +1,10 @@
-import { Flex, List, ThemeIcon } from '@mantine/core'
+import { Button, Flex, List, ThemeIcon } from '@mantine/core'
 import { Quiz } from '@prisma/client'
-import {
-  IconArticle,
-  IconListCheck,
-  IconSelect,
-  IconX,
-} from '@tabler/icons-react'
+import { IconArticle, IconListCheck, IconSelect } from '@tabler/icons-react'
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import { FC, useMemo } from 'react'
 
+import { ConfirmButton } from '@/components/ConfirmButton'
 import { convertToJapanTime } from '@/utils/convertToJapanTime'
 
 import { QuizFormModalButton } from './QuizFormModalButton'
@@ -138,11 +134,14 @@ export const QuizTable: FC<Props> = ({ quizzes, updateQuiz, deleteQuiz }) => {
                 modalTitle='テスト編集'
                 submitButtonName='更新する'
               />
-              <IconX
-                size='1.5rem'
-                onClick={() => deleteQuiz(quiz.id)}
-                className='cursor-pointer'
-              />
+              <ConfirmButton
+                confirmMessage={`問題: "${quiz.question}" を削除しますか？`}
+                onConfirm={() => deleteQuiz(quiz.id)}
+              >
+                <Button component='span' color='red'>
+                  削除
+                </Button>
+              </ConfirmButton>
             </Flex>
           )
         },

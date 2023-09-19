@@ -1,7 +1,7 @@
 import { Button, Flex, Loader, Tabs } from '@mantine/core'
 import { useMediaQuery, useDebouncedState } from '@mantine/hooks'
 import { IconPhoto, IconMessageCircle, IconSettings } from '@tabler/icons-react'
-import { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Editor, Preview } from '.'
 
@@ -31,6 +31,33 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
       setEditorState('clean')
     }, 2000)
   }, [markdown, editorState, onSave])
+
+  const handlePopstate = useCallback(() => {
+    const confirmMessage =
+      '保存されていないデータは削除されますが、よろしいですか？'
+    // OKが押されたらブラウザバックする
+    if (window.confirm(confirmMessage)) {
+      window.history.back()
+      setEditorState('clean') // これ無いと2度ダイアログ出る
+      return
+    }
+    // ダミー履歴を挿入して「戻る」を1回分吸収できる状態にする
+    history.pushState(null, '', null)
+  }, [])
+
+  const isDirty = useMemo(() => editorState === 'dirty', [editorState])
+
+  // 編集中なら、ブラウザバック前に確認を入れる
+  useEffect(() => {
+    if (!isDirty) return
+
+    history.pushState(null, '', null) // ダミー履歴を挿入
+    window.addEventListener('popstate', handlePopstate, false) // ブラウザの履歴の変更で発火
+
+    return () => {
+      window.removeEventListener('popstate', handlePopstate, false)
+    }
+  }, [handlePopstate, isDirty])
 
   return (
     <div>
