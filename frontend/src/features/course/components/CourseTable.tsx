@@ -1,5 +1,4 @@
-import { Flex } from '@mantine/core'
-import { IconX } from '@tabler/icons-react'
+import { Button, Flex } from '@mantine/core'
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import Link from 'next/link'
 import { FC, useMemo } from 'react'
@@ -136,7 +135,9 @@ export const CourseTable: FC<Props> = ({
                 confirmMessage={`コース: "${course.name}" を削除しますか？`}
                 onConfirm={() => deleteCourse(course.id)}
               >
-                <IconX size='1.5rem' />
+                <Button component='span' color='red'>
+                  削除
+                </Button>
               </ConfirmButton>
             </Flex>
           )

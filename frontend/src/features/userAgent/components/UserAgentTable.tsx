@@ -1,6 +1,6 @@
-import { Flex, ThemeIcon } from '@mantine/core'
+import { Button, Flex, ThemeIcon } from '@mantine/core'
 import { UserAgent } from '@prisma/client'
-import { IconDeviceDesktop, IconTerminal2, IconX } from '@tabler/icons-react'
+import { IconDeviceDesktop, IconTerminal2 } from '@tabler/icons-react'
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import { FC, useMemo } from 'react'
 
@@ -127,7 +127,9 @@ export const UserAgentTable: FC<Props> = ({
                 confirmMessage={`${userAgent.name}を削除しますか？\n※このユーザーエージェントを使用しているセクションも削除されます。`}
                 onConfirm={() => deleteUserAgent(userAgent.id)}
               >
-                <IconX size='1.5rem' />
+                <Button component='span' color='red'>
+                  削除
+                </Button>
               </ConfirmButton>
             </Flex>
           )

@@ -1,11 +1,6 @@
-import { Flex, List, ThemeIcon } from '@mantine/core'
+import { Button, Flex, List, ThemeIcon } from '@mantine/core'
 import { Quiz } from '@prisma/client'
-import {
-  IconArticle,
-  IconListCheck,
-  IconSelect,
-  IconX,
-} from '@tabler/icons-react'
+import { IconArticle, IconListCheck, IconSelect } from '@tabler/icons-react'
 import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import { FC, useMemo } from 'react'
 
@@ -143,7 +138,9 @@ export const QuizTable: FC<Props> = ({ quizzes, updateQuiz, deleteQuiz }) => {
                 confirmMessage={`問題: "${quiz.question}" を削除しますか？`}
                 onConfirm={() => deleteQuiz(quiz.id)}
               >
-                <IconX size='1.5rem' />
+                <Button component='span' color='red'>
+                  削除
+                </Button>
               </ConfirmButton>
             </Flex>
           )

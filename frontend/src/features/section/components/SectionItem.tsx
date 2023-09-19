@@ -1,10 +1,5 @@
-import { Flex, ThemeIcon } from '@mantine/core'
-import {
-  IconArticle,
-  IconBox,
-  IconX,
-  IconCurrencyQuetzal,
-} from '@tabler/icons-react'
+import { Button, Flex, ThemeIcon } from '@mantine/core'
+import { IconArticle, IconBox, IconCurrencyQuetzal } from '@tabler/icons-react'
 import Link from 'next/link'
 import { FC } from 'react'
 
@@ -70,7 +65,9 @@ export const SectionItem: FC<Props> = ({
             confirmMessage={`セクション: "${section.name}" を削除しますか？`}
             onConfirm={() => onDelete(section.id)}
           >
-            <IconX size='1.5rem' />
+            <Button component='span' color='red'>
+              削除
+            </Button>
           </ConfirmButton>
         </Flex>
       </div>
