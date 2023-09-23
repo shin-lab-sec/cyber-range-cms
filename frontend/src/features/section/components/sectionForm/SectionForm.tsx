@@ -24,35 +24,38 @@ export const SectionForm: FC<Props> = ({
 
   if (!sectionType) {
     return (
-      <div className='text-sm grid gap-3 grid-cols-3'>
-        <div
-          className='border rounded-md cursor-pointer flex flex-col bg-[#FEF5F4] shadow-md p-2 gap-1 duration-300 items-center'
-          onClick={() => setSectionType('quiz')}
-        >
-          <ThemeIcon color='red' size='lg' variant='light' radius='md'>
-            <IconCurrencyQuetzal size='2rem' />
-          </ThemeIcon>
-          テスト
+      <>
+        <p className='text-center'>セクションのタイプを選択して下さい</p>
+        <div className='mt-4 text-sm grid gap-3 grid-cols-3'>
+          <div
+            className='border rounded-md cursor-pointer flex flex-col bg-[#FEF5F4] shadow-md p-2 gap-1 duration-300 items-center'
+            onClick={() => setSectionType('quiz')}
+          >
+            <ThemeIcon color='red' size='lg' variant='light' radius='md'>
+              <IconCurrencyQuetzal size='2rem' />
+            </ThemeIcon>
+            テスト
+          </div>
+          <div
+            className='border rounded-md cursor-pointer flex flex-col bg-[#E7F4FE] shadow-md p-2 gap-1 duration-300 items-center'
+            onClick={() => setSectionType('article')}
+          >
+            <ThemeIcon color='blue' size='lg' variant='light' radius='md'>
+              <IconArticle size='2rem' />
+            </ThemeIcon>
+            解説記事
+          </div>
+          <div
+            className='border rounded-md cursor-pointer flex flex-col bg-[#F2F0FE] shadow-md p-2 gap-1 duration-300 items-center'
+            onClick={() => setSectionType('sandbox')}
+          >
+            <ThemeIcon color='violet' size='lg' variant='light' radius='md'>
+              <IconBox size='2rem' />
+            </ThemeIcon>
+            サンドボックス
+          </div>
         </div>
-        <div
-          className='border rounded-md cursor-pointer flex flex-col bg-[#E7F4FE] shadow-md p-2 gap-1 duration-300 items-center'
-          onClick={() => setSectionType('article')}
-        >
-          <ThemeIcon color='blue' size='lg' variant='light' radius='md'>
-            <IconArticle size='2rem' />
-          </ThemeIcon>
-          解説記事
-        </div>
-        <div
-          className='border rounded-md cursor-pointer flex flex-col bg-[#F2F0FE] shadow-md p-2 gap-1 duration-300 items-center'
-          onClick={() => setSectionType('sandbox')}
-        >
-          <ThemeIcon color='violet' size='lg' variant='light' radius='md'>
-            <IconBox size='2rem' />
-          </ThemeIcon>
-          サンドボックス
-        </div>
-      </div>
+      </>
     )
   }
 
