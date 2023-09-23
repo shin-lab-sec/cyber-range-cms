@@ -71,6 +71,7 @@ export const SectionSandboxForm: FC<Props> = ({
       )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        <p className='text-center'>サンドボックス</p>
         <Stack>
           <TextInput
             label='セクション名'
