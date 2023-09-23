@@ -123,7 +123,7 @@ export const CourseForm: FC<Props> = ({
 
           <label>
             コース画像
-            <input type='file' onChange={onChangeFile} />
+            <input type='file' accept='image/*' onChange={onChangeFile} />
           </label>
 
           <Flex justify='end'>
