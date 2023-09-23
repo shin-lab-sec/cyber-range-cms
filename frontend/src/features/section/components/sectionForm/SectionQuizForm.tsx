@@ -57,6 +57,7 @@ export const SectionQuizForm: FC<Props> = ({
       )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        <p className='text-center'>テスト</p>
         <Stack>
           <TextInput
             label='セクション名'

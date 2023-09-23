@@ -57,6 +57,7 @@ export const SectionArticleForm: FC<Props> = ({
       )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        <p className='text-center'>解説記事</p>
         <Stack>
           <TextInput
             label='セクション名'

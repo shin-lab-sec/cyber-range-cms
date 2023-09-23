@@ -26,7 +26,7 @@ export const QuizForm: FC<Props> = ({
     return (
       <>
         <p className='text-center'>問題のタイプを選択して下さい</p>
-        <div className='mt-3 grid gap-3 grid-cols-3'>
+        <div className='mt-4 grid gap-3 grid-cols-3'>
           <div
             className='border rounded-md cursor-pointer flex flex-col bg-[#FEF5F4] shadow-md text-sm p-2 gap-1 duration-300 items-center'
             onClick={() => setQuizType('text')}
