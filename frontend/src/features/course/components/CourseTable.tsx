@@ -47,11 +47,9 @@ export const CourseTable: FC<Props> = ({
         maxSize: 0,
         Cell: ({
           row: {
-            original: { sectionIds },
+            original: { sections },
           },
-        }) => (
-          <div className='max-w-300px break-words'>{sectionIds.length}</div>
-        ),
+        }) => <div className='max-w-300px break-words'>{sections.length}</div>,
       },
       {
         accessorKey: 'level',

@@ -18,7 +18,7 @@ async function main() {
       organization: '東京大学',
     },
   })
-  const userAgent2 = await await prisma.userAgent.upsert({
+  await await prisma.userAgent.upsert({
     where: {
       name_author_organization: {
         name: 'サンプルユーザーエージェント2',
@@ -36,7 +36,7 @@ async function main() {
     },
   })
 
-  const course1 = await prisma.course.upsert({
+  await prisma.course.upsert({
     where: {
       name_author_organization: {
         name: 'lsコマンド、マスターコース',
@@ -54,10 +54,81 @@ async function main() {
         'https://cms-storage.cypas.sec/images/0.9887783384628193-2023525.jpg',
       author: 'akio',
       organization: '東海大学',
-      sectionIds: [],
+      sections: {
+        create: [
+          {
+            name: 'lsコマンドとは',
+            type: 'article',
+            articles: {
+              create: [
+                {
+                  body: '# 1ページ目\n ## h2です\n ### h3です\n 買う物\n - リンゴ\n - 牛乳\n - あんぱん\n ```jsx\n const num = 1;\n ```',
+                },
+                {
+                  body: '# 2ページ目\n ## h2です\n ### h3です\n 買う物\n - リンゴ\n - 牛乳\n - あんぱん\n ```jsx\n const num = 1;\n ```',
+                },
+              ],
+            },
+          },
+          {
+            name: 'lsコマンドの演習',
+            type: 'sandbox',
+            scenarioGitHubUrl: 'https://github.com/tosssssy/sample-scenario',
+            articles: {
+              create: [
+                {
+                  body: '# 1ページ目\n ## h2です\n ### h3です\n 買う物\n - リンゴ\n - 牛乳\n - あんぱん\n ```jsx\n const num = 1;\n ```',
+                },
+                {
+                  body: '# 2ページ目\n ## h2です\n ### h3です\n 買う物\n - リンゴ\n - 牛乳\n - あんぱん\n ```jsx\n const num = 1;\n ```',
+                },
+              ],
+            },
+            userAgent: { connect: { id: userAgent1.id } },
+          },
+          {
+            name: '小テスト（lsコマンド）',
+            type: 'quiz',
+            quizzes: {
+              create: [
+                {
+                  question:
+                    'ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？',
+                  choices: ['dir', 'ls', 'list', 'show'],
+                  answers: ['ls'],
+                  type: 'radio',
+                  explanation:
+                    '正解は2のlsです。lsコマンドは、ディレクトリ内のファイルとディレクトリを一覧表示するために使用されます。Windowsではdirコマンドが使われることもありますが、一般的にはUnix/Linux系のシステムでよく使われるのはlsコマンドです。listやshowは一般的なコマンドではありません。',
+                },
+                {
+                  question:
+                    '以下のうち、lsコマンドのオプションに関する記述で正しいもの全て答えて下さい。',
+                  choices: ['-l', '-a', '-R', '-z'],
+                  answers: ['-l', '-a', '-R'],
+                  type: 'checkbox',
+                  explanation: `
+A) -l オプションは、lsコマンドの詳細な情報を表示するためのオプションです。ファイルのパーミッション、所有者、サイズなどの情報を表示します。\n
+B) -a オプションは、隠しファイルを表示するためのオプションです。ファイル名がドット（.）で始まるファイルやディレクトリを表示します。\n
+C) -R オプションは、再帰的にディレクトリ内のファイルを表示するためのオプションです。指定したディレクトリ内のすべてのサブディレクトリのファイルも表示します。\n
+D) -z オプションは、lsコマンドに存在しません。`,
+                },
+                {
+                  question: 'lsコマンドを使う目的を記述して下さい',
+                  answers: [
+                    'ファイルとディレクトリの一覧表示、詳細情報の表示、隠しファイルの表示、再帰的なリスト表示など',
+                  ],
+                  type: 'text',
+                  explanation: '',
+                },
+              ],
+            },
+          },
+        ],
+      },
     },
   })
-  const course2 = await prisma.course.upsert({
+
+  await prisma.course.upsert({
     where: {
       name_author_organization: {
         name: 'サンプルコース中級編',
@@ -78,7 +149,8 @@ async function main() {
       sectionIds: [],
     },
   })
-  const course3 = await prisma.course.upsert({
+
+  await prisma.course.upsert({
     where: {
       name_author_organization: {
         name: 'サンプルコース上級編',
@@ -98,103 +170,6 @@ async function main() {
       organization: '東海大学',
       sectionIds: [],
     },
-  })
-
-  const section1 = await prisma.section.upsert({
-    where: {
-      name_courseId: {
-        name: 'lsコマンドとは',
-        courseId: course1.id,
-      },
-    },
-    update: {},
-    create: {
-      name: 'lsコマンドとは',
-      type: 'article',
-      articleIds: [],
-      course: { connect: { id: course1.id } },
-    },
-  })
-  const section2 = await prisma.section.upsert({
-    where: {
-      name_courseId: {
-        name: 'lsコマンドの演習',
-        courseId: course1.id,
-      },
-    },
-    update: {},
-    create: {
-      name: 'lsコマンドの演習',
-      type: 'sandbox',
-      scenarioGitHubUrl: 'https://github.com/tosssssy/sample-scenario',
-      course: { connect: { id: course1.id } },
-      userAgent: { connect: { id: userAgent1.id } },
-    },
-  })
-  const section3 = await prisma.section.upsert({
-    where: {
-      name_courseId: {
-        name: '小テスト（lsコマンド）',
-        courseId: course1.id,
-      },
-    },
-    update: {},
-    create: {
-      name: '小テスト（lsコマンド）',
-      type: 'quiz',
-      quizIds: [],
-      course: { connect: { id: course1.id } },
-    },
-  })
-
-  const quiz1 = await prisma.quiz.upsert({
-    where: {
-      question_sectionId: {
-        question:
-          'ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？',
-        sectionId: section3.id,
-      },
-    },
-    update: {},
-    create: {
-      question:
-        'ディレクトリ内のファイルとディレクトリを一覧表示するためのコマンドは何でしょうか？',
-      choices: ['dir', 'ls', 'list', 'show'],
-      answers: ['ls'],
-      type: 'radio',
-      explanation:
-        '正解は2のlsです。lsコマンドは、ディレクトリ内のファイルとディレクトリを一覧表示するために使用されます。Windowsではdirコマンドが使われることもありますが、一般的にはUnix/Linux系のシステムでよく使われるのはlsコマンドです。listやshowは一般的なコマンドではありません。',
-      section: { connect: { id: section3.id } },
-    },
-  })
-  const quiz2 = await prisma.quiz.upsert({
-    where: {
-      question_sectionId: {
-        question:
-          '以下のうち、lsコマンドのオプションに関する記述で正しいもの全て答えて下さい。',
-        sectionId: section3.id,
-      },
-    },
-    update: {},
-    create: {
-      question:
-        '以下のうち、lsコマンドのオプションに関する記述で正しいもの全て答えて下さい。',
-      choices: ['-l', '-a', '-R', '-z'],
-      answers: ['-l', '-a', '-R'],
-      type: 'checkbox',
-      explanation: `
-        A) -l オプションは、lsコマンドの詳細な情報を表示するためのオプションです。ファイルのパーミッション、所有者、サイズなどの情報を表示します。\n
-        B) -a オプションは、隠しファイルを表示するためのオプションです。ファイル名がドット（.）で始まるファイルやディレクトリを表示します。\n
-        C) -R オプションは、再帰的にディレクトリ内のファイルを表示するためのオプションです。指定したディレクトリ内のすべてのサブディレクトリのファイルも表示します。\n
-        D) -z オプションは、lsコマンドに存在しません。`,
-      section: { connect: { id: section3.id } },
-    },
-  })
-
-  // quizIds 追加
-  await prisma.section.update({
-    where: { id: section3.id },
-    data: { quizIds: [quiz1.id, quiz2.id] },
   })
 }
 
