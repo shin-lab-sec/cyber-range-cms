@@ -1,6 +1,7 @@
 import Script from 'next/script'
 import { FC, useEffect } from 'react'
 import markdownHtml from 'zenn-markdown-html'
+import 'zenn-content-css'
 
 type Props = {
   markdown: string
