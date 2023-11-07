@@ -5,6 +5,7 @@ services:
       - 8002:8002
     build:
       context: frontend
+      dockerfile: Dockerfile.prod
     tty: true # コンテナを起動しっぱなしにする。
     volumes:
       - ./frontend:/app # フォルダを同期
