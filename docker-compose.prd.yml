@@ -5,20 +5,10 @@ services:
       - 8002:8002
     build:
       context: frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prod
     tty: true # コンテナを起動しっぱなしにする。
-    volumes:
-      - ./frontend:/app # フォルダを同期
-      - node_modules:/app/node_modules # node_modules, .nextはボリュームに保存
-      - next_data:/app/.next
     environment:
       - WATCHPACK_POLLING=true # ホットリロード（同期に必要）
-    command: >
-      bash -c "
-      yarn prisma migrate dev --name init &&
-      yarn &&
-      yarn dev
-      "
     depends_on: # db必須のフロント, dbコンテナが先に立つ
       - db
     restart: on-failure # 失敗したら再度コンテナを建てる
@@ -57,7 +47,5 @@ services:
       "
 volumes:
   postgres-db:
-  node_modules:
-  next_data:
   minio:
     driver: local
