@@ -9,6 +9,7 @@ services:
     tty: true # コンテナを起動しっぱなしにする。
     volumes:
       - ./frontend:/app # フォルダを同期
+      - ./.env:/app/.env
       - node_modules:/app/node_modules # node_modules, .nextはボリュームに保存
       - next_data:/app/.next
     environment:
