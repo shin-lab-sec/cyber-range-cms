@@ -9,6 +9,7 @@ services:
     tty: true # コンテナを起動しっぱなしにする。
     volumes:
       - ./.env:/app/.env
+      - ./.env.local:/app/.env.local
     environment:
       - WATCHPACK_POLLING=true # ホットリロード（同期に必要）
     depends_on: # db必須のフロント, dbコンテナが先に立つ
