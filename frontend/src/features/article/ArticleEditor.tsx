@@ -3,6 +3,8 @@ import { useMediaQuery, useDebouncedState } from '@mantine/hooks'
 import { IconPhoto, IconMessageCircle, IconSettings } from '@tabler/icons-react'
 import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 
+import { ConfirmButton } from '@/components/ConfirmButton'
+
 import { Editor, Preview } from '.'
 
 type Mode = 'edit' | 'preview' | 'live'
@@ -84,7 +86,7 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
       </Tabs>
 
       <div
-        className={`break-words ${
+        className={`break-words h-[calc(100vh-290px)] bg-black ${
           mode === 'live' && 'md:(grid grid-cols-2 gap-3)'
         }`}
       >
@@ -105,9 +107,14 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
       </div>
 
       <Flex mt='sm' gap='sm' justify='end'>
-        <Button onClick={onDelete} color='red'>
-          このページを削除
-        </Button>
+        <ConfirmButton
+          confirmMessage={`このページを削除しますか？`}
+          onConfirm={onDelete}
+        >
+          <Button component='span' color='red'>
+            このページを削除
+          </Button>
+        </ConfirmButton>
         <Button
           onClick={onClickSave}
           color={editorState === 'saved' ? 'green' : 'blue'}

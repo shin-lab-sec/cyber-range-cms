@@ -88,7 +88,7 @@ export const SectionSandboxForm: FC<Props> = ({
             }
             {...register('scenarioGitHubUrl')}
           />
-          {userAgents ? (
+          {userAgents.length > 0 ? (
             <Select
               label='ユーザーエージェント'
               placeholder='体験する時の環境を選択してください'
