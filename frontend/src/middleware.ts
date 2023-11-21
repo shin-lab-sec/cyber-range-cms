@@ -4,6 +4,9 @@ export function middleware(req: NextRequest) {
   const basicAuth = req.headers.get('authorization')
   const url = req.nextUrl
 
+  // api/v1/下のリクエストは認証不要にする
+  if (req.nextUrl.pathname.includes('/api/v1')) return
+
   if (basicAuth) {
     const authValue = basicAuth.split(' ')[1]
     const [userName, password] = Buffer.from(authValue, 'base64')
