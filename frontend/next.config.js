@@ -9,6 +9,7 @@ const WindiCSSWebpackPlugin = require('windicss-webpack-plugin')
 module.exports = withTM({
   reactStrictMode: false,
   swcMinify: true,
+  output: 'standalone',
   optimizeFonts: true,
   images: {
     domains: ['localhost', 'cms-storage.cypas.sec'],
