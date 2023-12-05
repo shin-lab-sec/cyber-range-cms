@@ -29,7 +29,7 @@ export const Layout: FC<Props> = ({ title, children, breadcrumbItems }) => {
         </nav>
       </header>
 
-      <main className='my-6 mx-4'>
+      <main className='mx-4 py-6'>
         {breadcrumbItems && (
           <div className='mb-4 overflow-x-auto overflow-y-hidden'>
             <BreadCrumbs items={breadcrumbItems} />

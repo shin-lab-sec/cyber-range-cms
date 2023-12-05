@@ -86,7 +86,7 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
       </Tabs>
 
       <div
-        className={`break-words h-[calc(100vh-290px)] bg-black ${
+        className={`break-words h-[calc(100vh-320px)] ${
           mode === 'live' && 'md:(grid grid-cols-2 gap-3)'
         }`}
       >
