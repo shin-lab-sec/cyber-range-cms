@@ -1,18 +1,15 @@
 import { Loader } from '@mantine/core'
 import { Article } from '@prisma/client'
-import { NextPage } from 'next'
-import { useSearchParams } from 'next/navigation'
+import { GetServerSideProps } from 'next'
 import { useLayoutEffect, useRef } from 'react'
 
 import { Preview } from '@/features/article'
-import { useGetApi } from '@/hooks/useApi'
+import prisma from '@/libs/prisma'
 
-const ArticlePage: NextPage = () => {
-  const searchParams = useSearchParams()
-  const id = searchParams.get('id') || '' // 一回目のレンダリングで正常なidが取得できる
+type PageProps = { article: Article | null }
+
+const ArticlePage = ({ article }: PageProps) => {
   const ref = useRef<HTMLIFrameElement>(null)
-
-  const { data: article } = useGetApi<Article>(`/articles/${id}`)
 
   // iframeで呼び出す側に高さを渡す
   useLayoutEffect(() => {
@@ -33,7 +30,7 @@ const ArticlePage: NextPage = () => {
     return () => window.removeEventListener('resize', sendEmbedSizeInfo)
   }, [article]) // articleが取得した時に発火させる
 
-  if (!article || !id) {
+  if (!article) {
     return (
       <div className='h-screen bg-[#141517] grid place-items-center'>
         <Loader size='lg' />
@@ -99,6 +96,31 @@ const ArticlePage: NextPage = () => {
       {/* 323e52 code, 微妙に明るい色 */}
     </>
   )
+}
+
+// サーバー上で記事データを取得してクライアント側に渡す
+export const getServerSideProps: GetServerSideProps = async context => {
+  const { id } = context.params as { id: string }
+
+  try {
+    const article = await prisma.article.findUnique({
+      where: {
+        id: id,
+      },
+    })
+
+    if (!article) {
+      return { props: { article: null } }
+    }
+
+    // Dateがprisma型なので、JSON.stringifyして返す
+    const createdAt = JSON.stringify(article.createdAt)
+    const updatedAt = JSON.stringify(article.updatedAt)
+
+    return { props: { article: { ...article, createdAt, updatedAt } } }
+  } catch (err) {
+    return { props: { article: null } }
+  }
 }
 
 export default ArticlePage
