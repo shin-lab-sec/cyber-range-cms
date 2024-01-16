@@ -16,16 +16,19 @@ type Props = {
 
 export const SectionArticles: FC<Props> = ({ section }) => {
   const { articles } = section
-  const [selectedPage, setSelectedPage] = useState(1)
+  const [selectedPage, setSelectedPage] = useState(1) // 表示中のページ番号
+  // 表示中の記事
   const selectedArticle = useMemo(
     () => articles[selectedPage - 1],
     [articles, selectedPage],
   )
 
+  // 作成、更新、削除関数
   const { createArticle } = useCreateArticle(section.id)
   const { updateArticle } = useUpdateArticle(section.id)
   const { deleteArticle } = useDeleteArticle(section.id)
 
+  // 記事がないなら作成ボタンを表示
   if (!articles.length) {
     return (
       <Flex justify='center' className='mt-200px'>
@@ -54,6 +57,7 @@ export const SectionArticles: FC<Props> = ({ section }) => {
             />
           </Flex>
 
+          {/* 記事エディタ */}
           <ArticleEditor
             key={selectedArticle.id}
             body={selectedArticle.body}

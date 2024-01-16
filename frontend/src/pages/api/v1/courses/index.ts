@@ -3,14 +3,15 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { runMiddleware } from '@/libs/cors'
 import prisma from '@/libs/prisma'
 
+// api/v1/coursesのAPI定義
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  // api/v1/courses
   await runMiddleware(req, res) // corsチェック
 
   try {
+    // コースの一覧取得
     const courses = await prisma.course.findMany({
       orderBy: { createdAt: 'asc' },
     })

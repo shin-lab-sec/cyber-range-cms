@@ -14,6 +14,7 @@ type Props = {
   modalTitle: string
 }
 
+// クイズ作成モーダルのボタン
 export const QuizFormModalButton: FC<Props> = ({
   onSubmit: onSubmitProps,
   initValue,
@@ -21,6 +22,7 @@ export const QuizFormModalButton: FC<Props> = ({
   submitButtonName,
   modalTitle,
 }) => {
+  // モーダルフォームの状態を管理する
   const { isOpen, isDirtyForm, onClose, onSubmit } = useModalForm(onSubmitProps)
 
   return (

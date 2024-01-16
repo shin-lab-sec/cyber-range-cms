@@ -7,17 +7,17 @@ import { postApi, putApi, deleteApi } from '@/utils/api'
 
 import { QuizFormRequest } from './types'
 
-// sectionのmutate
+// クイズ作成フック
 export const useCreateQuiz = (sectionId: string) => {
+  // セクションと、キャッシュ更新関数
   const { data: section, mutate: mutateSection } =
     useGetApi<SectionWithRelation>(`/sections/${sectionId}`)
 
-  // Quiz作成
-  // section更新
+  // クイズ作成関数
   const createQuiz = useCallback(
     async (params: QuizFormRequest) => {
       try {
-        console.log('リクエスト', params)
+        // クイズ作成
         const newQuiz = await postApi<Quiz>('/quizzes', {
           ...params,
           sectionId,
@@ -40,6 +40,7 @@ export const useCreateQuiz = (sectionId: string) => {
         // 再度データを取得しキャッシュを更新する
         mutateSection(updatedSection)
       } catch (e) {
+        // エラー処理
         console.error(e)
         if (e instanceof Error) {
           throw e.message
@@ -53,16 +54,18 @@ export const useCreateQuiz = (sectionId: string) => {
   return { createQuiz }
 }
 
-// sectionのmutate
+// クイズ更新フック
 export const useUpdateQuiz = (sectionId: string) => {
+  // セクションと、キャッシュ更新関数
   const { data: section, mutate: mutateSection } =
     useGetApi<SectionWithRelation>(`/sections/${sectionId}`)
 
-  // Quiz更新
+  // Quiz更新関数
   const updateQuiz = useCallback(
     async (quizId: string, params: QuizFormRequest) => {
       console.log({ quizId }, { params })
       try {
+        // Quiz更新
         const updatedQuiz = await putApi<Quiz>(`/quizzes/${quizId}`, {
           ...params,
           sectionId,
@@ -77,6 +80,7 @@ export const useUpdateQuiz = (sectionId: string) => {
         // 再度データを取得しキャッシュを更新する
         mutateSection({ ...section, quizzes: updatedQuizzes })
       } catch (e) {
+        // エラー処理
         console.error(e)
         if (e instanceof Error) {
           throw e.message
@@ -89,8 +93,9 @@ export const useUpdateQuiz = (sectionId: string) => {
   return { updateQuiz }
 }
 
-// sectionのmutate
+// クイズ削除フック
 export const useDeleteQuiz = (sectionId: string) => {
+  // セクションと、キャッシュ更新関数
   const { data: section, mutate: mutateSection } =
     useGetApi<SectionWithRelation>(`/sections/${sectionId}`)
 
@@ -99,6 +104,7 @@ export const useDeleteQuiz = (sectionId: string) => {
   const deleteQuiz = useCallback(
     async (quizId: string) => {
       try {
+        // Quiz削除
         await deleteApi(`/quizzes/${quizId}`)
         console.log('Quiz削除に成功')
         if (!section) return

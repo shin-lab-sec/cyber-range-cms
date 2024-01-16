@@ -7,6 +7,7 @@ type Props = {
   fileName: string
 }
 
+// dataをJSON形式でエクスポートするボタン
 export const ExportJsonButton: FC<Props> = ({ data, fileName }) => {
   const fileNameWithJson = `${fileName}.json`
   const blobData = new Blob([JSON.stringify(data)], {

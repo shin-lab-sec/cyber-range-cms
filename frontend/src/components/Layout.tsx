@@ -10,6 +10,7 @@ type Props = {
   breadcrumbItems?: breadCrumbsitem[]
 }
 
+// 全てのコンポーネントを括るコンポーネント
 export const Layout: FC<Props> = ({ title, children, breadcrumbItems }) => {
   return (
     <>

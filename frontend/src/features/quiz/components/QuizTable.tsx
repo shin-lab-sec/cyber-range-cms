@@ -16,7 +16,9 @@ type Props = {
   deleteQuiz: (id: string) => void
 }
 
+// クイズデータをテーブル形式で表示
 export const QuizTable: FC<Props> = ({ quizzes, updateQuiz, deleteQuiz }) => {
+  // テーブルのカラム情報
   const columns = useMemo<MRT_ColumnDef<Quiz>[]>(
     () => [
       {

@@ -21,11 +21,14 @@ import { useBoolean } from '@/hooks/useBoolean'
 import { sectionWithRelationSchema } from '@/libs/validates'
 import { CourseWithSections } from '@/types'
 
+// courses/[courseId]のページ
 const Courses: NextPage = () => {
   const draggableMode = useBoolean(false)
 
   const searchParams = useSearchParams()
   const id = searchParams.get('courseId') || '' // 一回目のレンダリングで正常なidが取得できる
+
+  // コースのデータを取得
   const { data: course } = useGetApi<CourseWithSections>(`/courses/${id}`)
 
   const sectionIds = useMemo(
@@ -51,12 +54,14 @@ const Courses: NextPage = () => {
     ? orderedSections.map(v => v.id)
     : []
 
+  // セクションの作成、更新、削除、順番変更関数
   const { createSection } = useCreateSection(id)
   const { updateSection } = useUpdateSection(id)
   const { deleteSection } = useDeleteSection(id, orderedSectionIds)
   const { updateCourseSectionOrder } = useUpdateCourseSectionOrder(id)
   const { createSectionWithRelation } = useCreateSectionWithRelation(id)
 
+  // コース、idが存在しない時
   if (!course || !id) {
     return (
       <Layout>
@@ -74,6 +79,7 @@ const Courses: NextPage = () => {
     >
       <h1>{course.name}のセクション一覧</h1>
       <div>
+        {/* 順番変更モードがfalse */}
         {!draggableMode.v && (
           <Flex gap='sm' mt='sm' justify='end' align='center'>
             {orderedSections?.length !== 0 && (
@@ -94,8 +100,10 @@ const Courses: NextPage = () => {
           </Flex>
         )}
 
+        {/* セクションが存在する */}
         {orderedSections?.length ? (
           <div className='mt-3'>
+            {/* 順番変更モードに応じてセクション一覧を表示 */}
             {draggableMode.v ? (
               <DraggableSections
                 sections={orderedSections}

@@ -13,6 +13,7 @@ type Props = {
   validateSchema: ZodSchema<any>
 }
 
+// JSONファイルのデータをインポートするInput
 export const ImportFileInput: FC<Props> = ({ createData, validateSchema }) => {
   const [fileInputStatus, setFileInputStatus] =
     useState<FileInputState>('default')

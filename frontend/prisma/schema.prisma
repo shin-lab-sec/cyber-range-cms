@@ -1,32 +1,37 @@
+// prismaクライアントの設定
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native"] // サーバー(Node)上だけ動く
 }
 
+// dbの設定（postgresql）
 datasource db {
-  provider = "postgresql" // "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 // Course, Scenario, UserAgentに autor, organization
 // Section, Quiz, Article は親で順番を保持する
 
+// Courseテーブルの定義
 model Course {
   id           String    @id @default(cuid())
   name         String    @db.VarChar(255)
   description  String
   level        Int       @default(1)
   imageUrl     String?   @db.VarChar(255)
-  sections     Section[]
-  sectionIds   String[]
+  sections     Section[] // Sectionテーブルと1対多の関係
+  sectionIds   String[] // 文字列の配列
   author       String    @db.VarChar(255)
   organization String    @db.VarChar(255)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @default(now()) @updatedAt()
 
+  // nameとauthorとorganizationの組み合わせをユニークとして扱う
   @@unique([name, author, organization])
 }
 
+// Sectionテーブルの定義
 model Section {
   id                String     @id @default(cuid())
   name              String     @db.VarChar(255)
@@ -47,6 +52,7 @@ model Section {
   @@unique([name, courseId])
 }
 
+// Scenarioテーブルの定義
 // 1日一回GitHubActionのバッチ処理で、SectionのgitHubUrlを全取得してcypas.jsonからメタ情報取得して、テーブルを更新する
 model Scenario {
   id           String   @id @default(cuid())
@@ -61,6 +67,7 @@ model Scenario {
   @@unique([name, author, organization])
 }
 
+// Articleテーブルの定義
 model Article {
   id        String   @id @default(cuid())
   body      String
@@ -70,6 +77,7 @@ model Article {
   updatedAt DateTime @default(now()) @updatedAt()
 }
 
+// Quizテーブルの定義
 model Quiz {
   id          String   @id @default(cuid())
   type        String   @db.VarChar(255) // "text" | "radio" | "checkbox"
@@ -85,6 +93,7 @@ model Quiz {
   @@unique([question, sectionId])
 }
 
+// UserAgentテーブルの定義
 // 仮想デスクトップ、ターミナルの2択にする
 // 他の人に作成させない？
 model UserAgent {

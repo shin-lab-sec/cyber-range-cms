@@ -14,9 +14,12 @@ import {
 import { useGetApi } from '@/hooks/useApi'
 import { userAgentRequestSchema } from '@/libs/validates'
 
+// useragentsページ
 const UserAgents: NextPage = () => {
+  // ユーザーエージェント一覧を取得
   const { data: userAgents } = useGetApi<UserAgent[]>(`/useragents`)
 
+  // ユーザーエージェントの作成・更新・削除
   const { createUserAgent } = useCreateUserAgent()
   const { updateUserAgent } = useUpdateUserAgent()
   const { deleteUserAgent } = useDeleteUserAgent()
@@ -26,14 +29,17 @@ const UserAgents: NextPage = () => {
       <Flex gap='sm' justify='space-between' align='center'>
         <h1>ユーザーエージェント一覧</h1>
         <Flex gap='sm' align='center'>
+          {/* JSONファイルで作成するInput */}
           <ImportFileInput
             createData={createUserAgent}
             validateSchema={userAgentRequestSchema}
           />
+          {/* ユーザーエージェントの作成ボタン */}
           <CreateUserAgentButton onSubmit={createUserAgent} />
         </Flex>
       </Flex>
 
+      {/* ユーザーエージェントが存在すれば、テーブルで一覧表示 */}
       {userAgents?.length ? (
         <div className='mt-8'>
           <UserAgentTable

@@ -17,6 +17,7 @@ const insertToTextArea = (insertString: string) => {
 
   sentence = front + insertString + back
 
+  // textareaの値を更新
   // 複数ペーストする際に必要
   textarea.value = sentence
   textarea.selectionEnd = end + insertString.length
@@ -24,10 +25,8 @@ const insertToTextArea = (insertString: string) => {
   return sentence
 }
 
-export default insertToTextArea
-
 // TODO: uploadFileをAPIにする
-// 画像をアップロードして、そのリンクをeditorに追加
+// 画像をアップロードし、アクセスできるURLをtextareaに挿入
 export const usePasteImage = () => {
   const { uploadFile } = useUploadFile()
 
@@ -41,9 +40,12 @@ export const usePasteImage = () => {
         if (file) files.push(file)
       }
 
+      // 複数の画像をアップロードに対応
       await Promise.all(
         files.map(async file => {
+          // 画像のアクセスURL
           const url = (await uploadFile(file)) || ''
+          // 画像のアクセスURLをtextareaに挿入
           setValue(insertToTextArea(`![](${url})`))
         }),
       )

@@ -11,10 +11,12 @@ type Props = {
   initValue: CourseRequest
 }
 
+// コース更新モーダルボタン
 export const UpdateCourseButton: FC<Props> = ({
   onSubmit: onSubmitProps,
   initValue,
 }) => {
+  // モーダルフォームの状態を管理する
   const { isOpen, isDirtyForm, onClose, onSubmit } = useModalForm(onSubmitProps)
 
   return (

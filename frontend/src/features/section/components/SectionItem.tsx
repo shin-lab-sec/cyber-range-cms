@@ -23,6 +23,7 @@ export const SectionItem: FC<Props> = ({
   onUpdate,
   onDelete,
 }) => {
+  // Propsの値をSectionFormRequestに変換
   const sectionFormRequest: SectionFormRequest = {
     name: section.name,
     type: section.type as 'quiz' | 'article' | 'sandbox',
@@ -33,6 +34,7 @@ export const SectionItem: FC<Props> = ({
   return (
     <Flex align='center' gap='sm'>
       <div className='rounded-md flex border-2 shadow-md w-full py-4 px-4 items-center justify-between'>
+        {/* セクションタイプ毎のアイコン */}
         <Flex align='center' gap='sm'>
           {section.type === 'quiz' && (
             <ThemeIcon color='red' size='lg' variant='light' radius='md'>
@@ -56,11 +58,13 @@ export const SectionItem: FC<Props> = ({
 
         <Flex align='center' gap='sm'>
           <ExportJsonButton data={section} fileName={section.name} />
+          {/* 更新モーダル表示ボタン */}
           <UpdateSectionButton
             onSubmit={v => onUpdate(section.id, v)}
             initValue={sectionFormRequest}
           />
 
+          {/* 削除ボタン */}
           <ConfirmButton
             confirmMessage={`セクション: "${section.name}" を削除しますか？`}
             onConfirm={() => onDelete(section.id)}

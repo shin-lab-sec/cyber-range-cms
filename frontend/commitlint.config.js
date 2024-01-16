@@ -1,3 +1,4 @@
+// コミットメッセージのルールを定義
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {

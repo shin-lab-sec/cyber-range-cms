@@ -16,12 +16,14 @@ type Props = {
   onDirty: () => void
 }
 
+// セクションタイプクイズのフォーム
 export const SectionQuizForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
   onDirty,
 }) => {
+  // フォームの状態を管理する
   const {
     register,
     handleSubmit,
@@ -32,6 +34,7 @@ export const SectionQuizForm: FC<Props> = ({
     defaultValues: { ...initValue, type: 'quiz' },
   })
 
+  // 送信関数をラップして、エラーハンドリングを行う
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<SectionFormRequest>(onSubmitProps)
 

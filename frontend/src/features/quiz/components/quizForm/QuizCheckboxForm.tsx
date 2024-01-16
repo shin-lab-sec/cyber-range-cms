@@ -24,12 +24,14 @@ type Props = {
   onDirty: () => void
 }
 
+// クイズの複数選択のフォーム
 export const QuizCheckboxForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
   onDirty,
 }) => {
+  // フォームの状態を管理する
   const {
     register,
     handleSubmit,
@@ -46,14 +48,17 @@ export const QuizCheckboxForm: FC<Props> = ({
 
   const [choiceText, setChoiceText] = useState('')
 
+  // 送信時の関数をラップし、エラーハンドリングを行う
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<QuizFormRequest>(onSubmitProps)
 
+  // フォームの値を監視する
   const choices = watch('choices')
   const answers = watch('answers')
 
+  // 選択肢を増やすボタンの処理
   const onClickAddChoiceButton = useCallback(() => {
-    console.log('nin')
+    // 同じ選択肢を作成する時はエラー
     if (choices.some(v => v === choiceText)) {
       setError('choices', {
         message: '同じ選択肢は入れられません',
@@ -61,6 +66,7 @@ export const QuizCheckboxForm: FC<Props> = ({
       return
     }
 
+    // エラーメッセージを消す
     if (errors.choices) clearErrors('choices')
 
     // choicesに追加
@@ -124,6 +130,7 @@ export const QuizCheckboxForm: FC<Props> = ({
               追加
             </Button>
           </Flex>
+          {/* 選択肢一覧 */}
           <List size='sm' className='break-all'>
             {choices.map((choice, i) => (
               <Flex
@@ -193,6 +200,7 @@ export const QuizCheckboxForm: FC<Props> = ({
               })
             }}
           />
+          {/* 答え一覧 */}
           <List size='sm' className='break-all'>
             {answers.map((answer, i) => (
               <Flex

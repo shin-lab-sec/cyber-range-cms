@@ -16,12 +16,14 @@ type Props = {
   onDirty: () => void
 }
 
+// ユーザーエージェント作成・更新のフォーム
 export const UserAgentForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
   onDirty,
 }) => {
+  // フォームの状態を管理する
   const {
     register,
     handleSubmit,
@@ -34,6 +36,7 @@ export const UserAgentForm: FC<Props> = ({
     defaultValues: initValue,
   })
 
+  // 送信時の関数をラップし、エラーハンドリングを行う
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<UserAgentFormRequest>(onSubmitProps)
 
@@ -105,6 +108,7 @@ export const UserAgentForm: FC<Props> = ({
             {...register('organization')}
           />
 
+          {/* 送信ボタン */}
           <Flex justify='end'>
             <Button type='submit'>{submitButtonName}</Button>
           </Flex>

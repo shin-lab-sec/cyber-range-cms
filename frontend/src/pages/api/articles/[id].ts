@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/libs/prisma'
 import { apiValidation, articleUpdateRequestSchema } from '@/libs/validates'
 
+// api/articles/[id]のAPI定義
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -10,8 +11,8 @@ export default async function handler(
   const { method, body } = req
   const id = String(req.query.id)
 
-  // articles/[id]
   switch (method) {
+    // 記事の取得
     case 'GET':
       try {
         const article = await prisma.article.findUnique({
@@ -25,7 +26,9 @@ export default async function handler(
       }
       break
 
+    // 記事の更新
     case 'PUT':
+      // zodバリデーションが通った時の処理
       apiValidation(req, res, articleUpdateRequestSchema, async () => {
         const updatedArticle = await prisma.article.update({
           where: {
@@ -39,6 +42,7 @@ export default async function handler(
       })
       break
 
+    // 記事の削除
     case 'DELETE':
       try {
         const deletedArticle = await prisma.article.delete({

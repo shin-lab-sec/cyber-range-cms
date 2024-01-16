@@ -1,26 +1,32 @@
 import Script from 'next/script'
 import { FC, useEffect } from 'react'
 import markdownHtml from 'zenn-markdown-html'
-import 'zenn-content-css'
+import 'zenn-content-css' // zennのCSSを使えるように
 
 type Props = {
   markdown: string
 }
+
+// マークダウンのプレビューを表示
 export const Preview: FC<Props> = ({ markdown }) => {
+  // マークダウン記法の文字列をhtmlに変換
   const html = markdownHtml(markdown, {
     embedOrigin: 'https://embed.zenn.studio',
   })
 
+  // 特定のマークダウン記法のプレビューに対応するライブラリのimport
   useEffect(() => {
     import('zenn-embed-elements')
   }, [])
 
   return (
     <div className='mx-auto break-words'>
+      {/* 特定のマークダウン記法のプレビューに対応するライブラリを使えるように*/}
       <Script src='https://embed.zenn.studio/js/listen-embed-event.js' />
       <div
-        // zennのCSS
+        // zennのCSSのクラスを指定
         className='znc'
+        // パースしたhtmlを挿入
         dangerouslySetInnerHTML={{
           __html: html,
         }}

@@ -1,5 +1,9 @@
 import { PrismaClient } from '@prisma/client'
+
+// PrismaClientのインスタンスを作成
 const prisma = new PrismaClient()
+
+// 仮データを作成する関数
 async function main() {
   const userAgent1 = await prisma.userAgent.upsert({
     where: {

@@ -10,6 +10,8 @@ type Props = {
   onDirty?: () => void
   setMarkdown?: (v: string) => void
 }
+
+// エディタ機能
 export const Editor: FC<Props> = ({
   body = '',
   onSave,

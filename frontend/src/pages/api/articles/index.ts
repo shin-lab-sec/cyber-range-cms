@@ -3,14 +3,15 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/libs/prisma'
 import { apiValidation, articleRequestSchema } from '@/libs/validates'
 
+// api/articlesのAPI定義
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const { method, body } = req
 
-  // articles
   switch (method) {
+    // 記事の一覧取得
     case 'GET':
       try {
         const articles = await prisma.article.findMany({
@@ -22,7 +23,9 @@ export default async function handler(
       }
       break
 
+    // 記事の作成
     case 'POST':
+      // zodバリデーションが通った時の処理
       apiValidation(req, res, articleRequestSchema, async () => {
         const createdArticle = await prisma.article.create({
           data: {

@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+// ファイルアップロードAPIのリクエストzodスキーマ
 export const fileUploadSchema = z.object({
   file: z.custom<FileList>().transform(file => file[0]),
   name: z.string().nonempty('ファイル名は必須です'),

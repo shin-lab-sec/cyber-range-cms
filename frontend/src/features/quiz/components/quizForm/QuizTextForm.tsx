@@ -16,12 +16,14 @@ type Props = {
   onDirty: () => void
 }
 
+// クイズの記述式のフォーム
 export const QuizTextForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
   onDirty,
 }) => {
+  // フォームの状態を管理する
   const {
     register,
     handleSubmit,
@@ -35,6 +37,7 @@ export const QuizTextForm: FC<Props> = ({
     defaultValues: initValue ?? { type: 'text', choices: [], answers: [] },
   })
 
+  // 送信時の関数をラップし、エラーハンドリングを行う
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<QuizFormRequest>(onSubmitProps)
 
@@ -51,8 +54,10 @@ export const QuizTextForm: FC<Props> = ({
         return
       }
 
+      // エラーがあれば消す
       if (errors.answers) clearErrors('answers')
 
+      // 値をセットする
       setValue('answers', [e.target.value], {
         shouldDirty: true,
       })

@@ -14,6 +14,7 @@ type Props = {
   onDirty: () => void
 }
 
+// セクションのタイプを選択して、それに応じたフォームを表示する
 export const SectionForm: FC<Props> = ({
   onSubmit,
   submitButtonName,
@@ -22,6 +23,7 @@ export const SectionForm: FC<Props> = ({
 }) => {
   const [sectionType, setSectionType] = useState(initValue?.type)
 
+  // セクションのタイプを選択していない
   if (!sectionType) {
     return (
       <>
@@ -59,6 +61,7 @@ export const SectionForm: FC<Props> = ({
     )
   }
 
+  // セクションタイプに対応するフォームを表示
   return (
     <>
       {sectionType === 'quiz' && (

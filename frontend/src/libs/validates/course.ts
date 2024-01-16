@@ -5,6 +5,7 @@ import { sectionWithRelationSchema } from './section'
 // "" | cms-storageのimagesバケット内のオブジェクトURL
 const imageUrlRegex = new RegExp('^(https://cms-storage.cypas.sec/images/.+|)$')
 
+// コース作成APIのリクエストのzodスキーマ
 export const courseRequestSchema = z.object({
   name: z
     .string()
@@ -25,6 +26,7 @@ export const courseRequestSchema = z.object({
     .max(255, '255文字以内で入力して下さい'),
 })
 
+// コース更新APIのリクエストのzodスキーマ
 // sectionIdsを追加して全プロパティをオプショナルに
 export const courseUpdateRequestSchema = courseRequestSchema
   .extend({
@@ -32,7 +34,7 @@ export const courseUpdateRequestSchema = courseRequestSchema
   })
   .partial()
 
-// リレーションもまとめて作成する
+// リレーションもまとめて作成する時のzodスキーマ
 export const courseWithRelationSchema = courseRequestSchema.extend({
   sections: z.array(sectionWithRelationSchema),
 })

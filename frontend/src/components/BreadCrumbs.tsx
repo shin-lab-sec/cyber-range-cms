@@ -8,6 +8,7 @@ type Props = {
   items: Item[]
 }
 
+// パンくずリストのコンポーネント
 export const BreadCrumbs: FC<Props> = ({ items }) => {
   const breadcrumbsItems = useMemo(() => {
     return items.map((item, i) => {

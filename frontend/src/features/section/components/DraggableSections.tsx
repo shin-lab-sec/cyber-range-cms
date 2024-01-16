@@ -22,6 +22,7 @@ type Props = {
   onClose?: () => void
 }
 
+// ドラッグアンドドロップでセクションの順番を変更出来るコンポーネント
 export const DraggableSections: FC<Props> = ({
   sections: sectionList,
   onUpdateOrder,
@@ -30,6 +31,7 @@ export const DraggableSections: FC<Props> = ({
 }) => {
   const [sections, setSections] = useState(sectionList)
 
+  // ドロップした時、順番を取得
   const onDragEnd = (result: DropResult) => {
     const items = [...sections]
     const deleteItem = items.splice(result.source.index, 1)
@@ -41,6 +43,7 @@ export const DraggableSections: FC<Props> = ({
     <div className={className}>
       <Flex gap='sm' justify='end' align='center'>
         <button onClick={onClose}>キャンセル</button>
+        {/* 順番を今の状態で更新 */}
         <Button
           onClick={() => {
             onUpdateOrder(sections)

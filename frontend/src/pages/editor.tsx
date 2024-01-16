@@ -7,6 +7,8 @@ import { Layout } from '@/components/Layout'
 import { Editor, Preview } from '@/features/article'
 
 type Mode = 'edit' | 'preview' | 'live'
+
+// テストページ
 const Minio: NextPage = () => {
   const [markdown, setMarkdown] = useState('')
   const [mode, setMode] = useState<Mode>('live')

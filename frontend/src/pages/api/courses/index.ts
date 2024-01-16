@@ -3,14 +3,15 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/libs/prisma'
 import { apiValidation, courseRequestSchema } from '@/libs/validates'
 
+// api/coursesのAPI定義
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const { method, body } = req
 
-  // api/courses
   switch (method) {
+    // コースの一覧取得
     case 'GET':
       try {
         const courses = await prisma.course.findMany({
@@ -32,7 +33,9 @@ export default async function handler(
       }
       break
 
+    // コースの作成
     case 'POST':
+      // zodバリデーションが通った時の処理
       apiValidation(req, res, courseRequestSchema, async () => {
         const createdCourse = await prisma.course.create({
           data: {

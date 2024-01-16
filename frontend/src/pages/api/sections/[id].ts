@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/libs/prisma'
 import { apiValidation, sectionUpdateRequestSchema } from '@/libs/validates'
 
+// api/sections/[id]のAPI定義
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -10,8 +11,8 @@ export default async function handler(
   const { method, body } = req
   const id = String(req.query.id)
 
-  // sections/[id]
   switch (method) {
+    // セクションの取得
     case 'GET':
       try {
         const section = await prisma.section.findUnique({
@@ -30,8 +31,9 @@ export default async function handler(
       }
       break
 
+    // セクションの更新
     case 'PUT':
-      // 全部オプショナルなら、違うtypeの値入ってもzod通しちゃう
+      // zodバリデーションが通った時の処理
       apiValidation(req, res, sectionUpdateRequestSchema, async () => {
         const sectionRequest: {
           name: string
@@ -70,6 +72,7 @@ export default async function handler(
       })
       break
 
+    // セクションの削除
     case 'DELETE':
       try {
         const deletedSection = await prisma.section.delete({
