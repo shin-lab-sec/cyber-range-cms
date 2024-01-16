@@ -7,14 +7,14 @@ import { deleteApi, postApi, putApi } from '@/utils/api'
 
 import { SectionFormRequest } from './types'
 
-// 作成
-// Section作成、CourseにsectionId追加（更新）
-// mutateはcourse/[corseId]だけする
+// セクション作成フック
 export const useCreateSection = (courseId: string) => {
+  // コース、キャッシュ更新関数
   const { data: course, mutate: mutateCourse } = useGetApi<CourseWithSections>(
     `/courses/${courseId}`,
   )
 
+  // セクション作成関数
   const createSection = useCallback(
     async (params: SectionFormRequest) => {
       // const courseId = params.courseId
@@ -42,6 +42,7 @@ export const useCreateSection = (courseId: string) => {
         // 再度データを取得しキャッシュを更新する
         mutateCourse(updatedCourse)
       } catch (e) {
+        // エラー処理
         console.error(e)
         if (e instanceof Error) {
           throw e.message
@@ -55,18 +56,18 @@ export const useCreateSection = (courseId: string) => {
   return { createSection }
 }
 
-// 更新
-// Section更新、Course順番更新
-// mutateは courses/:id
+// セクション更新フック
 export const useUpdateSection = (courseId: string) => {
+  // コース、キャッシュ更新関数
   const { data: course, mutate: mutateCourse } = useGetApi<CourseWithSections>(
     `/courses/${courseId}`,
   )
 
+  // セクション更新関数
   const updateSection = useCallback(
     async (sectionId: string, params: SectionFormRequest) => {
-      console.log('リクエスト', sectionId, params)
       try {
+        // Sectionを更新
         const updatedSection = await putApi<SectionWithRelation>(
           `/sections/${sectionId}`,
           {
@@ -84,6 +85,7 @@ export const useUpdateSection = (courseId: string) => {
         // 再度データを取得しキャッシュを更新する
         mutateCourse({ ...course, sections: updatedSections }, false)
       } catch (e) {
+        // エラー処理
         console.error(e)
         if (e instanceof Error) {
           throw e.message
@@ -96,13 +98,14 @@ export const useUpdateSection = (courseId: string) => {
   return { updateSection }
 }
 
-// 削除
-// Section削除、Course sectionIdを削除(更新)
+// セクション削除フック
 export const useDeleteSection = (courseId: string, sectionIds: string[]) => {
+  // キャッシュ更新関数
   const { mutate: mutateCourse } = useGetApi<CourseWithSections>(
     `/courses/${courseId}`,
   )
 
+  // セクション削除関数
   const deleteSection = useCallback(
     async (sectionId: string) => {
       try {
@@ -133,11 +136,14 @@ export const useDeleteSection = (courseId: string, sectionIds: string[]) => {
   return { deleteSection }
 }
 
+// セクション順序更新フック
 export const useUpdateCourseSectionOrder = (courseId: string) => {
+  // キャッシュ更新関数
   const { mutate: mutateCourse } = useGetApi<CourseWithSections>(
     `/courses/${courseId}`,
   )
 
+  // セクション順序更新関数
   const updateCourseSectionOrder = useCallback(
     async (sections: Section[]) => {
       // 引数のsectionsからsectionIdsを取得
@@ -165,14 +171,18 @@ export const useUpdateCourseSectionOrder = (courseId: string) => {
   return { updateCourseSectionOrder }
 }
 
+// セクションと、セクションに紐づくデータを同時に作成するフック
 export const useCreateSectionWithRelation = (courseId: string) => {
+  // コース、キャッシュ更新関数
   const { data: course, mutate: mutateCourse } = useGetApi<CourseWithSections>(
     `/courses/${courseId}`,
   )
 
+  // セクション、紐づくデータの作成関数
   const createSectionWithRelation = useCallback(
     async (params: SectionWithRelation) => {
       try {
+        // Sectionを作成
         const createdSection = await postApi<SectionWithRelation>(
           '/sections/bulk',
           { ...params, courseId },

@@ -6,6 +6,7 @@ type Props = {
   children: ReactNode
 }
 
+// 確認アラートを表示し、OKを押すと実行されるボタン
 export const ConfirmButton: FC<Props> = ({
   confirmMessage,
   onConfirm,

@@ -16,12 +16,14 @@ type Props = {
   onDirty: () => void
 }
 
+// セクションタイプ解説記事のフォーム
 export const SectionArticleForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
   onDirty,
 }) => {
+  // フォームの状態を管理する
   const {
     register,
     handleSubmit,
@@ -32,6 +34,7 @@ export const SectionArticleForm: FC<Props> = ({
     defaultValues: { ...initValue, type: 'article' },
   })
 
+  // 送信関数をラップして、エラーハンドリングを行う
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<SectionFormRequest>(onSubmitProps)
 

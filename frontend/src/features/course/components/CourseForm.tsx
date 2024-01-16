@@ -25,12 +25,14 @@ type Props = {
   onDirty: () => void
 }
 
+// コースフォーム
 export const CourseForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
   onDirty,
 }) => {
+  // フォームの状態を管理する
   const {
     register,
     handleSubmit,
@@ -42,6 +44,7 @@ export const CourseForm: FC<Props> = ({
     defaultValues: initValue ?? { imageUrl: '' },
   })
 
+  // 送信時の関数をラップし、エラーハンドリングを行う
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<CourseRequest>(onSubmitProps)
 
@@ -53,14 +56,17 @@ export const CourseForm: FC<Props> = ({
   // 画像アップロード
   const { uploadFile } = useUploadFile()
 
+  // 画像選択時の処理
   const onChangeFile = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
       // file選択していない
       if (!e.target.files || e.target.files.length === 0) return
 
       const file = e.target.files[0] // ファイルを取得
-
+      // 画像をアップロードし、アクセスURLを取得
       const url = await uploadFile(file)
+
+      // 値をセット
       if (url) setValue('imageUrl', url)
     },
     [setValue, uploadFile],

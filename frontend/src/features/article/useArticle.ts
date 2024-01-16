@@ -5,15 +5,16 @@ import { useGetApi } from '@/hooks/useApi'
 import { SectionWithRelation } from '@/types'
 import { postApi, putApi, deleteApi } from '@/utils/api'
 
-// sectionのmutate
+// 記事作成のフック
 export const useCreateArticle = (sectionId: string) => {
+  // セクション一覧、キャッシュ更新関数
   const { data: section, mutate: mutateSection } =
     useGetApi<SectionWithRelation>(`/sections/${sectionId}`)
 
-  // article作成
-  // section更新
+  // 記事作成関数
   const createArticle = useCallback(async () => {
     try {
+      // article作成
       const newArticle = await postApi<Article>('/articles', {
         body: '// ここに記事をマークダウン形式で書きます',
         sectionId,
@@ -36,6 +37,7 @@ export const useCreateArticle = (sectionId: string) => {
       // 再度データを取得しキャッシュを更新する
       mutateSection(updatedSection)
     } catch (e) {
+      // エラー処理
       console.error(e)
       if (e instanceof Error) {
         throw e.message
@@ -47,16 +49,18 @@ export const useCreateArticle = (sectionId: string) => {
   return { createArticle }
 }
 
-// sectionのmutate
+// 記事更新のフック
 export const useUpdateArticle = (sectionId: string) => {
+  // セクション一覧、キャッシュ更新関数
   const { data: section, mutate: mutateSection } =
     useGetApi<SectionWithRelation>(`/sections/${sectionId}`)
 
-  // article更新
+  // 記事更新関数
   const updateArticle = useCallback(
     async (articleId: string, body: string) => {
       console.log({ articleId }, { body })
       try {
+        // article更新
         const updatedArticle = await putApi<Article>(`/articles/${articleId}`, {
           body,
         })
@@ -70,6 +74,7 @@ export const useUpdateArticle = (sectionId: string) => {
         // 再度データを取得しキャッシュを更新する
         mutateSection({ ...section, articles: updatedArticles })
       } catch (e) {
+        // エラー処理
         console.error(e)
         if (e instanceof Error) {
           throw e.message
@@ -82,16 +87,17 @@ export const useUpdateArticle = (sectionId: string) => {
   return { updateArticle }
 }
 
-// sectionのmutate
+// 記事削除のフック
 export const useDeleteArticle = (sectionId: string) => {
+  // セクション一覧、キャッシュ更新関数
   const { data: section, mutate: mutateSection } =
     useGetApi<SectionWithRelation>(`/sections/${sectionId}`)
 
-  // article削除
-  // sectionを更新
+  // 記事削除関数
   const deleteArticle = useCallback(
     async (articleId: string) => {
       try {
+        // article削除
         await deleteApi(`/articles/${articleId}`)
         console.log('article削除に成功')
         if (!section) return

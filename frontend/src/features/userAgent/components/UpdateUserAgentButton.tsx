@@ -11,10 +11,12 @@ type Props = {
   initValue: UserAgentFormRequest
 }
 
+// ユーザーエージェント更新モーダルを表示するボタン
 export const UpdateUserAgentButton: FC<Props> = ({
   onSubmit: onSubmitProps,
   initValue,
 }) => {
+  // 送信関数をラップして、エラーハンドリングをする
   const { isOpen, isDirtyForm, onClose, onSubmit } = useModalForm(onSubmitProps)
 
   return (

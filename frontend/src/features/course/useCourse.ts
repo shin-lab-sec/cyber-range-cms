@@ -6,13 +6,17 @@ import { postApi, putApi, deleteApi } from '@/utils/api'
 
 import { CourseRequest } from './types'
 
+// コース作成のフック
 export const useCreateCourse = () => {
+  // コース一覧、キャッシュ更新関数
   const { data: courses, mutate: mutateCourses } =
     useGetApi<CourseWithSections[]>('/courses')
 
+  // コース作成関数
   const createCourse = useCallback(
     async (params: CourseRequest) => {
       try {
+        // コース作成
         const newCourse = await postApi<CourseWithSections>('/courses', params)
         console.log('追加に成功', newCourse)
 
@@ -20,6 +24,7 @@ export const useCreateCourse = () => {
         // 再度データを取得しキャッシュを更新する
         mutateCourses([...courses, newCourse])
       } catch (e) {
+        // エラー処理
         console.error(e)
         if (e instanceof Error) {
           throw e.message
@@ -33,14 +38,18 @@ export const useCreateCourse = () => {
   return { createCourse }
 }
 
+// コース更新のフック
 // TODO: courses/[id]のmutateやる？
 export const useUpdateCourse = () => {
+  // コース一覧、キャッシュ更新関数
   const { data: courses, mutate: mutateCourses } =
     useGetApi<CourseWithSections[]>('/courses')
 
+  // コース更新関数
   const updateCourse = useCallback(
     async (id: string, params: CourseRequest) => {
       try {
+        // コース更新
         const updatedCourse = await putApi<CourseWithSections>(
           `/courses/${id}`,
           params,
@@ -55,6 +64,7 @@ export const useUpdateCourse = () => {
         // 再度データを取得しキャッシュを更新する
         mutateCourses(updatedCourses)
       } catch (e) {
+        // エラー処理
         console.error(e)
         if (e instanceof Error) {
           throw e.message
@@ -67,6 +77,7 @@ export const useUpdateCourse = () => {
   return { updateCourse }
 }
 
+// コース削除のフック
 export const useDeleteCourse = () => {
   const { data: courses, mutate: mutateCourses } =
     useGetApi<CourseWithSections[]>('/courses')
@@ -92,13 +103,17 @@ export const useDeleteCourse = () => {
   return { deleteCourse }
 }
 
+// コースとコースに紐づくデータを同時に作成するフック
 export const useCreateCourseWithRelation = () => {
+  // コース一覧、キャッシュ更新関数
   const { data: courses, mutate: mutateCourses } =
     useGetApi<CourseWithSections[]>('/courses')
 
+  // コース作成関数
   const createWithRelationCourse = useCallback(
     async (params: CourseWithSections) => {
       try {
+        // コース、関連データをまとめて作成
         const newCourse = await postApi<CourseWithSections>(
           '/courses/bulk',
           params,

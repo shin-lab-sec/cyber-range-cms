@@ -24,12 +24,14 @@ type Props = {
   onDirty: () => void
 }
 
+// クイズの単一選択のフォーム
 export const QuizRadioForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
   onDirty,
 }) => {
+  // フォームの状態を管理する
   const {
     register,
     handleSubmit,
@@ -46,12 +48,15 @@ export const QuizRadioForm: FC<Props> = ({
 
   const [choiceText, setChoiceText] = useState('')
 
+  // 送信時の関数をラップし、エラーハンドリングを行う
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<QuizFormRequest>(onSubmitProps)
 
+  // フォームの値を監視する
   const choices = watch('choices')
   const answers = watch('answers')
 
+  // 選択肢追加ボタンを押した時の処理
   const onClickAddChoiceButton = useCallback(() => {
     if (choices.some(v => v === choiceText)) {
       setError('choices', {
@@ -60,6 +65,7 @@ export const QuizRadioForm: FC<Props> = ({
       return
     }
 
+    // エラーがあれば消す
     if (errors.choices) clearErrors('choices')
 
     // choicesに追加

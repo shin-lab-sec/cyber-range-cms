@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 
+// Booleanの状態を管理するフック
 export const useBoolean = (
   init: boolean = false,
 ): {

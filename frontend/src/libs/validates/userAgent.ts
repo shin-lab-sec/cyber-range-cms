@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 import { gitHubUrlRegex } from './shares'
 
+// ユーザーエージェントAPIへのリクエスト型
 export const userAgentRequestSchema = z.object({
   name: z.string().nonempty('ユーザーエージェント名は必須です'),
   gitHubUrl: z

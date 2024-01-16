@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 
+// 送信関数をラップして、エラーメッセージを返すフック
 export const useFormErrorHandling = <T = any>(
   func: (args: T) => Promise<void> | void,
 ): {
@@ -14,6 +15,7 @@ export const useFormErrorHandling = <T = any>(
         await func(params)
       } catch (error) {
         if (error instanceof Error) {
+          // エラーメッセージをセット
           setErrorMessage(error.message)
           return
         }
@@ -23,6 +25,7 @@ export const useFormErrorHandling = <T = any>(
     [func],
   )
 
+  // エラーメッセージを消す関数
   const clearErrorMessage = useCallback(() => {
     setErrorMessage(null)
   }, [])

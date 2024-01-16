@@ -15,6 +15,7 @@ type Props = {
   onDelete: () => void
 }
 
+// 記事を書くエディタ・プレビュー
 export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
   // setの間隔が500ms以上で、debouncedに反映される
   const [markdown, setMarkdown] = useDebouncedState(body, 500)
@@ -22,9 +23,12 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
   const [editorState, setEditorState] = useState<EditorState>('clean')
   const isMdScreen = useMediaQuery('(min-width: 768px)')
 
+  // Saveを押したときの処理
   const onClickSave = useCallback(async () => {
+    // エディタに変更を加えていないなら処理しない
     if (editorState !== 'dirty') return
 
+    // ボタンのステータスを変更 save -> 保存処理 -> saved -> 2秒待機 -> clean
     setEditorState('saving')
     await onSave(markdown)
     setEditorState('saved')
@@ -34,6 +38,7 @@ export const ArticleEditor: FC<Props> = ({ body, onSave, onDelete }) => {
     }, 2000)
   }, [markdown, editorState, onSave])
 
+  // エディタに変更を加えて、ブラウザの戻るボタンを押した時、確認アラートを挟む
   const handlePopstate = useCallback(() => {
     const confirmMessage =
       '保存されていないデータは削除されますが、よろしいですか？'

@@ -6,19 +6,26 @@ import { postApi, putApi, deleteApi } from '@/utils/api'
 
 import { UserAgentFormRequest } from './types'
 
+// ユーザーエージェント作成フック
 export const useCreateUserAgent = () => {
+  // ユーザーエージェント一覧、キャッシュ更新関数
   const { data: userAgents, mutate: mutateUserAgents } =
     useGetApi<UserAgent[]>('/useragents')
 
+  // ユーザーエージェント作成関数
   const createUserAgent = useCallback(
     async (params: UserAgentFormRequest) => {
       try {
+        // ユーザーエージェントを作成
         const newUserAgent = await postApi<UserAgent>('/useragents', params)
         console.log('追加に成功', newUserAgent)
+
         if (!userAgents) return
+
         // 再度データを取得しキャッシュを更新する
         mutateUserAgents([...userAgents, newUserAgent])
       } catch (e) {
+        // エラー処理
         console.error(e)
         if (e instanceof Error) {
           throw e.message
@@ -32,13 +39,17 @@ export const useCreateUserAgent = () => {
   return { createUserAgent }
 }
 
+// ユーザーエージェント更新のフック
 export const useUpdateUserAgent = () => {
+  // ユーザーエージェント一覧、キャッシュ更新関数
   const { data: userAgents, mutate: mutateUserAgents } =
     useGetApi<UserAgent[]>('/useragents')
 
+  //
   const updateUserAgent = useCallback(
     async (id: string, params: UserAgentFormRequest) => {
       try {
+        // ユーザーエージェント更新
         const updatedUserAgent = await putApi<UserAgent>(
           `/useragents/${id}`,
           params,
@@ -53,6 +64,7 @@ export const useUpdateUserAgent = () => {
         // 再度データを取得しキャッシュを更新する
         mutateUserAgents(updatedUserAgents)
       } catch (e) {
+        // エラー処理
         console.error(e)
         if (e instanceof Error) {
           throw e.message
@@ -65,13 +77,17 @@ export const useUpdateUserAgent = () => {
   return { updateUserAgent }
 }
 
+// ユーザーエージェント削除のフック
 export const useDeleteUserAgent = () => {
+  // ユーザーエージェント一覧、キャッシュ更新関数
   const { data: userAgents, mutate: mutateUserAgents } =
     useGetApi<UserAgent[]>('/useragents')
 
+  // ユーザーエージェント削除関数
   const deleteUserAgent = useCallback(
     async (id: string) => {
       try {
+        // ユーザーエージェント削除
         await deleteApi(`/useragents/${id}`)
         console.log('削除に成功')
 

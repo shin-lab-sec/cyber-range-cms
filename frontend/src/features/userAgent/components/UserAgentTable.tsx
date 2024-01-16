@@ -17,11 +17,13 @@ type Props = {
   deleteUserAgent: (id: string) => void
 }
 
+// ユーザーエージェント一覧表示テーブル
 export const UserAgentTable: FC<Props> = ({
   userAgents,
   updateUserAgent,
   deleteUserAgent,
 }) => {
+  // テーブルのカラム定義
   const columns = useMemo<MRT_ColumnDef<UserAgent>[]>(
     () => [
       {

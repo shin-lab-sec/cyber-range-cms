@@ -14,12 +14,16 @@ type Props = {
   section: SectionWithRelation
 }
 
+// セクションタイプがクイズ
 export const SectionQuizzes: FC<Props> = ({ section }) => {
   const { quizzes } = section
+
+  // クイズ作成、更新、削除関数
   const { createQuiz } = useCreateQuiz(section.id)
   const { updateQuiz } = useUpdateQuiz(section.id)
   const { deleteQuiz } = useDeleteQuiz(section.id)
 
+  // クイズがないなら作成ボタンを表示
   if (!quizzes.length) {
     return (
       <Flex justify='center' className='mt-200px'>
@@ -33,6 +37,7 @@ export const SectionQuizzes: FC<Props> = ({ section }) => {
     )
   }
 
+  // クイズがあるならクイズ追加ボタン、クイズ一覧テーブルを表示
   return (
     <div>
       <div>

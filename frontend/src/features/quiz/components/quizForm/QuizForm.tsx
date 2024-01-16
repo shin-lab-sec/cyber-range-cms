@@ -14,6 +14,7 @@ type Props = {
   onDirty: () => void
 }
 
+// クイズのタイプを選択して、それぞれのフォームを表示
 export const QuizForm: FC<Props> = ({
   onSubmit,
   submitButtonName,
@@ -22,6 +23,7 @@ export const QuizForm: FC<Props> = ({
 }) => {
   const [quizType, setQuizType] = useState(initValue?.type)
 
+  // クイズのタイプを選択していない
   if (!quizType) {
     return (
       <>
@@ -59,6 +61,7 @@ export const QuizForm: FC<Props> = ({
     )
   }
 
+  // それぞれのタイプのフォームを表示
   return (
     <>
       {quizType === 'text' && (

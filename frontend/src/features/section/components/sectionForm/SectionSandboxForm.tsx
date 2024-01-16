@@ -19,12 +19,14 @@ type Props = {
   onDirty: () => void
 }
 
+// セクションタイプサンドボックスのフォーム
 export const SectionSandboxForm: FC<Props> = ({
   onSubmit: onSubmitProps,
   submitButtonName,
   initValue,
   onDirty,
 }) => {
+  // フォームの状態を管理する
   const {
     register,
     handleSubmit,
@@ -37,6 +39,7 @@ export const SectionSandboxForm: FC<Props> = ({
     defaultValues: { ...initValue, type: 'sandbox' },
   })
 
+  // 送信関数をラップして、エラーハンドリングを行う
   const { onSubmit, errorMessage, clearErrorMessage } =
     useFormErrorHandling<SectionFormRequest>(onSubmitProps)
 
@@ -45,8 +48,10 @@ export const SectionSandboxForm: FC<Props> = ({
     if (isDirty) onDirty()
   }, [isDirty, onDirty])
 
+  // ユーザーエージェント一覧
   const { data: userAgents } = useGetApi<UserAgent[]>('/useragents')
 
+  // ユーザーエージェントが存在しない場合はローディングを表示する
   if (!userAgents)
     return (
       <div className='text-center'>
@@ -54,6 +59,7 @@ export const SectionSandboxForm: FC<Props> = ({
       </div>
     )
 
+  // ユーザーエージェントが存在する場合はフォームを表示する
   return (
     <>
       {errorMessage && (

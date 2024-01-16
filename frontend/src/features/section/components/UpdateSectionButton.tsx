@@ -11,10 +11,12 @@ type Props = {
   initValue: SectionFormRequest
 }
 
+// セクション更新モーダルを表示するボタン
 export const UpdateSectionButton: FC<Props> = ({
   onSubmit: onSubmitProps,
   initValue,
 }) => {
+  // 送信関数をラップして、エラーハンドリングをする
   const { isOpen, isDirtyForm, onClose, onSubmit } = useModalForm(onSubmitProps)
 
   return (

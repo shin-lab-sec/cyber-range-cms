@@ -10,6 +10,7 @@ type Props = {
   onSubmit: (params: SectionFormRequest) => void
 }
 
+// セクション作成モーダルを表示するボタン
 export const CreateSectionButton: FC<Props> = ({ onSubmit: onSubmitProps }) => {
   const { isOpen, isDirtyForm, onClose, onSubmit } = useModalForm(onSubmitProps)
 

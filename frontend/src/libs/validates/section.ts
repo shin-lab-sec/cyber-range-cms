@@ -5,6 +5,7 @@ import { quizFormRequestSchema } from './quiz'
 import { gitHubUrlRegex } from './shares'
 import { userAgentRequestSchema } from './userAgent'
 
+// セクションタイプクイズのリクエストのzodスキーマ
 // courseIdはcreateに必要だけど、formには要らない
 // formのdefaultでcourseIdだけ設定すればOK
 const sectionQuizSchema = z.object({
@@ -14,6 +15,7 @@ const sectionQuizSchema = z.object({
     .max(255, '255文字以内で入力して下さい'),
   type: z.literal('quiz'),
 })
+// セクションタイプ記事のリクエストのzodスキーマ
 const sectionArticleSchema = z.object({
   name: z
     .string()
@@ -21,6 +23,7 @@ const sectionArticleSchema = z.object({
     .max(255, '255文字以内で入力して下さい'),
   type: z.literal('article'),
 })
+// セクションタイプサンドボックスのリクエストのzodスキーマ
 const sectionSandboxSchema = z.object({
   name: z
     .string()
@@ -36,6 +39,7 @@ const sectionSandboxSchema = z.object({
     .nonempty('ユーザーエージェントは必須です'),
 })
 
+// コースIDのzodスキーマ
 const courseIdSchema = z.string().nonempty('コースが選択されていません')
 
 // APiへのリクエストはsectionRequestSchema
@@ -68,13 +72,14 @@ const sectionSandboxUpdateSchema = sectionSandboxSchema.extend({
     .optional(),
 })
 
+// セクション更新APIのリクエストのzodスキーマ
 export const sectionUpdateRequestSchema = z.union([
   sectionQuizUpdateSchema,
   sectionArticleUpdateSchema,
   sectionSandboxUpdateSchema,
 ])
 
-// リレーションもまとめて作成する
+// リレーションもまとめて作成する時のzodスキーマ（コース側で使う）
 export const sectionWithRelationSchema = z.union([
   sectionQuizSchema.extend({ quizzes: z.array(quizFormRequestSchema) }),
   sectionArticleSchema.extend({ articles: z.array(articleRequestSchema) }),
@@ -84,7 +89,7 @@ export const sectionWithRelationSchema = z.union([
   }),
 ])
 
-// section1つをリレーションもまとめて作成する
+// section1つをリレーションもまとめて作成する時のzodスキーマ
 // sections/bulkでのみ使う
 export const sectionWithCourseIdAndRelationSchema = z.union([
   sectionQuizSchema.extend({

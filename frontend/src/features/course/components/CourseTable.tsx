@@ -17,11 +17,13 @@ type Props = {
   deleteCourse: (id: string) => void
 }
 
+// コーステーブル
 export const CourseTable: FC<Props> = ({
   courses,
   updateCourse,
   deleteCourse,
 }) => {
+  // テーブルのカラム情報
   const columns = useMemo<MRT_ColumnDef<CourseWithSections>[]>(
     () => [
       {
