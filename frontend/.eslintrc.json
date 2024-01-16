@@ -50,10 +50,11 @@
     }
   ],
   "rules": {
-    "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/no-empty-function": "error",
-    "unused-imports/no-unused-imports": "error",
-    "react-hooks/rules-of-hooks": "error",
+    "@typescript-eslint/no-unused-vars": "warn", // 未使用変数は警告
+    "@typescript-eslint/no-empty-function": "error", // 空の関数はエラー
+    "unused-imports/no-unused-imports": "error", // 未使用のimportはエラー
+    "react-hooks/rules-of-hooks": "error", // hookのルールを守らないとエラー
+    // importの順番のルール
     "import/order": [
       "error",
       {
@@ -66,7 +67,7 @@
         ],
         "newlines-between": "always", // グループ間で改行
         "alphabetize": {
-          "order": "asc"
+          "order": "asc" // アルファベットの昇順
         }
       }
     ],

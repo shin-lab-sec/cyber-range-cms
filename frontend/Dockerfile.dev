@@ -4,13 +4,14 @@ FROM node:lts-buster-slim
 RUN apt-get update && apt-get install -y \
   openssl
 
+# コンテナのディレクトリをapp配下にする
 WORKDIR /app
 
 # package.json yarn.lockをコピーする
 COPY package.json yarn.lock ./
 
-# yarn.lockを変更させない
+# yarn.lockを変更させないで、パッケージをインストール
 RUN yarn install --frozen-lockfile
 
-# 先に、.nextを生成したい
+# 先に.nextを生成したいので、イメージ内でサーバーを起動する
 CMD [ "yarn", "dev" ]
