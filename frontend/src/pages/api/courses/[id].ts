@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/libs/prisma'
 import { apiValidation, courseUpdateRequestSchema } from '@/libs/validates'
 
+// api/courses/[id]のAPI定義
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -10,8 +11,8 @@ export default async function handler(
   const { method, body } = req
   const id = String(req.query.id)
 
-  // api/courses/[id]
   switch (method) {
+    // コースの取得
     case 'GET':
       try {
         const course = await prisma.course.findUnique({
@@ -36,7 +37,9 @@ export default async function handler(
       }
       break
 
+    // コースの更新
     case 'PUT':
+      // zodバリデーションが通った時の処理
       apiValidation(req, res, courseUpdateRequestSchema, async () => {
         const updatedCourse = await prisma.course.update({
           where: {
@@ -67,6 +70,7 @@ export default async function handler(
       })
       break
 
+    // コースの削除
     case 'DELETE':
       try {
         const deletedCourse = await prisma.course.delete({

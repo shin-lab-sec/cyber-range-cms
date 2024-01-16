@@ -91,6 +91,7 @@ const parseGPTResponse = (gptResponse: string): GPTResponse => {
   return jsonData as GPTResponse
 }
 
+// api/v1/quizzes/[id]/answerのAPI定義
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<AnswerResuponse>,
@@ -102,7 +103,9 @@ export default async function handler(
   await runMiddleware(req, res) // corsチェック
 
   switch (method) {
+    // クイズの正誤判定をする
     case 'POST':
+      // zodバリデーションが通った時の処理
       apiValidation(req, res, quizAnswersSchema, async () => {
         const quiz = await prisma.quiz.findUnique({
           where: {

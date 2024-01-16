@@ -7,6 +7,7 @@ import {
   sectionWithCourseIdAndRelationSchema,
 } from '@/libs/validates'
 
+// section（各タイプ）とuserAgentを作成するリクエスト型
 type SectionWithRelationRequest = Partial<Section> & {
   quizzes: { create: Partial<Quiz>[] }
   articles: { create: Partial<Article>[] }
@@ -48,6 +49,7 @@ const generateUseragentRequest = (userAgent: UserAgent) => {
   }
 }
 
+// クイズのリクエストデータを生成
 const generateQuizzesRequest = (quizzes: Quiz[]) => {
   return {
     quizzes: {
@@ -62,6 +64,7 @@ const generateQuizzesRequest = (quizzes: Quiz[]) => {
   }
 }
 
+// 記事のリクエストデータを生成
 const generateArticlesRequest = (articles: Article[]) => {
   return {
     articles: {
@@ -72,13 +75,14 @@ const generateArticlesRequest = (articles: Article[]) => {
   }
 }
 
+// api/courses/bulkのAPI定義
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const { body } = req
 
-  // api/courses/bulk
+  // zodバリデーションが通った時の処理
   apiValidation(req, res, sectionWithCourseIdAndRelationSchema, async () => {
     const quizzesRequest = generateQuizzesRequest(body.quizzes)
     const articlesRequest = generateArticlesRequest(body.articles)
@@ -89,6 +93,7 @@ export default async function handler(
       userAgentRequest = generateUseragentRequest(body.userAgent)
     }
 
+    // sectionとuserAgentを作成するリクエストデータ
     const sectionWithRelationRequest: SectionWithRelationRequest = {
       name: body.name,
       type: body.type,

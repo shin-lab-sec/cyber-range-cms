@@ -3,15 +3,16 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/libs/prisma'
 import { apiValidation, sectionRequestSchema } from '@/libs/validates'
 
+// api/sectionsのAPI定義
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const { method, body } = req
 
-  // courses/[courseId]/sections
-  // いるか？
+  // 必要？
   switch (method) {
+    // セクションの一覧取得
     case 'GET':
       try {
         const sections = await prisma.section.findMany({
@@ -28,8 +29,10 @@ export default async function handler(
       }
       break
 
+    // セクションの作成
     // typeで3つに分ける？
     case 'POST':
+      // zodバリデーションが通った時の処理
       apiValidation(req, res, sectionRequestSchema, async () => {
         const sectionRequest: {
           name: string

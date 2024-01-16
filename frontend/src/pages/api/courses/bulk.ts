@@ -5,10 +5,12 @@ import prisma from '@/libs/prisma'
 import { apiValidation, courseWithRelationSchema } from '@/libs/validates'
 import { SectionWithRelation } from '@/types'
 
+// courseとsectionを作成するリクエスト型
 type CourseWithRelationRequest = Partial<Course> & {
   sections?: { create: Partial<Section>[] }
 }
 
+// section（各タイプ）とuserAgentを作成するリクエスト型
 type SectionWithRelationRequest = Partial<Section> & {
   quizzes: { create: Partial<Quiz>[] }
   articles: { create: Partial<Article>[] }
@@ -49,6 +51,7 @@ const generateUseragentRequest = (userAgent: UserAgent) => {
   }
 }
 
+// クイズのリクエストデータを生成
 const generateQuizzesRequest = (quizzes: Quiz[]) => {
   return {
     quizzes: {
@@ -63,6 +66,7 @@ const generateQuizzesRequest = (quizzes: Quiz[]) => {
   }
 }
 
+// 記事のリクエストデータを生成
 const generateArticlesRequest = (articles: Article[]) => {
   return {
     articles: {
@@ -73,6 +77,7 @@ const generateArticlesRequest = (articles: Article[]) => {
   }
 }
 
+// セクションのリクエストデータを生成
 const generateSectionWithRelationRequest = (
   sections: SectionWithRelation[],
 ) => {
@@ -97,13 +102,14 @@ const generateSectionWithRelationRequest = (
   })
 }
 
+// api/courses/bulkのAPI定義
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   const { body } = req
 
-  // api/courses/bulk
+  // zodバリデーションが通った時の処理
   apiValidation(req, res, courseWithRelationSchema, async () => {
     let sectionsRequest = {}
 
@@ -116,6 +122,7 @@ export default async function handler(
       sectionsRequest = { sections: { create: sectionsWithRelationRequest } }
     }
 
+    // courseとsectionを作成するリクエストデータ
     const courseWithRelationRequest: CourseWithRelationRequest = {
       name: body.name,
       description: body.description,
@@ -127,6 +134,7 @@ export default async function handler(
       ...sectionsRequest, // {}ならリクエストに含まれない
     }
 
+    // courseとsectionを作成する
     const createdCourse = await prisma.course.create({
       data: courseWithRelationRequest as any, // courseWithRelationRequestに型を付けたかった
       include: {

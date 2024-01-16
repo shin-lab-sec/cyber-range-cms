@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/libs/prisma'
 import { apiValidation, userAgentRequestSchema } from '@/libs/validates'
 
+// api/useragents/[id]のAPI定義
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -10,8 +11,8 @@ export default async function handler(
   const { method, body } = req
   const id = String(req.query.id)
 
-  // useragents/[id]
   switch (method) {
+    // ユーザーエージェントの取得
     case 'GET':
       try {
         const userAgent = await prisma.userAgent.findUnique({
@@ -25,7 +26,9 @@ export default async function handler(
       }
       break
 
+    // ユーザーエージェントの更新
     case 'PUT':
+      // zodバリデーションが通った時の処理
       apiValidation(req, res, userAgentRequestSchema, async () => {
         const updatedUserAgent = await prisma.userAgent.update({
           where: {
@@ -43,6 +46,7 @@ export default async function handler(
       })
       break
 
+    // ユーザーエージェントの削除
     case 'DELETE':
       try {
         const deletedUserAgent = await prisma.userAgent.delete({
