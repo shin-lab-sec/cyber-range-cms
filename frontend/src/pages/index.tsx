@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 
 import { Layout } from '@/components/Layout'
 
+// indexページ
 const Home: NextPage = () => {
   return (
     <Layout>

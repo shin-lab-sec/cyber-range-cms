@@ -7,11 +7,13 @@ import { useLayoutEffect, useRef } from 'react'
 import { Preview } from '@/features/article'
 import { useGetApi } from '@/hooks/useApi'
 
+// articles/[id]のページ
 const ArticlePage: NextPage = () => {
   const searchParams = useSearchParams()
   const id = searchParams.get('id') || '' // 一回目のレンダリングで正常なidが取得できる
   const ref = useRef<HTMLIFrameElement>(null)
 
+  // 記事を取得
   const { data: article } = useGetApi<Article>(`/articles/${id}`)
 
   // iframeで呼び出す側に高さを渡す
@@ -33,6 +35,7 @@ const ArticlePage: NextPage = () => {
     return () => window.removeEventListener('resize', sendEmbedSizeInfo)
   }, [article]) // articleが取得した時に発火させる
 
+  // 記事、idがない場合はローディング
   if (!article || !id) {
     return (
       <div className='h-screen bg-[#141517] grid place-items-center'>
@@ -41,6 +44,7 @@ const ArticlePage: NextPage = () => {
     )
   }
 
+  // 記事のプレビュー
   return (
     <>
       <div className='max-w-800px' ref={ref}>

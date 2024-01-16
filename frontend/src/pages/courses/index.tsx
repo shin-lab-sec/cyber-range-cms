@@ -15,9 +15,12 @@ import { useGetApi } from '@/hooks/useApi'
 import { courseWithRelationSchema } from '@/libs/validates'
 import { CourseWithSections } from '@/types'
 
+// coursesページ
 const Courses: NextPage = () => {
+  // コース一覧を取得
   const { data: courses } = useGetApi<CourseWithSections[]>(`/courses`)
 
+  // コースの作成、更新、削除、まとめて作成関数
   const { createCourse } = useCreateCourse()
   const { updateCourse } = useUpdateCourse()
   const { deleteCourse } = useDeleteCourse()
@@ -28,14 +31,17 @@ const Courses: NextPage = () => {
       <Flex gap='sm' justify='space-between' align='center'>
         <h1>コース一覧</h1>
         <Flex gap='sm' align='center'>
+          {/* JSONファイルで作成するInput */}
           <ImportFileInput
             createData={createWithRelationCourse}
             validateSchema={courseWithRelationSchema}
           />
+          {/* コース作成モーダルボタン */}
           <CreateCourseButton onSubmit={createCourse} />
         </Flex>
       </Flex>
 
+      {/* コース存在すれば、一覧をテーブルで表示 */}
       {courses?.length ? (
         <div className='mt-8'>
           <CourseTable

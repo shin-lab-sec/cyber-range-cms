@@ -5,6 +5,7 @@ import { ChangeEvent, useCallback, useState } from 'react'
 import { Layout } from '@/components/Layout'
 import { useUploadFile } from '@/hooks/useUploadFile'
 
+// MinIOテストページ
 const Minio: NextPage = () => {
   const [imageUrl, setImageUrl] = useState<string | undefined>()
 
